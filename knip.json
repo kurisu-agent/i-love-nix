@@ -1,0 +1,9 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["slides.md", "components/**/*.vue", "setup/**/*.ts"],
+  "project": ["components/**/*.{ts,vue}", "setup/**/*.ts"],
+  "ignoreDependencies": [
+    "@slidev/theme-default",
+    "vue"
+  ]
+}

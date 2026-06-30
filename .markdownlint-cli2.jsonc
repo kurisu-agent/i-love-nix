@@ -1,0 +1,15 @@
+{
+  // Slidev decks: every slide is its own H1, "---" separators look like setext
+  // underlines, and slides mix HTML blocks with long prose. Relax the rules that
+  // fight deck syntax; keep the rest for catching real markdown issues.
+  "config": {
+    "default": true,
+    "line-length": false,
+    "no-inline-html": false,
+    "first-line-heading": false,
+    "no-duplicate-heading": false,
+    "single-title": false,
+    "heading-style": false
+  },
+  "ignores": ["node_modules", "dist"]
+}

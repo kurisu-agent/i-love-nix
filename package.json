@@ -1,0 +1,21 @@
+{
+  "name": "nix-pres-draft",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export",
+    "fmt": "prettier --write .",
+    "lint": "markdownlint-cli2 \"**/*.md\"",
+    "deadcode": "knip"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.16.0",
+    "@slidev/theme-default": "^0.25.0",
+    "knip": "^6.23.0",
+    "markdownlint-cli2": "^0.22.1",
+    "prettier": "^3.9.4",
+    "vue": "^3.5.39"
+  }
+}
