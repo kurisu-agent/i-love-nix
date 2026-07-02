@@ -9,7 +9,7 @@
     "first-line-heading": false,
     "no-duplicate-heading": false,
     "single-title": false,
-    "heading-style": false
+    "heading-style": false,
   },
-  "ignores": ["node_modules", "dist"]
+  "ignores": ["node_modules", "dist"],
 }

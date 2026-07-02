@@ -2,3 +2,5 @@ node_modules
 dist
 .slidev
 *.log
+.env.local
+.env*.local

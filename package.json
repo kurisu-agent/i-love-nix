@@ -6,7 +6,11 @@
     "dev": "slidev --open",
     "build": "slidev build",
     "export": "slidev export",
-    "fmt": "prettier --write .",
+    "fmt": "prettier --write . && node scripts/check-slides.mjs slides.md --fix --quiet",
+    "fmt:check": "prettier --check .",
+    "check": "node scripts/check-slides.mjs slides.md",
+    "check:fix": "node scripts/check-slides.mjs slides.md --fix",
+    "validate": "npm run check && npm run fmt:check && npm run build",
     "lint": "markdownlint-cli2 \"**/*.md\"",
     "deadcode": "knip"
   },

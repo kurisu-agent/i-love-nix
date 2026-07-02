@@ -1,2 +1,12 @@
 dist
 node_modules
+.slidev
+# slides.md is owned by scripts/check-slides.mjs — prettier mangles Slidev's
+# per-slide `---`/frontmatter into stray slides, so it must not touch it.
+slides.md
+public
+assets
+*.svg
+*.png
+.env.local
+package-lock.json
