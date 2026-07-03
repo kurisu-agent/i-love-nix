@@ -13,6 +13,19 @@ lineNumbers: true
 and you should too
 
 ---
+layout: center
+class: text-center
+---
+
+<div class="absolute inset-0 flex items-center justify-center">
+  <div class="aspect-[96/150] h-[62%]" style="background: url(/wakaba-mark.svg) center / contain no-repeat; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.25));"></div>
+</div>
+
+<div class="absolute bottom-12 left-0 right-0 text-2xl font-bold opacity-80">
+  🔰 a beginner's guide — we all start here
+</div>
+
+---
 
 # Quick temperature check <span class="text-2xl">🌡️</span>
 
@@ -146,7 +159,7 @@ in
 }
 ```
 
-- Everything is an **expression** — there are no statements
+- Everything is an **expression** — every piece of code _evaluates to a value_ (no statements, no `return`); even an `if` or `let` yields a value, so the whole file is one big expression you can nest anywhere
 - **Attribute sets** (`{ ... }`) and **lists** (`[ ... ]`) are the building blocks
 - Functions are `arg: body`, applied by juxtaposition: `greeting "Nix"`
 - Evaluation is **lazy** — nothing computes until something needs it
@@ -197,6 +210,60 @@ in
 </div>
 
 <div class="opacity-60 text-sm pt-4">Nix is the engine 🔧 · NixOS is the car built around it 🚗</div>
+
+---
+
+# `nix run` — what actually happens
+
+```bash
+nix run nixpkgs#ripgrep -- --version
+```
+
+<div class="text-left max-w-3xl mx-auto pt-4">
+
+1. **Resolve** — `nixpkgs#ripgrep` looks up the `nixpkgs` flake in the registry and locks it to an exact git revision
+2. **Evaluate** — run the Nix expression → a **derivation** (`…-ripgrep-14.1.0.drv`): the pure recipe + the hash of every input
+3. **Realise** — turn that recipe into a real `/nix/store` path _(next slide 👉)_
+4. **Run** — `exec /nix/store/…-ripgrep-14.1.0/bin/rg`
+
+</div>
+
+<div class="opacity-60 text-sm pt-4">Nothing is installed — no PATH change, no profile entry. It runs straight out of the store. 🐇</div>
+
+---
+
+# Realise — build in a **clean room** 🧪
+
+<div class="grid grid-cols-2 gap-8 items-center mt-2">
+<div>
+
+```mermaid {scale: 0.55}
+graph TD
+  D[".drv recipe<br/>+ input hashes"] --> Q{"path already<br/>in /nix/store?"}
+  Q -->|yes| U["✅ use it"]
+  Q -->|no| S{"prebuilt in<br/>cache.nixos.org?"}
+  S -->|yes| F["⬇️ substitute<br/>fetch binary"]
+  S -->|no| B["🔨 build in sandbox"]
+  U --> R["realised store path"]
+  F --> R
+  B --> R
+```
+
+</div>
+<div>
+
+**The build runs in a sealed sandbox** — a "clean room":
+
+- 🚫🌐 **No network** — a build can't `curl` or `pip install`; every input must be _declared_ up front
+- 📦 **Only declared inputs** mounted read-only — no `/home`, no system libs, no ambient state
+- 🕳️ Private mount / PID / net namespaces; pinned user, fixed timestamps
+
+<div class="opacity-70 text-sm pt-2">Same inputs → same output. The sealed environment is <em>why</em> the hash can promise reproducibility.</div>
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-3">…and Nix realises the whole <b>closure</b> this way (`pcre2 → gcc-libs → glibc`) before anything runs.</div>
 
 ---
 
@@ -459,6 +526,8 @@ Deploy a declarative NixOS config to **any** remote box — bare metal or a fres
 </div>
 </div>
 
+<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-community/nixos-anywhere">github.com/nix-community/nixos-anywhere</a> · <a href="https://github.com/SaumonNet/proxmox-nixos">SaumonNet/proxmox-nixos</a></div>
+
 ---
 
 # Why people reach for it
@@ -507,6 +576,8 @@ class: text-center
 <div>🌐 the whole fleet → <b>clan.lol</b></div>
 <div>💾 disks → <b>disko</b></div>
 <div>🚀 any remote box → <b>nixos-anywhere</b></div>
+<div>🖥️ patch your compositor → <b>COSMIC-comp overlay</b></div>
+<div>📦 dev shells → <b>devenv / direnv</b></div>
 </div>
 
 <div class="opacity-60 text-sm pt-8">no config left behind 🐇 — now let's go deeper…</div>
