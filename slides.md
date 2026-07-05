@@ -905,6 +905,27 @@ Hosted **binary cache** for Nix — never compile the same thing twice.
 
 ---
 
+# ncps
+
+<div class="grid grid-cols-2 gap-10 items-center mt-2">
+<div>
+
+Self-hosted **pull-through binary cache** — a local mirror sitting between your machines and `cache.nixos.org`.
+
+- Fetches store paths on demand, then caches &amp; **signs** them for the whole LAN
+- Download once → every laptop, server &amp; CI box substitutes locally
+- Multi-upstream failover · S3 or local storage · SQLite/Postgres · Prometheus
+
+</div>
+<div>
+<Placeholder label="ncps — LAN pull-through cache in front of cache.nixos.org" />
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-4"><a href="https://github.com/kalbasit/ncps">github.com/kalbasit/ncps</a> — accelerate Nix retrieval across your local network</div>
+
+---
+
 # Secrets
 
 <div class="grid grid-cols-2 gap-10 items-center mt-2">
