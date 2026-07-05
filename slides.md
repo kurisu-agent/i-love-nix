@@ -213,6 +213,48 @@ in
 
 ---
 
+# A flake ≈ `package.json` for your whole system
+
+> _If you've used npm, you already know the shape of this_
+
+<div class="grid grid-cols-2 gap-8 mt-2">
+<div>
+
+### 📦 Node
+- `package.json` — declares **inputs** (deps) & **outputs** (scripts, bin)
+- `package-lock.json` — pins every dep to an **exact** version + hash
+- `npm ci` — rebuild the exact tree anywhere
+
+```json
+// package.json
+{
+  "dependencies": { "left-pad": "^1.3.0" }
+}
+```
+
+</div>
+<div>
+
+### ❄️ Nix
+- `flake.nix` — declares **inputs** (other flakes) & **outputs** (packages, devShells, whole NixOS systems)
+- `flake.lock` — pins every input to an **exact** git rev + hash
+- `nix build` / `develop` — rebuild it anywhere
+
+```nix
+# flake.nix
+{
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+  outputs = { nixpkgs, ... }: { /* … */ };
+}
+```
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-2">Same idea, bigger scope: a flake locks <b>your entire world</b> — not just one language's libraries. 🐇</div>
+
+---
+
 # `nix run` — what actually happens
 
 ```bash
@@ -539,6 +581,41 @@ Deploy a declarative NixOS config to **any** remote box — bare metal or a fres
 
 ---
 
+# The everyday toolbox <span class="text-2xl">🧰</span>
+
+> A handful of verbs cover most of daily Nix
+
+<div class="grid grid-cols-2 gap-10 mt-2">
+<div>
+
+### 🏃 Ephemeral — try it, then it's gone
+
+```bash
+nix run   nixpkgs#hello      # run once, no install
+nix shell nixpkgs#cowsay     # tools on PATH (subshell)
+nix develop                  # enter a flake's devShell
+nix search nixpkgs ripgrep   # find in 100k+ packages
+```
+
+</div>
+<div>
+
+### 📌 Persistent — sticks around
+
+```bash
+nix profile install nixpkgs#ripgrep
+nix profile list | remove | rollback
+nix build nixpkgs#hello      # → ./result symlink
+nix flake init | update      # scaffold | bump lock
+```
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-4"><code>run</code>/<code>shell</code>/<code>develop</code> vanish when you exit · <code>profile</code> persists — with generations &amp; rollbacks, just like the system. Sweep up with <code>nix-collect-garbage -d</code>. 🐇</div>
+
+---
+
 # A reproducible dev shell
 
 Drop a `flake.nix` in a repo and `nix develop` gives everyone the same toolchain:
@@ -559,6 +636,75 @@ Drop a `flake.nix` in a repo and `nix develop` gives everyone the same toolchain
 ```
 
 `nix develop` → you're in a shell with Node 24 and Git, pinned by the flake lock.
+
+---
+
+# Docker vs Nix <span class="text-2xl">🐳❄️</span>
+
+> _"Curiouser and curiouser!"_ — two very different rabbit holes to the same goal
+
+<div class="grid grid-cols-2 gap-10 mt-2">
+<div>
+
+### 🐳 Docker
+- Ships a **filesystem snapshot** — an opaque image, layer on layer
+- Reproducible-_ish_: `FROM ubuntu:22.04` + `apt install` drifts as upstream moves
+- Isolates at **runtime** — the unit is a running **container**
+- A `Dockerfile` is an imperative script that _happens_ to leave an image behind
+
+</div>
+<div>
+
+### ❄️ Nix
+- Ships an **exact dependency graph** — hashed all the way down to `glibc`
+- Reproducible by construction: same inputs → same output, this year or next
+- Isolates at **build time** — the unit is a **`/nix/store` path**
+- A `.nix` file is a declarative expression that _is_ the build
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-4">Docker pins the <b>outcome</b> · Nix pins the <b>process that produces it</b>. 🐇</div>
+
+---
+
+# Docker ➕ Nix — better together
+
+> Not either/or — the store travels **both** directions
+
+<div class="grid grid-cols-2 gap-8 mt-2">
+<div>
+
+### ❄️ → 🐳 Nix builds the image
+`dockerTools.buildLayeredImage` — an OCI image straight from Nix. No `Dockerfile`, just your **exact closure** (a few MB, no base distro) as reproducible layers.
+
+```nix
+dockerTools.buildLayeredImage {
+  name = "my-app";
+  contents = [ pkgs.my-app ];
+  config.Cmd = [ "/bin/my-app" ];
+}
+```
+
+</div>
+<div>
+
+### 🐳 → ❄️ Nix inside the container
+The **devcontainer feature** drops Nix into any image — reproducible tooling in Docker, Codespaces & CI, no NixOS required.
+
+```jsonc
+// .devcontainer/devcontainer.json
+"features": {
+  "ghcr.io/devcontainers/features/nix:1": {
+    "packages": "nodejs_24,git"
+  }
+}
+```
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-2">Nix as the <b>builder</b> 🔧 or Nix as the <b>guest</b> 🏠 — hermetic builds, universal runtime. 🐇</div>
 
 ---
 layout: center
@@ -861,6 +1007,32 @@ The community **conference** for Nix &amp; NixOS — talks, workshops, and the p
 </div>
 
 <div class="opacity-60 text-sm pt-4"><a href="https://nixcon.org">nixcon.org</a></div>
+
+---
+layout: center
+class: text-center
+---
+
+# Extropy Harvesting <span class="text-3xl">🌱</span>
+
+<div class="opacity-80 text-xl pt-2">every system slides toward chaos — Nix lets you <em>capture</em> the order instead of losing it</div>
+
+<div class="grid grid-cols-2 gap-10 text-left max-w-3xl mx-auto pt-10">
+<div>
+
+### 🕳️ Entropy — the default
+Systems drift. Packages rot, config diverges, "works on my machine." Every manual fix leaks back into disorder.
+
+</div>
+<div>
+
+### 🌱 Extropy — what you harvest
+Each fix you _declare_ becomes permanent structure. Order accumulates in `.nix` instead of evaporating.
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-10">Write it down once and it never decays back to chaos — you're harvesting order out of entropy. 🐇</div>
 
 ---
 layout: center
