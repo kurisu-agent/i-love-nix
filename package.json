@@ -15,10 +15,14 @@
     "deadcode": "knip"
   },
   "devDependencies": {
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify-json/simple-icons": "^1.2.90",
     "@slidev/cli": "^52.16.0",
     "@slidev/theme-default": "^0.25.0",
     "knip": "^6.23.0",
     "markdownlint-cli2": "^0.22.1",
+    "playwright": "^1.61.1",
+    "playwright-chromium": "^1.60.0",
     "prettier": "^3.9.4",
     "vue": "^3.5.39"
   }

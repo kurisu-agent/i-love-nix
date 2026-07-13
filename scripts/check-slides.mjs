@@ -62,15 +62,27 @@ function lint(src) {
   return { errors, warnings, fixed, fixable: blanksToDrop.length }
 }
 
-const original = readFileSync(FILE, 'utf8')
-let { errors, warnings, fixed, fixable } = lint(original)
+// Lint the entry file plus every deck it imports via `src:` frontmatter.
+const entrySrc = readFileSync(FILE, 'utf8')
+const imports = [...entrySrc.matchAll(/^src:\s*([^#\s]+)/gm)].map((m) =>
+  resolve(dirname(FILE), m[1]),
+)
+const FILES = [FILE, ...imports]
 
-if (FIX && fixable) {
-  writeFileSync(FILE, fixed)
-  if (!QUIET)
-    console.log(`🔧 fixed ${fixable} stray-frontmatter blank line(s) in ${basename(FILE)}`)
-  // re-lint the fixed source so the report reflects reality
-  ;({ errors, warnings } = lint(fixed))
+const errors = []
+const warnings = []
+for (const f of FILES) {
+  let result = lint(readFileSync(f, 'utf8'))
+  if (FIX && result.fixable) {
+    writeFileSync(f, result.fixed)
+    if (!QUIET)
+      console.log(`🔧 fixed ${result.fixable} stray-frontmatter blank line(s) in ${basename(f)}`)
+    // re-lint the fixed source so the report reflects reality
+    result = lint(result.fixed)
+  }
+  const tag = FILES.length > 1 ? `${basename(f)} ` : ''
+  errors.push(...result.errors.map((e) => tag + e))
+  warnings.push(...result.warnings.map((w) => tag + w))
 }
 
 // 3. Parser-based structural check: real slide count + leaked-frontmatter slides.

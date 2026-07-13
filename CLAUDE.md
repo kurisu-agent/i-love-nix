@@ -12,10 +12,18 @@ A Slidev deck: "I ❤️ NixOS — and you should too". Themed around Alice in W
 - A slide should read in a glance; details go in the speaker's mouth, not on the slide.
 - Generate on-theme imagery with `scripts/gen_image.py` (Gemini, Nano Banana Pro, 16:9).
 
+## Deck structure
+
+`slides.md` is a thin index: title/agenda slides plus one `src: ./pages/NN-section.md`
+import per section. The actual content lives in `pages/*.md` (one file per section, each
+opening with a section-divider slide). Edit slides in `pages/`; only touch `slides.md` to
+add/reorder sections or change the agenda.
+
 ## Validation
 
-`slides.md` is owned by `scripts/check-slides.mjs`, NOT prettier (prettier mangles Slidev's
-per-slide frontmatter — it's in `.prettierignore`). After editing slides:
+`slides.md` and `pages/*.md` are owned by `scripts/check-slides.mjs`, NOT prettier (prettier
+mangles Slidev's per-slide frontmatter — they're in `.prettierignore`). The checker follows
+`src:` imports from `slides.md` automatically. After editing slides:
 
 - `npm run validate` — full gate: structural check + `prettier --check` + `slidev build`.
 - `npm run check` / `npm run check:fix` — structural validation / auto-repair.
