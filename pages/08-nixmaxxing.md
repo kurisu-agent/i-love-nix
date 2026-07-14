@@ -28,6 +28,34 @@ class: text-center
 <div class="opacity-60 text-sm pt-8">no config left behind — now let's go deeper…</div>
 
 ---
+
+# The dendritic pattern <span class="text-2xl">🌳</span>
+
+> One rule: **every file is a flake-parts module** — so a file is a _feature_, not a machine
+
+```nix
+# modules/japanese-input.nix — one aspect, every layer it touches
+{
+  flake.modules.nixos.desktop = { … };          # the system side
+  flake.modules.homeManager.base = { … };       # the user side
+}
+```
+
+- **Cross-cutting, solved** — one file configures NixOS + Home Manager + nix-darwin together, instead of the same feature scattered across three trees
+- **Auto-imported** — no `imports = [ … ]` bookkeeping; move or rename files freely, the path is just a label
+- **Scales without reorganizing** — one laptop or a whole fleet, same shape
+
+<div class="opacity-60 text-sm pt-4"><a href="https://github.com/mightyiam/dendritic">github.com/mightyiam/dendritic</a> · built on <a href="https://flake.parts">flake-parts</a> + <a href="https://github.com/vic/import-tree">import-tree</a></div>
+
+<!--
+The usual config repo is organized by *machine* or by *layer* (nixos/ vs home/), so one logical feature — say Japanese input — ends up as three fragments in three trees that have to be kept in sync by hand.
+
+Dendritic flips the axis: every file is a flake-parts module describing one *feature*, and it contributes option values to whichever layers it touches. The module system itself becomes the coordination layer across NixOS, Home Manager, and nix-darwin.
+
+Because files are auto-imported (import-tree), the tree structure carries zero semantics — it's pure documentation. Several community maintainers have adopted it and it pairs naturally with the flake-parts style you saw in the nix-common example earlier.
+-->
+
+---
 layout: center
 class: text-center
 ---
@@ -55,6 +83,49 @@ class: text-center
 - **Overlay:** override / extend a package in the package set
 - **Patch:** modify source before the build (`patches = [ … ]`)
 - **Case study:** the "Tempest" fix — write up overlay-vs-patch trade-off
+
+<div class="grid grid-cols-2 gap-8 pt-4 text-left">
+<div>
+
+### 🌳 a device-tree overlay
+
+```nix
+hardware.deviceTree = {
+  enable = true;
+  overlays = [{
+    name = "enable-spi";
+    dtsFile = ./spi-on.dtso;
+  }];
+};
+```
+
+<div class="opacity-60 text-sm pt-1">ARM board: amend the <b>hardware description</b> — no vendor image, no fork</div>
+
+</div>
+<div>
+
+### 🩹 a kernel patch
+
+```nix
+boot.kernelPatches = [{
+  name = "fix-suspend";
+  patch = ./0001-fix-suspend.patch;
+}];
+```
+
+<div class="opacity-60 text-sm pt-1">the kernel is <b>just another package</b> — re-applied automatically on every update</div>
+
+</div>
+</div>
+
+<!--
+Both examples are the cosmic-comp story from the intro, at lower levels of the stack.
+
+Device-tree overlays: on ARM/embedded boards the DT describes the hardware to the kernel. Vendors make you rebuild a boot image to change it; NixOS takes a `.dtso` file as declarative config and splices it in on every rebuild — same pattern as any overlay: describe the delta, never fork the base.
+
+Kernel patches: `boot.kernelPatches` rebuilds the kernel derivation with your patch in `patches = [ … ]`. The point isn't that you *can* patch a kernel — any distro can — it's that the patch is *declared*: every kernel update re-applies it, and rolling back the generation rolls back the kernel. (Fair warning to deliver aloud: you're now building your own kernel — that's real compile time unless a cache serves it.)
+-->
+
 
 ---
 

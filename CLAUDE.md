@@ -11,6 +11,9 @@ A Slidev deck: "I ❤️ NixOS — and you should too". Themed around Alice in W
 - Cut subtitles, taglines, and "fluff" (e.g. "press space to advance"). Let visuals carry the message.
 - A slide should read in a glance; details go in the speaker's mouth, not on the slide.
 - Generate on-theme imagery with `scripts/gen_image.py` (Gemini, Nano Banana Pro, 16:9).
+- The live demo is scripted in `demos/README.md` (run-sheet + sample.nix + a runnable
+  flake in `demos/potion/`). `demos/` must stay git-tracked — Nix only sees tracked
+  files when evaluating a flake in a git repo.
 
 ## Deck structure
 

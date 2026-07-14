@@ -7,7 +7,54 @@ class: text-center
 
 ---
 
-# A flake ≈ `package.json` for your whole system
+# The traditional way <span class="text-2xl">🔥</span>
+
+> _"…but it works on my machine"_
+
+<div class="opacity-70 pt-1">☝️ this is the <b>entropy</b> we mean — unrecorded change piling up until no one can explain the machine. Its four favorite faces:</div>
+
+<div class="grid grid-cols-2 gap-x-10 gap-y-6 pt-4">
+<div>
+
+### 🎲 one global, mutable pile
+`/usr/lib` is a shared variable every install mutates — apps fight over one copy of everything
+
+</div>
+<div>
+
+### 🧟 zombie machines
+a system is the sum of every command ever run on it — still shambling, but nobody remembers why it's alive
+
+</div>
+<div>
+
+### 🔧 build-system roulette
+your gcc 13 vs CI's gcc 12 · system openssl vs brew's — "install the deps" means something different everywhere
+
+</div>
+<div>
+
+### 🙏 setup by folklore
+a README of steps, a wiki page, that one teammate who remembers — replayed by hand, drifting every time
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-8">Nothing pins anything, so everything drifts. Every tool in this section is an attempt to fix some of this — Nix goes after the root.</div>
+
+<!--
+Open with the shared pain — every hand in the room has lost a day to one of these quadrants.
+
+Name the villain explicitly: this slide is the **entropy** from the "Extropy Harvesting" slide, out in the wild. "It works on my machine" *is* entropy talking — the machine works for reasons nobody recorded, so the knowledge exists only as accumulated accident. Every untracked `apt install`, every hand-edit in `/etc`, every "just run this once" adds disorder that can't be replayed, only archaeologically excavated.
+
+The common root cause: implicit, mutable, global state. The build "works" because of what *happens* to be installed, at whatever version happens to be there, configured by whoever touched the box last. Nothing records the real inputs, so nothing can reproduce them.
+
+Frame for the section: npm, Ansible, Terraform, Docker each attack a slice of this — per-language deps, machine setup, infra, snapshots. Keep the four quadrants in mind as each comparison goes by.
+-->
+
+---
+
+# A flake ≈ `package.json` — for anything Nix builds
 
 > _If you've used npm, you already know the shape of this_
 
@@ -45,36 +92,38 @@ class: text-center
 </div>
 </div>
 
-<div class="opacity-60 text-sm pt-2">Same idea, bigger scope: a flake locks <b>your entire world</b> — not just one language's libraries.</div>
+<div class="opacity-60 text-sm pt-2">Same idea, bigger reach: the same lockfile discipline scales from <b>one dev shell</b> all the way up to <b>a whole NixOS machine</b> — not just one language's libraries.</div>
 
 ---
 
-# Docker vs Nix <span class="text-2xl">🐳❄️</span>
+# …and vs npm <span class="text-2xl">📦</span>
 
-> Two very different routes to the same goal
+> You already met the `package.json` analogy — under the hood the **models** are worlds apart
 
 <div class="grid grid-cols-2 gap-10 mt-2">
 <div>
 
-### 🐳 Docker
-- Ships a **filesystem snapshot** — an opaque image, layer on layer
-- Reproducible-_ish_: `FROM ubuntu:22.04` + `apt install` drifts as upstream moves
-- Isolates at **runtime** — the unit is a running **container**
-- A `Dockerfile` is an imperative script that _happens_ to leave an image behind
+### 📦 npm / `node_modules`
+- Deps live in a per-project **`node_modules`** — nested, duplicated, mutated in place
+- Version **ranges** (`^1.3.0`) → the tree drifts unless the lockfile holds it
+- **Phantom deps** — you can `require` a package you never declared (it got hoisted)
+- `postinstall` runs **arbitrary code** at install time — supply-chain surface
+- Only the JS layer — a native `.node` addon still needs system libs &amp; a compiler
 
 </div>
 <div>
 
 ### ❄️ Nix
-- Ships an **exact dependency graph** — hashed all the way down to `glibc`
-- Reproducible by construction: same inputs → same output, this year or next
-- Isolates at **build time** — the unit is a **`/nix/store` path**
-- A `.nix` file is a declarative expression that _is_ the build
+- One shared **`/nix/store`**, content-addressed — every version coexists, shared not copied
+- Every input **pinned by hash** in `flake.lock`; the store path _is_ the identity
+- **No phantom deps** — a build sees only what it declared; nothing ambient leaks in
+- Builds run in a **sandbox** — no network, no arbitrary install-time side effects
+- Packages the **whole closure** down to `glibc`, not just the JS
 
 </div>
 </div>
 
-<div class="opacity-60 text-sm pt-4">Docker pins the <b>outcome</b> · Nix pins the <b>process that produces it</b>.</div>
+<div class="opacity-60 text-sm pt-4">npm resolves a <b>tree per project</b> you hope matches the lock · Nix resolves a <b>graph — shared &amp; hashed</b> — that can't drift.</div>
 
 ---
 
@@ -139,34 +188,32 @@ class: text-center
 
 ---
 
-# …and vs npm <span class="text-2xl">📦</span>
+# Docker vs Nix <span class="text-2xl">🐳❄️</span>
 
-> You already met the `package.json` analogy — under the hood the **models** are worlds apart
+> Two very different routes to the same goal
 
 <div class="grid grid-cols-2 gap-10 mt-2">
 <div>
 
-### 📦 npm / `node_modules`
-- Deps live in a per-project **`node_modules`** — nested, duplicated, mutated in place
-- Version **ranges** (`^1.3.0`) → the tree drifts unless the lockfile holds it
-- **Phantom deps** — you can `require` a package you never declared (it got hoisted)
-- `postinstall` runs **arbitrary code** at install time — supply-chain surface
-- Only the JS layer — a native `.node` addon still needs system libs &amp; a compiler
+### 🐳 Docker
+- Ships a **filesystem snapshot** — an opaque image, layer on layer
+- Reproducible-_ish_: `FROM ubuntu:22.04` + `apt install` drifts as upstream moves
+- Isolates at **runtime** — the unit is a running **container**
+- A `Dockerfile` is an imperative script that _happens_ to leave an image behind
 
 </div>
 <div>
 
 ### ❄️ Nix
-- One shared **`/nix/store`**, content-addressed — every version coexists, shared not copied
-- Every input **pinned by hash** in `flake.lock`; the store path _is_ the identity
-- **No phantom deps** — a build sees only what it declared; nothing ambient leaks in
-- Builds run in a **sandbox** — no network, no arbitrary install-time side effects
-- Packages the **whole closure** down to `glibc`, not just the JS
+- Ships an **exact dependency graph** — hashed all the way down to `glibc`
+- Reproducible by construction: same inputs → same output, this year or next
+- Isolates at **build time** — the unit is a **`/nix/store` path**
+- A `.nix` file is a declarative expression that _is_ the build
 
 </div>
 </div>
 
-<div class="opacity-60 text-sm pt-4">npm resolves a <b>tree per project</b> you hope matches the lock · Nix resolves a <b>graph — shared &amp; hashed</b> — that can't drift.</div>
+<div class="opacity-60 text-sm pt-4">Docker pins the <b>outcome</b> · Nix pins the <b>process that produces it</b>.</div>
 
 ---
 

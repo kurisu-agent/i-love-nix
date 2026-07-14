@@ -1,0 +1,92 @@
+# Live demo run-sheet 🧪
+
+Start at the **Drink me** bookend slide. Run the acts top to bottom.
+
+## Act 0 — before the talk
+
+```bash
+cd /workspaces/nix-pres-draft/demos
+./enable-devenv.sh
+exec zsh
+```
+
+(The script pre-trusts rabbit only — snake's `direnv allow` is the live reveal in Act 5. Don't allow it early.)
+
+## Act 1 — kick off the vibe-coding demo 🤖
+
+Switch to the VM, start Claude Code on the NixOS config, leave it running.
+
+## Act 2 — run things without installing them 🏃
+
+```bash
+nix run nixpkgs#hello
+nix run nixpkgs#cowsay -- "sup?"
+```
+
+## Act 3 — the language is just values
+
+```bash
+cat sample.nix
+nix eval -f sample.nix message
+nix eval -f sample.nix message --argstr name "Alice"
+nix eval -f sample.nix doubled
+```
+
+## Act 4 — crab potion: allow it, get a toolchain 🦀
+
+```bash
+cargo --version          # command not found
+cd crab-potion
+cat flake.nix
+nix develop -c bash      # step into the devShell explicitly
+cargo --version          # a whole toolchain appeared
+rustc hello.rs -o hello && ./hello
+exit                     # leave the shell…
+cargo --version          # …and it's gone again
+cd ..
+```
+
+## Act 5 — snake potion: never type nix develop again 🐍
+
+```bash
+python3 --version        # host python — 3.11
+cd snake-potion          # nothing happens — this .envrc isn't trusted yet
+cat .envrc               # one line: use flake
+direnv allow             # trust it → the shell loads right here, on cd
+python3 --version        # 3.14 from the flake
+which python3            # /nix/store/…
+cat flake.nix
+nix run .                # the packaged script, from the flake
+cd ..                    # unloads on the way out
+python3 --version        # back to 3.11
+```
+
+## Act 6 — rabbit potion: even the prompt 🐇
+
+```bash
+cd rabbit-potion         # pre-trusted → the 🐇 hops into your prompt
+cat flake.nix            # …and it's all declared in the shellHook
+cowsay "we're all mad here"
+cd ..                    # prompt back to normal
+```
+
+## Act 7 — nix profile 📌
+
+```bash
+nix profile install nixpkgs#cmatrix
+cmatrix
+nix profile rollback
+cmatrix             # command not found
+```
+
+## Act 8 — back to the vibe demo 🤖
+
+Review the config Claude wrote, `nixos-rebuild test`, roll back if it lied.
+
+---
+
+**If something looks weird:**
+
+- Tools follow you after `cd`? You're still inside a `nix develop` shell — `exit`. (direnv always prints `direnv: …` lines when it acts; no lines = old shell.)
+- direnv totally silent, even on `allow`? Run `exec zsh` — heals the shell.
+- Everything else (quirks, why the flags): comments in `enable-devenv.sh`.

@@ -4,14 +4,16 @@ import StepGuide from './StepGuide.vue'
 
 defineProps({ current: { type: Number, default: 0 } })
 const steps = [
-  'Rollbacks',
-  'Reproducible',
-  'Build cache',
   'Declarative',
+  'Reproducible',
+  'Composable',
+  'Interfaces',
+  'Shareable',
+  'Caching',
   'nixpkgs',
-  'No dep-hell',
+  'Dependencies',
+  'Rollbacks',
   'nixos-anywhere',
-  'Sharing',
 ].map((label) => ({ label }))
 </script>
 

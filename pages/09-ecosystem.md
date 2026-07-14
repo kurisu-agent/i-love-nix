@@ -241,32 +241,6 @@ layout: center
 class: text-center
 ---
 
-# Extropy Harvesting <span class="text-3xl">🌱</span>
-
-<div class="opacity-80 text-xl pt-2">every system slides toward chaos — Nix lets you <em>capture</em> the order instead of losing it</div>
-
-<div class="grid grid-cols-2 gap-10 text-left max-w-3xl mx-auto pt-10">
-<div>
-
-### 🕳️ Entropy — the default
-Systems drift. Packages rot, config diverges, "works on my machine." Every manual fix leaks back into disorder.
-
-</div>
-<div>
-
-### 🌱 Extropy — what you harvest
-Each fix you _declare_ becomes permanent structure. Order accumulates in `.nix` instead of evaporating.
-
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-10">Write it down once and it never decays back to chaos — you're harvesting order out of entropy.</div>
-
----
-layout: center
-class: text-center
----
-
 # Where to go next
 
 [nix.dev](https://nix.dev) · [Zero to Nix](https://zero-to-nix.com) · [nixos.org](https://nixos.org)

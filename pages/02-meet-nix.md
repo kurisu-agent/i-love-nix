@@ -3,7 +3,22 @@ layout: center
 class: text-center
 ---
 
-<SectionBookend image="/alice-meet-nix.png" title="Meet Nix" subtitle="what it is, where it came from, how to start" />
+<SectionBookend image="/alice-meet-nix.png" title="Meet Nix" subtitle="history and theory — what it is and where it came from" />
+
+---
+layout: center
+class: text-center
+---
+
+<div class="flex flex-col items-center">
+  <div class="w-72 h-72 rounded-full" style="background: url(/eelco-dolstra.jpg) center / cover no-repeat; box-shadow: 0 12px 40px rgba(0,0,0,0.35);"></div>
+  <div class="text-3xl font-bold pt-6">Eelco Dolstra</div>
+  <div class="text-lg opacity-70 pt-1">the man who nixed it all</div>
+</div>
+
+<!--
+Put a face to the name right away: Eelco Dolstra — created Nix as his PhD research in 2003, and today co-founder of Determinate Systems. Everything in this section flows from his thesis.
+-->
 
 ---
 
@@ -34,9 +49,9 @@ class: text-center
 
 ---
 
-# …and "Nix" means three things at once <span class="text-2xl">🃏</span>
+# …and "Nix" means four things at once <span class="text-2xl">🃏</span>
 
-<div class="grid grid-cols-3 gap-8 pt-6">
+<div class="grid grid-cols-4 gap-6 pt-6">
 <div>
 
 ### 🗣️ the language
@@ -51,28 +66,19 @@ The tool that **evaluates** that language, builds derivations, and owns the `/ni
 </div>
 <div>
 
+### 🗂️ nixpkgs
+The **package collection** — 100k+ recipes written in the language, built by the tool. The world's largest.
+
+</div>
+<div>
+
 ### 💻 the OS — NixOS
 A whole **Linux distro** where the language configures the _entire_ system, not just packages.
 
 </div>
 </div>
 
-<div class="opacity-60 text-sm pt-8">Same three letters, three layers — language → package manager → OS. We'll take them in that order.</div>
-
----
-layout: center
-class: text-center
----
-
-<div class="flex flex-col items-center">
-  <div class="w-72 h-72 rounded-full" style="background: url(/eelco-dolstra.jpg) center / cover no-repeat; box-shadow: 0 12px 40px rgba(0,0,0,0.35);"></div>
-  <div class="text-3xl font-bold pt-6">Eelco Dolstra</div>
-  <div class="text-lg opacity-70 pt-1">the man who nixed it all</div>
-</div>
-
-<!--
-Put a face to the name before the timeline: Eelco Dolstra — created Nix as his PhD research in 2003, and today co-founder of Determinate Systems. Everything on the next slide flows from his thesis.
--->
+<div class="opacity-60 text-sm pt-8">Same three letters, four layers — language → package manager → nixpkgs → OS. We'll take them in that order.</div>
 
 ---
 
@@ -140,6 +146,51 @@ The simple frame: Nix is a **functional language**, and expressions-instead-of-s
 
 ---
 
+# Procedural vs declarative
+
+Two ways to get a machine into a state — describe the **steps**, or describe the **result**:
+
+<div class="grid grid-cols-2 gap-10 pt-4">
+<div>
+
+### 🔧 procedural — _say how_
+
+```bash
+sudo apt install nginx
+sudo vim /etc/nginx/nginx.conf
+sudo systemctl enable --now nginx
+# …and again, by hand, on the next box
+```
+
+</div>
+<div>
+
+### ❄️ declarative — _say what_
+
+```nix
+services.nginx = {
+  enable = true;
+  virtualHosts."example.com".root = "/var/www";
+};
+```
+
+</div>
+</div>
+
+<div class="pt-8 text-center text-lg">steps depend on <strong>where you start</strong> · a declared result is derived fresh <strong>from zero</strong>, every time</div>
+
+<div class="opacity-60 text-sm pt-6 text-center">The functional language is what makes this <strong>enforceable</strong>: a config can't <em>do</em> anything — it can only <em>describe</em>.</div>
+
+<!--
+Imperative systems are defined by their **history**: the current state is the sum of every command anyone ever ran, in order, including the ones nobody remembers. Reproducing the machine means replaying an unknown script. Config management tools (Ansible et al.) automate the steps, but the steps still mutate whatever state they land on.
+
+Declarative flips it: the file states the **end state**, and the tool derives whatever steps are needed — from any starting point, including a blank disk. Idempotent by construction; drift has nowhere to live because nothing is defined *relative to now*.
+
+Tie back to the previous slide: expressions-not-statements is the same idea one level down. And forward: "no side effects" is why Nix's declarative promise actually holds — the config *can't* sneak in an imperative step.
+-->
+
+---
+
 # No side effects — what that buys you <span class="text-2xl">✨</span>
 
 An expression can't mutate anything: its value depends on its inputs **alone**. Everything else falls out of that:
@@ -166,148 +217,150 @@ This is also why the whole ecosystem is shaped like "modules you drop in" — Ho
 
 
 ---
+layout: center
+class: text-center
+---
 
-# The Nix language in 30 seconds
+# The boundaries dissolve <span class="text-3xl">🫥</span>
+
+<div class="pt-3 text-xl">📦 an app &nbsp;·&nbsp; ⚙️ a config &nbsp;·&nbsp; 🧩 a module &nbsp;·&nbsp; 🚀 a deployment &nbsp;·&nbsp; 💻 an OS</div>
+
+<div class="text-left text-sm max-w-3xl mx-auto pt-4">
 
 ```nix
-let
-  pkgs = import <nixpkgs> {};
-  greeting = name: "Hello, ${name}!";
-in
 {
-  message = greeting "Nix";
-  tools   = [ pkgs.git pkgs.jq pkgs.ripgrep ];
+  packages.myapp = rustPlatform.buildRustPackage { src = ./.; };  # 📦 an app
+  nixosConfigurations.server = nixosSystem {                      # 💻 an OS
+    modules = [
+      { services.myapp = { enable = true; port = 8080; }; }       # ⚙️ a config
+      { programs.mosh.enable = true;                              # 🧩 a module…
+        nixpkgs.overlays = [(final: prev: {
+          mosh = prev.mosh.overrideAttrs {                        # …carrying a patched build
+            patches = [ ./fix-mosh-colors.patch ];
+          };
+        })];
+      }
+      { networking.hostName = "wonderland";                       # 🚀 a deployment —
+        imports = [ ./hardware.nix ]; }                           #    this exact machine
+    ];
+  };
 }
 ```
 
-- **Attribute sets** (`{ ... }`) and **lists** (`[ ... ]`) are the building blocks
-- Functions are `arg: body`, applied by juxtaposition: `greeting "Nix"`
-- `let … in` binds names for the expression below; `${…}` interpolates into strings
+</div>
+
+<div class="opacity-70 pt-3">A system is a big package · a package is a tiny system.</div>
+
+<div class="opacity-60 text-sm pt-2">These <b>17 lines</b>, checked into GitHub, are a harvest: this exact machine, rebuildable by anyone, forever →</div>
 
 <!--
-The previous two slides in real syntax: the whole file is ONE expression whose value is the attrset at the bottom.
+Close by counting: seventeen lines. Push them to GitHub and the machine stops being a machine — it's a *fact* now: anyone, on any hardware, this year or in ten, can check out that commit and get this exact server back, patched mosh and all. That's the extropy harvest the next slide names — the segue is literally the arrow on screen.
+
+One of the big philosophical payoffs. Everywhere else these are *different kinds of thing* with different tools: an app (apt/brew), a config file (/etc), a module (Ansible role), a deployment (Terraform/Helm), an OS (the distro's business). In Nix they're all the same primitive — an expression that evaluates to a derivation in one graph — so the categories stop being categories.
+
+Walk the example inside-out: a custom Rust project built as a package; a config line that flips it on as a service; a module that enables mosh — and *inside* it, an overlay carrying a source patch onto mosh's build; and at the bottom, the deployment: a hostname plus `hardware.nix` pins this value to one *physical machine* — disks, kernel modules, the actual box. Five "different kinds of thing", one nested value — no impedance mismatch at any seam.
+
+(And getting it onto that box is one command — `nixos-rebuild switch --target-host` or nixos-anywhere — worth saying aloud.)
+
+Concrete consequences: a whole NixOS system can be a flake *input* to something else; a dev shell and an OS are built by the same command family; `nixos-rebuild` and `nix build` differ only in what the derivation *describes*.
+
+There's no boundary where "config" ends and "software" begins — it's values all the way down. And that sets up the next slide: if everything is one kind of thing, everything can be *captured* the same way.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+# Extropy Harvesting <span class="text-3xl">🌱</span>
+
+<div class="opacity-80 text-xl pt-2">every system slides toward chaos — Nix lets you <em>capture</em> the order instead of losing it</div>
+
+<div class="grid grid-cols-2 gap-10 text-left max-w-3xl mx-auto pt-10">
+<div>
+
+### 🕳️ Entropy — the default
+Systems drift. Packages rot, config diverges, "works on my machine." Every manual fix leaks back into disorder.
+
+</div>
+<div>
+
+### 🌱 Extropy — what you harvest
+Each fix you _declare_ becomes permanent structure. Order accumulates in `.nix` instead of evaporating.
+
+</div>
+</div>
+
+<div class="pt-10 text-lg">a commit hash + some Nix = a working system, <b>crystallized</b> — permanently, anywhere</div>
+
+<div class="opacity-60 text-sm pt-3">This is the superpower everything you just saw adds up to. Hold onto it for the rest of the talk.</div>
+
+<!--
+Land the section on the payoff of all the philosophy: pure functions, declared inputs, hashed outputs — individually they sound academic, but together they mean that once a fix exists as Nix code in a commit, it is *permanently* captured. Check out that rev in five years, on a different machine, and the same system comes back. Effort stops evaporating; order compounds.
+
+That's the frame for everything that follows — every tool and trick in the rest of the deck is a way of harvesting more order into the crystal.
 -->
 
 ---
 
-# Getting Nix <span class="text-2xl">⬇️</span>
+# Where people point it <span class="text-2xl">🎯</span>
 
-Two ways in — same language, same store, same commands:
+A NixOS system is **exactly what you declared — and nothing more**. No preinstalled fluff, just your closure — which is also a **security win** 🔒:
 
-<div class="grid grid-cols-2 gap-8 pt-6">
+<div class="grid grid-cols-3 gap-x-8 gap-y-6 pt-4">
 <div>
 
-### 🐧 standalone
-On **any Linux**, macOS, or WSL — one installer, no reboot:
-
-```bash
-curl -fsSL https://install.determinate.systems/nix \
-  | sh -s -- install
-```
+### 💻 your own desktop
+NixOS (or a Mac via nix-darwin) — the whole machine in one repo, rebuilt at will
 
 </div>
 <div>
 
-### 💻 NixOS
-The **whole OS** is Nix — config to bootloader. More on that in a moment.
+### 🖥️ servers — beefy or tiny
+declarative fleets with atomic rollbacks — and a minimal closure fits high-performance and low-resource boxes alike
+
+</div>
+<div>
+
+### 🤖 embedded & robotics
+cross-compiled ARM images, atomic A/B updates for devices you can't drive to
+
+</div>
+<div>
+
+### 🧑‍💻 dev environments
+per-repo toolchains that match CI exactly — onboarding is `cd` + `direnv allow`
+
+</div>
+<div>
+
+### 📦 container images
+`dockerTools` builds OCI images from the exact closure — no `Dockerfile`, tiny layers
+
+</div>
+<div>
+
+### 🔬 reproducible research
+pin the entire stack in a lockfile; rerun the experiment bit-for-bit, years later
 
 </div>
 </div>
 
-<div class="opacity-60 text-sm pt-8">Try it on the machine you already have — going full NixOS is the deep end, not the entry fee.</div>
+<div class="opacity-60 text-sm pt-8">One language, one store — the same tool scales from a robot's flash image to the laptop in front of you.</div>
 
 <!--
-The installer is Determinate Systems' — the de-facto standard now: creates the /nix APFS volume on macOS, survives OS upgrades, has a real uninstaller, flakes on by default.
+Lead with the minimality point: a conventional distro image ships hundreds of packages someone else chose — a NixOS system is *derived from your declaration*, so it contains the closure of what you asked for and literally nothing else. Less disk, less RAM, less attack surface, nothing to uninstall. That's why the same OS is at home on a high-performance server, a 512 MB VPS, and an embedded board.
 
-On macOS there's also **nix-darwin** worth mentioning aloud: the NixOS module system ported to the Mac — packages, launchd services, `defaults`-style settings, all declarative with generations and `darwin-rebuild switch`. It layers *on top of* this standalone install (the installer answers "how do I get Nix", nix-darwin answers "how do I make my Mac declarative"). It gets its own slide in the ecosystem section.
+Unpack the security win — it's more than just "fewer packages":
+
+- **Smaller attack surface** — nothing preinstalled means nothing forgotten: no stray daemon listening, no distro-chosen package waiting for a CVE you didn't know you shipped.
+- **Immutable store** — `/nix/store` is mounted read-only; binaries can't be tampered with in place, and any path can be re-verified against its hash (`nix store verify`). Malware that wants to quietly patch a binary has nowhere to hide.
+- **Auditable as code** — the whole machine is a reviewable repo + lockfile: every change is a diff, every deploy a hash. Config drift isn't "detected", it's *impossible* — a machine either matches its declaration or it isn't that generation.
+- **Supply-chain provenance** — every source is pinned by content hash, every cache artifact is signature-checked, and reproducible builds let independent builders *verify* binaries instead of trusting them.
+- **Fast incident recovery** — a bad or compromised deploy is one rollback (or reboot) away from a known-good generation.
+
+The spread is the point: this isn't a dev-shell tool OR a distro OR a deploy tool — the same primitive (a hashed, declarative build) serves every layer.
+
+Real-world anchors if asked: robotics/defense companies ship NixOS on devices (Anduril is the famous example), scientific teams use it for paper-reproducibility, and plenty of companies use only the dev-shell layer (devenv/devbox) without ever touching NixOS.
 -->
 
----
-
-# The everyday toolbox <span class="text-2xl">🧰</span>
-
-> A handful of verbs cover most of daily Nix
-
-<div class="grid grid-cols-2 gap-10 mt-2">
-<div>
-
-### 🏃 Ephemeral — try it, then it's gone
-
-```bash
-nix run   nixpkgs#hello      # run once, no install
-nix shell nixpkgs#cowsay     # tools on PATH (subshell)
-nix develop                  # enter a flake's devShell
-nix search nixpkgs ripgrep   # find in 100k+ packages
-```
-
-</div>
-<div>
-
-### 📌 Persistent — sticks around
-
-```bash
-nix profile install nixpkgs#ripgrep
-nix profile list | remove | rollback
-nix build nixpkgs#hello      # → ./result symlink
-nix flake init | update      # scaffold | bump lock
-```
-
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><code>run</code>/<code>shell</code>/<code>develop</code> vanish when you exit · <code>profile</code> persists — with generations &amp; rollbacks, just like the system. Sweep up with <code>nix-collect-garbage -d</code>.</div>
-
----
-
-# `nix profile` — installs that roll back too <span class="text-2xl">📌</span>
-
-> Unlike `run` / `shell` / `develop`, this one **sticks around** — but it's still just symlinks &amp; generations
-
-```bash
-nix profile install nixpkgs#ripgrep   # add to your user profile
-nix profile list                      # what's installed
-nix profile rollback                  # undo the last change
-```
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-- Your profile is a **generation-backed symlink tree** — `~/.nix-profile → /nix/store/…-profile`
-- Every `install` / `remove` / `upgrade` mints a **new generation**; the old one stays for `rollback`
-- Same model as `nixos-rebuild` — atomic &amp; reversible — but scoped to **one user**, no root needed
-- Content-addressed underneath → two tools wanting different `glibc`s coexist happily
-
-</div>
-<div>
-<Placeholder label="~/.nix-profile → one generation per change" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4">Ephemeral: <code>run</code> · <code>shell</code> · <code>develop</code> — vs — persistent &amp; rollback-able: <code>profile</code>.</div>
-
----
-
-# …and NixOS takes it all the way <span class="text-2xl">💻</span>
-
-<div class="grid grid-cols-2 gap-10 mt-2">
-<div>
-
-### ❄️ Nix
-- The **language** + **package manager**
-- Runs on any Linux, macOS, even WSL
-- Dev shells, reproducible builds, the `/nix/store`
-- **nixpkgs** = the package collection it draws from
-
-</div>
-<div>
-
-### 💻 NixOS
-- A full **Linux distribution** built on Nix
-- The **whole system** is one declarative config
-- Generations, rollbacks, services — all from `.nix` files
-- Needs Nix; the reverse isn't true
-
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4">Nix is the engine 🔧 · NixOS is the car built around it 🚗 — but how does it compare to the tools you already use?</div>

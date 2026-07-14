@@ -8,9 +8,9 @@ mdc: true
 lineNumbers: true
 ---
 
-# I ❤️ NixOS
+# I `<3` Nix
 
-## and you should too
+## (and you should too)
 
 ---
 layout: center
@@ -45,10 +45,9 @@ class: text-center
   <div>🐇 Down the rabbit hole</div>
   <div>🐛 Meet Nix</div>
   <div>🪞 Through the looking-glass</div>
-  <div>⚙️ Under the hood</div>
   <div>❤️ Why people love it</div>
-  <div>🧰 Daily driving</div>
-  <div>💪 NixMaxxing</div>
+  <div>🧪 Drink me</div>
+  <div>⚙️ Under the hood</div>
   <div>🌍 The ecosystem</div>
 </div>
 
@@ -61,25 +60,36 @@ src: ./pages/02-meet-nix.md
 ---
 
 ---
-src: ./pages/03-comparisons.md
+src: ./pages/04-comparisons.md
 ---
 
 ---
-src: ./pages/04-under-the-hood.md
+src: ./pages/06-why-love-it.md
 ---
 
 ---
-src: ./pages/05-why-love-it.md
+src: ./pages/03-drink-me.md
 ---
 
 ---
-src: ./pages/06-daily-driving.md
+src: ./pages/05-under-the-hood.md
 ---
 
 ---
-src: ./pages/07-nixmaxxing.md
+src: ./pages/09-ecosystem.md
 ---
 
 ---
-src: ./pages/08-ecosystem.md
+layout: center
+class: text-center
+---
+
+<SectionBookend image="/alice-fin.png" title="fin. 🐇" subtitle="thank you — questions?" position="bottom-left" />
+
+---
+src: ./pages/10-cutting-floor.md
+---
+
+---
+src: ./pages/08-nixmaxxing.md
 ---

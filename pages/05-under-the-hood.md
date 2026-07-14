@@ -194,6 +194,54 @@ That's the whole trick: every input is pinned by hash, so the sandbox can pull e
 
 <PipelineSteps :current="4" />
 
+<div class="pt-6"></div>
+
+<div class="grid grid-cols-2 gap-10 text-left">
+<div>
+
+### 🗄️ FHS — every other distro
+
+```text
+/usr/bin/python3         # THE python
+/usr/lib/libssl.so       # THE openssl
+/etc/nginx/nginx.conf    # THE config
+```
+
+one global namespace · one version of each thing · every install **overwrites in place**
+
+</div>
+<div>
+
+### ❄️ the store
+
+```text
+/nix/store/a3f9…-python3-3.12.8/bin/python3
+/nix/store/b7c4…-openssl-3.0.13/lib/libssl.so
+/nix/store/c1x8…-openssl-1.1.1w/lib/libssl.so
+```
+
+every package **self-contained** · addressed by hash · nothing is ever overwritten
+
+</div>
+</div>
+
+<div class="text-center opacity-70 pt-8">Nix deliberately breaks the <b>FHS</b> — "which version?" is answered <b>per-app</b> (baked-in store paths), not per-machine</div>
+
+<div class="text-center opacity-60 text-sm pt-2">the catch: pre-built binaries that <em>assume</em> <code>/usr/lib</code> exists need a shim — <code>nix-ld</code>, in NixMaxxing</div>
+
+<!--
+The FHS — Filesystem Hierarchy Standard — is what every conventional distro follows: /usr/bin, /usr/lib, /etc as THE well-known locations. It's a *convention of global mutable state*: one namespace, one version of each library, and installing anything means overwriting what's there. It's exactly the "traditional way" slide from earlier, standardized.
+
+Nix opts out on purpose. On NixOS there is no populated /usr/lib at all (just /usr/bin/env and /bin/sh for scripts). Every package lives in its own hash-addressed prefix, and binaries find their exact dependencies via RPATH entries and patched shebangs that point at absolute store paths — which is *how* two OpenSSLs can coexist — you'll see exactly that in the dependency graph on the next slide: nothing ever looks anything up in a shared directory.
+
+Trade-off to be honest about: software distributed as pre-built FHS-assuming binaries (Steam games, random vendor tools, Claude Code) can't find their loader or libs. The escape hatches — nix-ld, buildFHSEnv, steam-run — come up in NixMaxxing.
+-->
+
+---
+
+
+<PipelineSteps :current="4" />
+
 <div class="flex flex-col items-center justify-center h-[440px]">
 
 ```mermaid {scale: 0.75}
