@@ -1,19 +1,28 @@
 <script setup>
 // Generic horizontal step guide for multi-slide sequences.
-// steps: [{ icon?, label }] — icon falls back to the step number
+// steps: [{ icon?, label }] — icon is a Phosphor name (via <Ico>); falls back to the step number
 // current: 1-based index of the active step; 0 = overview (all steps equal)
 // compact: inactive steps collapse to their number/icon (for long step lists)
+// arrow: connectors get an arrowhead (for pipelines with a direction)
+import Ico from './Ico.vue'
+
 defineProps({
   steps: { type: Array, required: true },
   current: { type: Number, default: 0 },
   compact: { type: Boolean, default: false },
+  arrow: { type: Boolean, default: false },
 })
 </script>
 
 <template>
   <div class="flex items-center gap-2 text-xs my-6 select-none">
     <template v-for="(s, i) in steps" :key="i">
-      <div v-if="i" class="h-px flex-1 bg-gray-300 dark:bg-gray-600"></div>
+      <div v-if="i" class="flex-1 flex items-center">
+        <div class="h-px flex-1 bg-gray-300 dark:bg-gray-600"></div>
+        <span v-if="arrow" class="text-gray-400 dark:text-gray-500 text-sm leading-none -ml-0.5"
+          >▸</span
+        >
+      </div>
       <div
         class="flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all duration-300 whitespace-nowrap"
         :class="
@@ -24,7 +33,7 @@ defineProps({
               : 'bg-gray-200 dark:bg-gray-700 opacity-50'
         "
       >
-        <span v-if="s.icon" class="text-sm leading-none">{{ s.icon }}</span>
+        <span v-if="s.icon" class="text-sm leading-none"><Ico :name="s.icon" /></span>
         <span v-else class="font-mono">{{ i + 1 }}</span>
         <span v-if="!compact || current === i + 1 || current === 0">{{ s.label }}</span>
       </div>

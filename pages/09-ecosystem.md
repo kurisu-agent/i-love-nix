@@ -7,6 +7,63 @@ class: text-center
 
 ---
 
+# nixpkgs — the mothership <Ico name="folders" class="text-2xl" />
+
+<div class="grid grid-cols-2 gap-10 items-center mt-2">
+<div>
+
+**The** package collection — 100k+ packages *and* every NixOS module, one giant repo everything else builds on.
+
+- <Ico name="rocket" /> **`nixos-unstable`** — rolling &amp; fresh; the default for desktops and flakes
+- <Ico name="shield-check" /> **`nixos-25.05`** — stable release every six months (May &amp; November); only fixes get backported
+- <Ico name="lightning" /> **Hydra** — the build farm: builds every package, **signs** it, fills `cache.nixos.org` — a branch only advances when it's green
+- <Ico name="git-branch" /> **mix freely** — pin both, run a stable system with a handful of unstable packages
+
+</div>
+<div>
+<Placeholder label="branches: master → nixos-unstable → nixos-25.05" />
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-4"><a href="https://github.com/NixOS/nixpkgs">github.com/NixOS/nixpkgs</a> — the repo those 1,000,000 commits live in</div>
+
+<!--
+Start the ecosystem tour at the center of gravity: nixpkgs isn't "a repo of build scripts", it's the largest and freshest package collection in existence — and the NixOS module system lives in the same tree, which is why a package and the service that runs it always move together.
+
+The tracks, in plain terms: everything merges into `master`; once it builds and passes tests, Hydra advances `nixos-unstable` — a rolling release in practice, and fresher than the AUR while being CI-tested. Twice a year (May and November) a release branch is cut — `nixos-25.05`, `nixos-25.11`, named YY.MM — which then only receives bug and security backports: that's what you put on servers. Channels vs flake inputs are just two ways of pointing at these same branches.
+
+Hydra is the machinery behind all of it: the project's own open-source CI/build farm (hydra.nixos.org). Every commit's packages get built for each platform, the outputs are cryptographically signed and pushed to cache.nixos.org, and a channel/branch only advances past a commit once its build jobs are green. Two payoffs to say out loud: you almost never compile anything (your machine substitutes the exact signed binaries Hydra already built — same inputs, same hash, so the cache hit is *provably* the thing you asked for), and signature checking means a poisoned mirror can't hand you a tampered binary. It's the security model from the "hardened deployments" slide, running at ecosystem scale.
+
+The mixing point lands well live: because packages are just values, "stable system + unstable neovim" is three lines — add a second nixpkgs input and pick packages from either. No PPA juggling, no partial-upgrade roulette.
+-->
+
+---
+
+# nix-community <Ico name="users-three" class="text-2xl" />
+
+<div class="grid grid-cols-2 gap-10 items-center mt-2">
+<div>
+
+The **community umbrella org** — where the ecosystem's de-facto-standard tools live and get maintained together.
+
+- Home Manager, impermanence, comma, nh, nixvim, disko, NUR…
+- Shared CI, binary cache &amp; co-maintainers for adopted projects
+- The first place to look when nixpkgs alone isn't enough
+
+</div>
+<div>
+<Placeholder label="nix-community — one org, dozens of standard tools" />
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-community">github.com/nix-community</a></div>
+
+<!--
+The second pillar: an umbrella GitHub org that adopts important community projects and gives them shared infrastructure — CI, a Cachix cache, and co-maintainers — so key tools don't live or die with one person's free time. Almost everything in the rest of this section lives here. Segue: starting with the one you'll reach for first — Home Manager.
+-->
+
+---
+
 # Home Manager
 
 <div class="grid grid-cols-2 gap-10 items-center mt-2">
@@ -67,6 +124,46 @@ Per-project toolchains, friendlier than raw `nix develop`:
 </div>
 
 <div class="opacity-60 text-sm pt-4"><a href="https://devenv.sh">devenv.sh</a> · <a href="https://www.jetify.com/devbox/">devbox</a> · <a href="https://github.com/nix-community/nix-direnv">nix-direnv</a></div>
+
+---
+
+# Docker <Ico name="plus" /> Nix — better together
+
+> Not either/or — the store travels **both** directions
+
+<div class="grid grid-cols-2 gap-8 mt-2">
+<div>
+
+### <Ico name="simple-icons:nixos" /> → <Ico name="logos:docker-icon" /> Nix builds the image
+`dockerTools.buildLayeredImage` — an OCI image straight from Nix. No `Dockerfile`, just your **exact closure** (a few MB, no base distro) as reproducible layers.
+
+```nix
+dockerTools.buildLayeredImage {
+  name = "my-app";
+  contents = [ pkgs.my-app ];
+  config.Cmd = [ "/bin/my-app" ];
+}
+```
+
+</div>
+<div>
+
+### <Ico name="logos:docker-icon" /> → <Ico name="simple-icons:nixos" /> Nix inside the container
+The **devcontainer feature** drops Nix into any image — reproducible tooling in Docker, Codespaces & CI, no NixOS required.
+
+```jsonc
+// .devcontainer/devcontainer.json
+"features": {
+  "ghcr.io/devcontainers/features/nix:1": {
+    "packages": "nodejs_24,git"
+  }
+}
+```
+
+</div>
+</div>
+
+<div class="opacity-60 text-sm pt-2">Nix as the <b>builder</b> <Ico name="wrench" /> or Nix as the <b>guest</b> <Ico name="house" /> — hermetic builds, universal runtime.</div>
 
 ---
 
@@ -196,7 +293,7 @@ Make Nix feel like a real language in your editor:
 
 ---
 
-# Erase your darlings <span class="text-2xl">🔥</span>
+# Erase your darlings <Ico name="fire" class="text-2xl" />
 
 <div class="grid grid-cols-2 gap-10 items-center mt-2">
 <div>

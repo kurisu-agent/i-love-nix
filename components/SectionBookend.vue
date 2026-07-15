@@ -26,7 +26,7 @@ const POSITIONS = {
     :class="POSITIONS[props.position] || POSITIONS['top-left']"
     style="background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px)"
   >
-    <div class="text-4xl font-bold tracking-wide">{{ title }}</div>
+    <div class="text-4xl font-bold tracking-wide">{{ title }}<slot /></div>
     <div v-if="subtitle" class="text-lg opacity-80 pt-2">{{ subtitle }}</div>
   </div>
 </template>

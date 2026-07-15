@@ -10,26 +10,26 @@ layout: center
 class: text-center
 ---
 
-# NixMaxxing <span class="text-3xl">💪</span>
+# NixMaxxing <Ico name="barbell" class="text-3xl" />
 
 <div class="opacity-80 text-xl pt-2">when "it works" isn't enough — declare <em>everything</em></div>
 
 <div class="grid grid-cols-2 gap-x-10 gap-y-2 text-left max-w-2xl mx-auto pt-8">
-<div>🏠 dotfiles → <b>Home Manager</b></div>
-<div>🍎 your Mac → <b>nix-darwin</b></div>
-<div>🔐 secrets → <b>sops-nix / agenix</b></div>
-<div>🌐 the whole fleet → <b>clan.lol</b></div>
-<div>💾 disks → <b>disko</b></div>
-<div>🚀 any remote box → <b>nixos-anywhere</b></div>
-<div>🖥️ patch your compositor → <b>COSMIC-comp overlay</b></div>
-<div>📦 dev shells → <b>devenv / direnv</b></div>
+<div><Ico name="house" /> dotfiles → <b>Home Manager</b></div>
+<div><Ico name="logos:apple" /> your Mac → <b>nix-darwin</b></div>
+<div><Ico name="lock-key" /> secrets → <b>sops-nix / agenix</b></div>
+<div><Ico name="globe" /> the whole fleet → <b>clan.lol</b></div>
+<div><Ico name="floppy-disk" /> disks → <b>disko</b></div>
+<div><Ico name="rocket-launch" /> any remote box → <b>nixos-anywhere</b></div>
+<div><Ico name="desktop" /> patch your compositor → <b>COSMIC-comp overlay</b></div>
+<div><Ico name="package" /> dev shells → <b>devenv / direnv</b></div>
 </div>
 
 <div class="opacity-60 text-sm pt-8">no config left behind — now let's go deeper…</div>
 
 ---
 
-# The dendritic pattern <span class="text-2xl">🌳</span>
+# The dendritic pattern <Ico name="tree" class="text-2xl" />
 
 > One rule: **every file is a flake-parts module** — so a file is a _feature_, not a machine
 
@@ -64,11 +64,11 @@ class: text-center
 
 <div class="opacity-70 text-xl pt-2">the parts still under construction</div>
 
-<div class="pt-6 text-sm opacity-50">🚧 the following are <b>TODO</b> placeholders</div>
+<div class="pt-6 text-sm opacity-50"><Ico name="barricade" /> the following are <b>TODO</b> placeholders</div>
 
 ---
 
-# `nix-ld` — running foreign binaries <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle">🚧 TODO</span>
+# `nix-ld` — running foreign binaries <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle"><Ico name="barricade" /> TODO</span>
 
 - Pre-built dynamic executables can't find `ld.so` / their libs on NixOS
 - `nix-ld` = shim loader + `NIX_LD_LIBRARY_PATH` to satisfy them
@@ -76,7 +76,7 @@ class: text-center
 
 ---
 
-# Overlays vs patches <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle">🚧 TODO</span>
+# Overlays vs patches <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle"><Ico name="barricade" /> TODO</span>
 
 > _Painting the roses_ — change a package without forking the world
 
@@ -87,7 +87,7 @@ class: text-center
 <div class="grid grid-cols-2 gap-8 pt-4 text-left">
 <div>
 
-### 🌳 a device-tree overlay
+### <Ico name="tree" /> a device-tree overlay
 
 ```nix
 hardware.deviceTree = {
@@ -104,7 +104,7 @@ hardware.deviceTree = {
 </div>
 <div>
 
-### 🩹 a kernel patch
+### <Ico name="bandaids" /> a kernel patch
 
 ```nix
 boot.kernelPatches = [{
@@ -129,7 +129,7 @@ Kernel patches: `boot.kernelPatches` rebuilds the kernel derivation with your pa
 
 ---
 
-# Two doors, one store <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle">🚧 TODO</span>
+# Two doors, one store <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle"><Ico name="barricade" /> TODO</span>
 
 > Input-addressed vs **content-addressed** derivations
 
@@ -140,7 +140,7 @@ Kernel patches: `boot.kernelPatches` rebuilds the kernel derivation with your pa
 
 ---
 
-# Realisations & mixed graphs <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle">🚧 TODO</span>
+# Realisations & mixed graphs <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle"><Ico name="barricade" /> TODO</span>
 
 - CA outputs carry **realisation** records: `(drv-output-id → path, signatures)`
 - **IA → CA** works via **placeholder strings** rewritten to the real path at build time
@@ -149,7 +149,7 @@ Kernel patches: `boot.kernelPatches` rebuilds the kernel derivation with your pa
 
 ---
 
-# Perfect refactors → the same hash <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle">🚧 TODO</span>
+# Perfect refactors → the same hash <span class="text-xs font-bold px-2 py-1 rounded bg-amber-400 text-black align-middle"><Ico name="barricade" /> TODO</span>
 
 > The Cheshire grin — same output even when the recipe changed
 

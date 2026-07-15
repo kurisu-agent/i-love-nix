@@ -40,7 +40,7 @@ class: text-center
   <div class="flex flex-col items-center gap-2 w-24">
     <simple-icons-nixos class="text-6xl" style="color: #5277C3" />
     <div class="text-sm opacity-70">NixOS</div>
-    <div class="text-xs opacity-40">2026 ❤️</div>
+    <div class="text-xs opacity-40">2026 <Ico name="heart" /></div>
   </div>
 </div>
 

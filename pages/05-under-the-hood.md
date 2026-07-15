@@ -7,80 +7,110 @@ class: text-center
 
 ---
 
-# `nix run nixpkgs#fastfetch` — the whole trip
+# A flake ≈ `package.json` — for anything Nix builds
 
-<div class="grid grid-cols-2 gap-8 pr-40 text-xs text-left">
+> _If you've used npm, you already know the shape of this_
+
+<div class="grid grid-cols-2 gap-8 mt-2">
 <div>
 
-**📜 what you write**
+### <Ico name="package" /> Node
 
-```nix
-mkDerivation {
-  pname = "fastfetch";
-  src = fetchFromGitHub { … };
+```json
+// package.json — what you want
+{
+  "dependencies": { "left-pad": "^1.3.0" }
 }
 ```
 
-<div class="text-center text-2xl opacity-40 leading-none pt-1">↓</div>
+```json
+// package-lock.json — what you got, exactly
+{
+  "node_modules/left-pad": {
+    "version": "1.3.0",
+    "integrity": "sha512-mqcy0Xh4…"
+  }
+}
+```
 
 </div>
 <div>
 
-**📦 what lands on disk**
+### <Ico name="snowflake" /> Nix
 
-```text
-/nix/store/a3f9k2q…-fastfetch-2.65.2/
-└── bin/fastfetch
+```nix
+# flake.nix — what you want
+{
+  inputs.left-pad.url = "github:acme/left-pad";
+  outputs = { left-pad, ... }: { /* … */ };
+}
 ```
-
-<div class="text-center text-2xl opacity-40 leading-none pt-1">↓</div>
-
-</div>
-</div>
-
-<div class="flex justify-center pt-2">
-
-```mermaid {scale: 0.6}
-graph LR
-  E["📜 expression<br/>.nix"] -->|evaluate| D["🧾 derivation<br/>.drv"]
-  D -->|realise| S["📦 store path<br/>🕸️ dependency graph"]
-  S -->|hash = shared key| W["🌍 caches,<br/>everywhere"]
-```
-
-</div>
-
-<div class="grid grid-cols-2 gap-8 pl-40 pt-2 text-xs text-left">
-<div>
-
-<div class="text-center text-2xl opacity-40 leading-none pb-1">↑</div>
-
-**🧾 what it evaluates to**
 
 ```json
-{ "name": "fastfetch-2.65.2",
-  "inputDrvs": [ "…-yyjson.drv" ],
-  "builder": "…/bin/bash" }
-```
-
-</div>
-<div>
-
-<div class="text-center text-2xl opacity-40 leading-none pb-1">↑</div>
-
-**🌍 what gets shared**
-
-```text
-GET cache.nixos.org/a3f9k2q….narinfo
-→ 200 — download, don't rebuild
+// flake.lock — what you got, exactly
+{
+  "left-pad": {
+    "rev": "60e2e3fa…",
+    "narHash": "sha256-i8yYPMdb…"
+  }
+}
 ```
 
 </div>
 </div>
+
+<div class="opacity-60 text-sm pt-2">Same idea, bigger reach: the same lockfile discipline scales from <b>one dev shell</b> all the way up to <b>a whole NixOS machine</b> — not just one language's libraries.</div>
+
+<div class="opacity-60 text-sm pt-1">…and one level deeper: both hashes above only pin what you <b>download</b> — Nix <em>also</em> names every <b>build result</b> by hash. That's the next few slides <Ico name="arrow-right" /></div>
 
 <!--
-One command anchors this whole section. This map is the overview — each arrow is one stop, and the following slides zoom into each stop in order (the realise stop gets a bonus zoom into the sandbox). Keep pointing back to this picture as we go.
+Land the analogy first — package.json : package-lock.json :: flake.nix : flake.lock, "what you want" vs "what you got, exactly". If the room knows npm, this is free intuition.
 
-The trip: the flake reference resolves to a Nix **expression**; evaluating it produces a **derivation** (a pure build recipe); **realising** the derivation produces an immutable **store path**; store paths reference each other, forming a **dependency graph**; and because every path is named by the hash of its inputs, that graph can be **shared** with any machine on earth.
+Then plant the flag on where the analogy *ends*, because it matters for everything that follows: npm's `integrity` and flake.lock's `narHash` are the same kind of thing — a **content hash of a downloaded artifact**. It verifies what you fetched, and npm stops there: everything that happens *after* the fetch — the node_modules layout, native addon compiles, postinstall scripts — has no hash, no name, no identity. Two machines with identical lockfiles can still end up with different results.
+
+Nix keeps going: evaluation derives a hash-address for every **build result** — computed from the recipe *before the build even runs* (that's "input-addressed"; the evaluate stop coming up shows it in the .drv). So the lockfile discipline doesn't end at the download — the *outputs* are named, verifiable, cacheable, and shareable too. npm pins the shopping list; Nix pins the shopping list *and* names every dish before it's cooked.
+-->
+
+---
+
+# `nix run nixpkgs#fastfetch` — the whole trip
+
+<PipelineSteps />
+
+<div class="flex justify-center items-center h-[340px]">
+<div class="relative w-[860px] h-[200px] text-sm">
+  <svg class="absolute inset-0 w-full h-full" viewBox="0 0 860 200" fill="none">
+    <defs>
+      <marker id="trip-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+      </marker>
+    </defs>
+    <path d="M 822 32 H 846 V 100 H 14 V 168 H 30" stroke="#94a3b8" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#trip-arrow)" />
+  </svg>
+  <span class="absolute left-1/2 top-[100px] -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="shuffle" /> realize</span>
+  <div class="absolute left-[40px] right-[40px] top-0 h-[64px] flex items-center gap-0">
+    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex flex-col justify-center text-center leading-tight"><span><Ico name="keyboard" /> <span class="font-mono">nix run</span></span><span class="font-mono">nixpkgs#fastfetch</span></div>
+    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="compass" /> resolve</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
+    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex items-center justify-center gap-1.5 text-center"><Ico name="scroll" /> expression <span class="font-mono">.nix</span></div>
+    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="scroll" /> evaluate</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
+    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex items-center justify-center gap-1.5 text-center"><Ico name="receipt" /> derivation <span class="font-mono">.drv</span></div>
+  </div>
+  <div class="absolute left-[40px] right-[40px] top-[136px] h-[64px] flex items-center gap-0">
+    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex items-center justify-center gap-1.5 text-center"><Ico name="hammer" /> sandbox build</div>
+    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="package" /> store</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
+    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex flex-col justify-center text-center leading-tight"><span><Ico name="package" /> store path</span><span><Ico name="graph" /> dependency graph</span></div>
+    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="globe-hemisphere-west" /> cache</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
+    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex flex-col justify-center text-center leading-tight"><span><Ico name="globe-hemisphere-west" /> everywhere,</span><span>by hash</span></div>
+  </div>
+</div>
+</div>
+
+<div class="text-center opacity-70">one command, six stops — the next slides zoom into <b>each stop</b> in order</div>
+
+<!--
+One command anchors this whole section. This map is the overview — no details yet on purpose; each stop gets its own slide with the receipts. Keep pointing back to this picture as we go.
+
+The trip: the flake reference **resolves** to a Nix expression; **evaluating** it produces a derivation (a pure build recipe); **realizing** decides how to make it real; on a miss, a sealed sandbox **builds** it; the output lands in the immutable **store**, where paths reference each other as a graph; and because every path is named by the hash of its inputs, the whole thing **caches** globally.
 
 Punchline at the end of the trip: nothing is "installed". No PATH change, no profile entry — Nix just execs `/nix/store/…-fastfetch-2.65.2/bin/fastfetch` straight out of the store.
 -->
@@ -89,29 +119,101 @@ Punchline at the end of the trip: nothing is "installed". No PATH change, no pro
 
 <PipelineSteps :current="1" />
 
-<div class="flex justify-center items-center h-[360px]">
+<div class="flex justify-center pt-2">
 
-```mermaid {scale: 0.7}
+```mermaid {scale: 0.6}
 graph LR
-  C["⌨️ nix run<br/>nixpkgs#fastfetch"] -->|"resolve<br/>pin to an exact git rev"| E["📜 expression<br/>pkgs/…/fastfetch/package.nix"]
-  E -->|"evaluate<br/>pure · lazy · no network"| D["🧾 derivation<br/>fastfetch-2.65.2.drv"]
+  C["⌨️ nixpkgs#fastfetch"] -->|"flake registry"| R["github:NixOS/nixpkgs<br/>pinned @ 60e2e3fa…"]
+  R -->|"#fastfetch"| E["📜 packages.x86_64-linux.fastfetch"]
 ```
 
 </div>
 
-<div class="text-center opacity-70">evaluation is a <b>pure function</b>: pinned inputs in → build recipe out · <b>nothing is built or downloaded yet</b></div>
+<div class="flex justify-center pt-4">
+<div>
+
+```nix
+# …which nixpkgs defines in pkgs/by-name/fa/fastfetch/package.nix
+mkDerivation {
+  pname = "fastfetch";
+  src = fetchFromGitHub { … };
+}
+```
+
+</div>
+</div>
+
+<div class="text-center opacity-70 pt-4">a ref is just a <b>pointer</b>: registry name → pinned repo → one <code>.nix</code> file · nothing fetched yet but metadata</div>
 
 <!--
-**Resolve** — `nixpkgs#fastfetch` looks up `nixpkgs` in the flake registry (→ `github:NixOS/nixpkgs`) and pins it to an exact git revision, recorded in the lock.
+**Resolve** — `nixpkgs#fastfetch` looks up `nixpkgs` in the flake registry (→ `github:NixOS/nixpkgs`) and pins it to an exact git revision — recorded in a lock, so tomorrow resolves identically. `#fastfetch` then selects that flake's `packages.<system>.fastfetch` output, which nixpkgs defines in `pkgs/by-name/fa/fastfetch/package.nix`.
 
-**Evaluate** — the Nix expression runs as a pure, lazy function: no network, no mutation, no ambient state. Its result is not a binary — it's a **derivation**, `…-fastfetch-2.65.2.drv`: the complete build recipe plus the hash of every input (sources, dependencies, flags, compiler).
-
-Mental model: evaluation is a pure function from pinned inputs to a recipe. Nothing has been built or downloaded yet — that's the next stop.
+That file (right) is the **expression** — the human-written recipe. Nobody wrote anything locally, and nothing has been fetched but git metadata. Every Nix journey starts with a file like this one.
 -->
 
 ---
 
 <PipelineSteps :current="2" />
+
+<div class="grid grid-cols-2 gap-10 items-center mt-2">
+<div>
+
+<div class="flex justify-center">
+
+```mermaid {scale: 0.6}
+graph LR
+  E["📜 expression<br/>package.nix"] -->|"evaluate<br/>pure · lazy · no network"| D["🧾 derivation<br/>fastfetch-2.65.2.drv"]
+```
+
+</div>
+
+```python
+# the recipe alone names the output
+out = "/nix/store/"
+    + hash(inputDrvs, builder, env, platform)
+    + "-fastfetch-2.65.2"
+```
+
+</div>
+<div>
+
+```json
+// the .drv — a build recipe, as plain data
+{ "name": "fastfetch-2.65.2",
+  "inputDrvs": [ "…-yyjson.drv",
+                 "…-gcc-14.drv" ],
+  "builder": "/nix/store/…-bash-5.2/bin/bash",
+  "env": { "src": "/nix/store/…" },
+  "outputs": { "out": "/nix/store/
+    rdd4pnr4…-fastfetch-2.65.2" } }
+```
+
+</div>
+</div>
+
+<div class="text-center opacity-70 pt-4">evaluation is a <b>pure function</b>: pinned inputs in → build recipe out · <b>nothing is built or downloaded yet</b></div>
+
+<div class="text-center opacity-60 text-sm pt-2">the address is <code>hash(recipe)</code> — <b>input-addressed</b> · contrast <code>narHash</code>: <code>hash(bytes)</code>, a <b>content</b> hash of something already fetched</div>
+
+<div class="text-center opacity-60 text-sm pt-1">(building <em>outputs</em> content-addressed too — <code>ca-derivations</code> — exists, but is still experimental)</div>
+
+<!--
+**Evaluate** — the Nix expression runs as a pure, lazy function: no network, no mutation, no ambient state. Its result is not a binary — it's a **derivation**, `…-fastfetch-2.65.2.drv`: the complete build recipe plus the hash of every input (sources, dependencies, flags, compiler). It's just data — you can `nix derivation show` it.
+
+Point at `builder`: even the shell that runs the build is a **store path** — a bash pinned by hash, an input like any other (it's inside `hash(…)` in the pseudocode). Nothing ambient sneaks in: if `builder` were the host's `/bin/bash`, whatever version happened to live there would silently shape the build and determinism would leak. It can't — a .drv may only reference the store.
+
+The detail that makes everything downstream work: evaluation *also computes the output's store path* — the pseudocode bottom-left is the whole idea. The hash in `/nix/store/rdd4pnr4…-fastfetch-2.65.2` is a hash **of the .drv itself** — every input drv's hash, the builder, its args and env, the platform — NOT a hash of the built binaries. Walk the two hash functions explicitly: `out = hash(recipe)` here, versus `narHash = hash(bytes)` in the lockfile two slides back — one names a *future* build from its inputs, the other fingerprints *already-fetched* content. That's what **input-addressed** means: the address is known before doing any work, like knowing a spreadsheet cell's coordinates before computing the formula. Change any input anywhere in the graph and the address changes; keep them identical and every machine on earth derives the *same* address. It's what makes the next step a pure lookup: "is it already in the store? in a cache?" — no building, no guessing.
+
+This is exactly the step the npm analogy from the section opener *doesn't have*: a lockfile's integrity hash (npm's `integrity`, flake.lock's `narHash`) verifies what you **download** — but npm's build results (node_modules, native addons, postinstall effects) have no name and no identity. Here, the *result* gets an address the moment you evaluate. That one extra move is what turns "pinned dependencies" into "cacheable, verifiable, shareable builds".
+
+The flip side, if asked (keep it brief): **content-addressed** — path = hash of the output *bytes*, known only *after* building, self-verifying instead of signed. The everyday case is fixed-output fetchers (a source tarball's declared `sha256` — sandbox slide); making *every* build CA is `ca-derivations`, still experimental — its payoff would be early cutoff (a comment change in glibc rebuilds bit-identical → same content hash → the world *doesn't* rebuild). The record bridging the two worlds is called a **realisation**. Deep-dive material; nixpkgs is overwhelmingly input-addressed today.
+
+Mental model: evaluation is a pure function from pinned inputs to a recipe **plus the recipe's future address**. Nothing has been built or downloaded yet — that's the next stop.
+-->
+
+---
+
+<PipelineSteps :current="3" />
 
 <div class="flex justify-center items-center h-[360px]">
 
@@ -122,30 +224,24 @@ graph LR
   Q -->|no| S{"prebuilt in<br/>cache.nixos.org<br/>or on your LAN?"}
   S -->|yes| F["⬇️ substitute"]
   S -->|no| B["🔨 build in sandbox"]
-  U --> R["realised store path"]
+  U --> R["realized store path"]
   F --> R
   B --> R
 ```
 
 </div>
 
-<div class="text-center opacity-70">realising makes the recipe <b>real</b> — cheapest way first: reuse ✅ → download ⬇️ → build 🔨</div>
+<div class="text-center opacity-70">realizing makes the recipe <b>real</b> — cheapest way first: reuse <Ico name="check-fat" class="text-green-500" /> → download <Ico name="download-simple" /> → build <Ico name="hammer" /></div>
 
 <!--
-Realising = turning the recipe into a real store path, cheapest way first: already in the store → done; prebuilt in a binary cache → download ("substitute"); otherwise → build it, in a sealed sandbox.
+Realizing = turning the recipe into a real store path, cheapest way first: already in the store → done; prebuilt in a binary cache → download ("substitute"); otherwise → build it, in a sealed sandbox — that sandbox is the next stop.
 
-The clean room, in three bullets: 🚫🌐 no network · 📦 declared inputs only, mounted read-only · 🕳️ sealed namespaces.
-
-The sandbox is a clean room: a build can't `curl` or `pip install` — every input must be declared up front. Only declared inputs are mounted, read-only: no `/home`, no system libs, no ambient state. Private mount / PID / net namespaces, pinned build user, fixed timestamps.
-
-Same inputs → same output. The sealed environment is *why* the hash can promise reproducibility.
-
-And Nix realises the whole **closure** this way — `pcre2 → gcc-libs → glibc` — before anything runs.
+And Nix realizes the whole **closure** this way — `pcre2 → gcc-libs → glibc` — before anything runs.
 -->
 
 ---
 
-<PipelineSteps :current="3" />
+<PipelineSteps :current="4" />
 
 <div class="flex justify-center items-center h-[360px]">
 
@@ -179,7 +275,9 @@ graph LR
 <div class="text-center opacity-60 text-sm pt-2">every input is pinned, so <b>either room</b> yields the same bytes — build wherever is fastest: <code>--builders "ssh://10.0.0.5"</code></div>
 
 <!--
-Zooming into the "build in sandbox" node from the previous slide. The room is sealed — the *only* door in is a hash, and there are two kinds:
+Zooming into the "build in sandbox" node from the previous slide. The clean room, in three bullets: 🚫🌐 no network · 📦 declared inputs only, mounted read-only · 🕳️ sealed namespaces. A build can't `curl` or `pip install` — every input must be declared up front; no `/home`, no system libs, no ambient state; private mount / PID / net namespaces, pinned build user, fixed timestamps. The sealed environment is *why* the hash can promise reproducibility.
+
+The room is sealed — the *only* door in is a hash, and there are two kinds:
 
 **Sources — by content hash.** `fetchurl` / `fetchFromGitHub` are *fixed-output derivations*: the one place network access is allowed, precisely because the output must match a `sha256` declared up front. Fetch from the original mirror, a CDN, a cache — doesn't matter *where* the bytes come from; if they don't hash to the declared value, the build fails. Identity lives in the hash, not the URL.
 
@@ -192,14 +290,14 @@ That's the whole trick: every input is pinned by hash, so the sandbox can pull e
 
 ---
 
-<PipelineSteps :current="4" />
+<PipelineSteps :current="5" />
 
 <div class="pt-6"></div>
 
 <div class="grid grid-cols-2 gap-10 text-left">
 <div>
 
-### 🗄️ FHS — every other distro
+### <Ico name="archive" /> FHS — every other distro
 
 ```text
 /usr/bin/python3         # THE python
@@ -212,7 +310,7 @@ one global namespace · one version of each thing · every install **overwrites 
 </div>
 <div>
 
-### ❄️ the store
+### <Ico name="snowflake" /> the store
 
 ```text
 /nix/store/a3f9…-python3-3.12.8/bin/python3
@@ -239,26 +337,45 @@ Trade-off to be honest about: software distributed as pre-built FHS-assuming bin
 
 ---
 
-
-<PipelineSteps :current="4" />
+<PipelineSteps :current="5" />
 
 <div class="flex flex-col items-center justify-center h-[440px]">
 
-```mermaid {scale: 0.75}
+```mermaid {scale: 0.62}
 graph TD
-  C["glibc-2.39"] --> O["openssl-3.0.13"]
-  C --> O2["openssl-1.1.1w"]
-  C --> P["pcre2-10.44"]
-  C --> H["nghttp2-1.62"]
-  O --> A["nginx-1.27"]
+  subgraph BT["🔧 build tools"]
+    C["glibc-2.39"]
+  end
+  subgraph LIB["📚 libraries"]
+    P["pcre2-10.44"]
+    H["nghttp2-1.62"]
+    subgraph SSL["one lib, two versions"]
+      O["openssl-3.0.13"]
+      O2["openssl-1.1.1w"]
+    end
+  end
+  subgraph APP["🚀 applications"]
+    A["nginx-1.27"]
+    B["curl-8.9"]
+    M["mongodb-4.4"]
+  end
+  C --> O
+  C --> O2
+  C --> P
+  C --> H
+  O --> A
   P --> A
-  O --> B["curl-8.9"]
+  O --> B
   H --> B
-  O2 --> M["mongodb-4.4"]
+  O2 --> M
   classDef shared fill:#3b82f6,color:#fff,stroke:#1e40af,stroke-width:2px;
   classDef second fill:#f59e0b,color:#000,stroke:#b45309,stroke-width:2px;
   class O,C shared
   class O2 second
+  style BT stroke-dasharray:6 4;
+  style LIB stroke-dasharray:6 4;
+  style APP stroke-dasharray:6 4;
+  style SSL stroke-dasharray:3 3,stroke:#94a3b8;
 ```
 
 </div>
@@ -266,7 +383,9 @@ graph TD
 <!--
 The **hash** is computed over *every* build input — sources, deps, flags, compiler. The name-version part is just a human-friendly label. Each path is **immutable** and self-contained, so many versions of anything coexist with zero conflicts — there is no global `/usr/lib` to fight over.
 
-**Two kinds of hash, one store.** The default is **input-addressed**: the path is the hash of the *recipe*, so it's known before the build even starts. The opt-in alternative (`ca-derivations`, still experimental) is **content-addressed**: the path is the hash of the *output bytes*, known only after building — which lets a rebuilt-but-bit-identical output keep its path, so dependents don't rebuild. Deep dive later in NixMaxxing ("Two doors, one store").
+**Two kinds of hash, one store.** The default is **input-addressed**: the path is the hash of the *recipe*, so it's known before the build even starts. The opt-in alternative (`ca-derivations`, still experimental) is **content-addressed**: the path is the hash of the *output bytes*, known only after building — which lets a rebuilt-but-bit-identical output keep its path, so dependents don't rebuild. Covered on the "Two doors, one store" slide earlier in this section — just re-anchor it here if the room looks lost.
+
+**The zones** are reading aids, not store structure — the store itself is flat; "build tools / libraries / applications" is just how humans read the strata. The nested dotted box makes the punchline visible before you say it: two openssls, siblings in the same zone, no conflict.
 
 **The store is a graph.** Each path records which store paths it references — that's a **DAG**. Arrows flow *down from glibc*: every arrow means "is an input to" — inputs feed into whatever is built from them. The bullets to deliver:
 
@@ -283,9 +402,9 @@ The **hash** is computed over *every* build input — sources, deps, flags, comp
 
 ---
 
-<PipelineSteps :current="5" />
+<PipelineSteps :current="6" />
 
-<div class="flex justify-center items-center h-[360px]">
+<div class="flex justify-center items-center h-[300px]">
 
 ```mermaid {scale: 0.65}
 graph LR
@@ -300,6 +419,14 @@ graph LR
 </div>
 
 <div class="text-center opacity-70">the hash is a <b>global key</b>, so a store can live at <b>any level</b> — this machine, your LAN, the planet — and the nearest copy wins</div>
+
+<div class="flex justify-center pt-4">
+
+```text
+GET cache.nixos.org/a3f9k2q….narinfo   →   200 — download, don't rebuild
+```
+
+</div>
 
 <!--
 A store path's name **is** the hash of its inputs — so every machine on earth agrees on what a build *should* be. That hash is the shared key that makes global caching work at all.

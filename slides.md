@@ -6,6 +6,9 @@ class: text-center
 transition: fade
 mdc: true
 lineNumbers: true
+fonts:
+  sans: Noto Sans
+  mono: JetBrains Mono
 ---
 
 # I `<3` Nix
@@ -23,7 +26,7 @@ class: text-center
 
 ---
 
-# Quick temperature check <span class="text-2xl">🌡️</span>
+# Quick temperature check <Ico name="thermometer" class="text-2xl" />
 
 <div class="opacity-70 pb-4">Where's the room at with Nix? Pick one:</div>
 
@@ -32,23 +35,22 @@ class: text-center
 - **C** — Dabbled — ran `nix-shell`, maybe broke my system once
 - **D** — Daily driver / it's running on this laptop right now
 
-<div class="text-sm opacity-50 pt-6">📊 <b>[insert poll]</b> — live poll placeholder (Slido / Mentimeter / show of hands)</div>
+<div class="text-sm opacity-50 pt-6"><Ico name="chart-bar" /> <b>[insert poll]</b> — live poll placeholder (Slido / Mentimeter / show of hands)</div>
 
 ---
 layout: center
 class: text-center
 ---
 
-# The rabbit hole, mapped <span class="text-2xl">🗺️</span>
+# The rabbit hole, mapped <Ico name="map-trifold" class="text-2xl" />
 
 <div class="grid grid-cols-1 gap-3 text-left text-xl max-w-sm mx-auto pt-8">
-  <div>🐇 Down the rabbit hole</div>
-  <div>🐛 Meet Nix</div>
-  <div>🪞 Through the looking-glass</div>
-  <div>❤️ Why people love it</div>
-  <div>🧪 Drink me</div>
-  <div>⚙️ Under the hood</div>
-  <div>🌍 The ecosystem</div>
+  <div><Ico name="rabbit" /> Down the rabbit hole</div>
+  <div><Ico name="bug" /> Meet Nix</div>
+  <div><Ico name="heart" /> Why people love it</div>
+  <div><Ico name="flask" /> Drink me</div>
+  <div><Ico name="gear" /> Under the hood</div>
+  <div><Ico name="globe-hemisphere-west" /> The ecosystem</div>
 </div>
 
 ---
@@ -57,10 +59,6 @@ src: ./pages/01-rabbit-hole.md
 
 ---
 src: ./pages/02-meet-nix.md
----
-
----
-src: ./pages/04-comparisons.md
 ---
 
 ---
@@ -84,7 +82,7 @@ layout: center
 class: text-center
 ---
 
-<SectionBookend image="/alice-fin.png" title="fin. 🐇" subtitle="thank you — questions?" position="bottom-left" />
+<SectionBookend image="/alice-fin.png" title="fin. " subtitle="thank you — questions?" position="bottom-left"><Ico name="rabbit" /></SectionBookend>
 
 ---
 src: ./pages/10-cutting-floor.md

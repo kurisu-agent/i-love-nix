@@ -1,17 +1,18 @@
 <script setup>
-// The evaluate → realise → store → share pipeline as a horizontal step guide.
+// The resolve → evaluate → realize → build → store → cache pipeline as a horizontal step guide.
 import StepGuide from './StepGuide.vue'
 
 defineProps({ current: { type: Number, default: 0 } })
 const steps = [
-  { icon: '📜', label: 'evaluate' },
-  { icon: '🔀', label: 'realise' },
-  { icon: '🔨', label: 'build' },
-  { icon: '📦', label: 'store' },
-  { icon: '🌍', label: 'share' },
+  { icon: 'compass', label: 'resolve' },
+  { icon: 'scroll', label: 'evaluate' },
+  { icon: 'shuffle', label: 'realize' },
+  { icon: 'hammer', label: 'build' },
+  { icon: 'package', label: 'store' },
+  { icon: 'globe-hemisphere-west', label: 'cache' },
 ]
 </script>
 
 <template>
-  <StepGuide :steps="steps" :current="current" />
+  <StepGuide :steps="steps" :current="current" arrow />
 </template>
