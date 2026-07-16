@@ -21,7 +21,8 @@ fonts:
 </div>
 
 <!--
-Title slide: a flat nix field with animated nix-logo snow via <NixSnow> (components/NixSnow.vue) — the sky is prefilled so it's already snowing on arrival. The lockup is just the title and a mono microlabel; the falling logos are the imagery.
+- open: "i love nix — and you should too"
+- let the snow land before speaking
 -->
 
 ---
@@ -66,8 +67,8 @@ layout: center
 </div>
 
 <!--
-Get a show of hands on A/B/C/D — this calibrates how deep to go.
-Wire up the live poll (Slido / Mentimeter) here if using one.
+- show of hands on a/b/c/d — calibrates how deep to go
+- launch the live poll if using one
 -->
 
 
@@ -128,7 +129,10 @@ class: text-center
   </div>
 </div>
 
-<!-- Thank the room and open the floor for questions. -->
+<!--
+- thank the room
+- open the floor for questions
+-->
 
 
 ---

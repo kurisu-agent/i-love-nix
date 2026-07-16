@@ -6,7 +6,8 @@ defineProps({ current: { type: Number, default: 0 } })
 const steps = [
   { icon: 'books', label: 'nixpkgs' },
   { icon: 'house', label: 'Home Manager' },
-  { icon: 'terminal', label: 'Dev envs' },
+  { icon: 'terminal', label: 'devenv' },
+  { icon: 'fire', label: 'Impermanence' },
   { icon: 'pen-nib', label: 'Editing' },
   { icon: 'magnifying-glass', label: 'Ergonomics' },
   { icon: 'apple-logo', label: 'nix-darwin' },
@@ -14,7 +15,6 @@ const steps = [
   { icon: 'cloud-arrow-down', label: 'Cachix' },
   { icon: 'lock-key', label: 'Secrets' },
   { icon: 'hard-drives', label: 'ncps' },
-  { icon: 'fire', label: 'Impermanence' },
   { icon: 'users-three', label: 'nix-community' },
   { icon: 'share-network', label: 'clan.lol' },
   { icon: 'confetti', label: 'NixCon' },

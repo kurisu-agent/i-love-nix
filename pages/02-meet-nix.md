@@ -14,7 +14,7 @@ class: text-center
 </div>
 
 <!--
-Section divider — half-and-half style (as the theme's own section-00 divider): solid nix-blue block with the snowflake + section microlabel + title on the left, full-bleed image on the right, hard split.
+- Section divider — "meet nix"
 -->
 
 ---
@@ -27,14 +27,15 @@ layout: center
     <div class="absolute top-12 right-12"><simple-icons-nixos class="text-5xl text-white" /></div>
     <div class="absolute bottom-12 left-12 text-left">
       <div class="text-6xl font-black text-white leading-none">Eelco<br />Dolstra</div>
-      <div class="font-mono text-xs tracking-[0.3em] pt-5" style="color: #7EBAE4;">UTRECHT UNIVERSITY</div>
+      <div class="flex items-center gap-3 font-mono text-xs tracking-[0.3em] pt-5" style="color: #7EBAE4;"><Ico name="circle-flags:nl" class="text-base" />UTRECHT UNIVERSITY</div>
     </div>
   </div>
 </div>
 
 <!--
-Put a face to the name: created Nix as PhD research in 2003, today co-founder of Determinate Systems. Everything here flows from his thesis.
-Square-cropped full-bleed photo, hard-split against a flat nix block. Name + one mono microlabel, nothing else.
+- Created Nix as PhD research in 2003
+- Today co-founder of Determinate Systems
+- Everything in this deck flows from his thesis
 -->
 
 ---
@@ -47,9 +48,9 @@ layout: center
 </div>
 
 <!--
-"The Purely Functional Software Deployment Model", Utrecht, defended Jan 2006. The whole deck — store, derivations, closures, NixOS — is this one idea: treat deployment as a purely functional computation.
-A build is a mathematical mapping: inputs in, store path out, nothing else touched — same inputs, same output, forever. The store, caching, rollbacks are all just this arrow applied everywhere.
-Diagram credit: tweag.io, from their Nix series.
+- "The Purely Functional Software Deployment Model", Utrecht, 2006
+- A build is a math mapping: inputs in, store path out — same inputs, same output, forever
+- Store, caching, rollbacks are all this one arrow applied everywhere
 -->
 
 ---
@@ -109,8 +110,9 @@ layout: center
 </div>
 
 <!--
-Walk the tiles left to right: muted white 2003 tile + dashed connector = research years; 2006 thesis; 2007 NixOS from Armijn Hemel's master's; 2013 first stable (13.10); 2020–21 flakes; May 2026 nixpkgs hits 1M commits (a humble `serpl` version bump — the point is relentless, boring freshness). Link: github.com/NixOS/nixpkgs.
-Fine print if pressed: a few GitHub *mirrors* are bigger (Chromium, Linux, Gentoo), but among repos actually developed on GitHub nixpkgs is №1 by commits. Stewarded by the NixOS Foundation and Determinate Systems.
+- 2003 research → 2006 thesis → 2007 NixOS → 2013 first stable → 2020–21 flakes
+- May 2026: nixpkgs crosses 1M commits — relentless, boring freshness
+- №1 by commits among repos actually developed on GitHub
 -->
 
 ---
@@ -137,7 +139,9 @@ layout: center
 </div>
 
 <!--
-Three meanings, all true. Dutch *niks* (nothing) → every build starts from an empty clean room. English *to nix* → nix dependency hell, nix "works on my machine". Latin *nix* (snow) → the snowflake logo, and like a snowflake no two builds are alike (each named by content hash).
+- Dutch *niks* (nothing) → every build starts from an empty clean room
+- English *to nix* → nix dependency hell, nix "works on my machine"
+- Latin *nix* (snow) → snowflake logo, each build content-hashed like a snowflake
 -->
 
 ---
@@ -169,7 +173,9 @@ layout: center
 </div>
 
 <!--
-Same three letters, four layers — language (you write it) → package manager (evaluates it, runs on any Linux/macOS/WSL) → nixpkgs (built by the tool) → NixOS (configures the entire system, not just packages). We take them in that order.
+- Same three letters, four layers
+- Language → package manager → nixpkgs → NixOS (whole system, not just packages)
+- We take them in that order
 -->
 
 ---
@@ -181,7 +187,7 @@ layout: center
   <div class="flex flex-col justify-center p-14">
     <div class="h-10 flex items-center gap-3 px-4" style="background: #27385D;">
       <Ico name="simple-icons:python" class="text-base text-white" />
-      <span class="font-mono text-xs tracking-widest text-white">python</span>
+      <span class="font-mono text-xs tracking-widest text-white">imperative · run for effect</span>
     </div>
     <div class="text-left">
 
@@ -193,12 +199,12 @@ else:
 ```
 
 </div>
-<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">imperative · run for effect</div>
+<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">python</div>
   </div>
   <div class="flex flex-col justify-center p-14">
     <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
       <simple-icons-nixos class="text-base text-white" />
-      <span class="font-mono text-xs tracking-widest text-white">nix</span>
+      <span class="font-mono text-xs tracking-widest text-white">functional · evaluate to a value</span>
     </div>
     <div class="text-left">
 
@@ -207,7 +213,7 @@ port = if prod then 443 else 8080;
 ```
 
 </div>
-<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">functional · evaluate to a value</div>
+<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">nix</div>
   </div>
 </div>
 
@@ -224,7 +230,9 @@ port = if prod then 443 else 8080;
 </style>
 
 <!--
-Nix is a purely functional language — a program isn't a list of instructions, it's one expression that evaluates to a value. The contrast is statements: Python/Bash run instructions for effect, so you can't ask "what's the value of this `if`?". Nix has none — every construct evaluates to a value, so `if` needs an `else` and anything nests anywhere (an `if` inside a list, a `let` inside an attr). No `return`, no `else`-less `if` — the whole file is one expression, so anything nests anywhere. Think JSON with functions, or a spreadsheet. Nix's twist is pure AND lazy, and the value describes a build.
+- Purely functional: the whole file is one expression that evaluates to a value
+- Python/Bash run statements for effect; Nix has none, so `if` needs an `else`
+- Think JSON with functions — pure AND lazy, and the value describes a build
 -->
 
 ---
@@ -267,9 +275,9 @@ layout: center
 </div>
 
 <!--
-An expression can't mutate anything: its value depends on its inputs alone. The footer is the thesis in one line — "The Purely Functional Software Deployment Model" (Dolstra 2006): a component is uniquely defined by its declared build inputs, and the payoff is "strong guarantees about components, such as non-interference".
-Pin the terminology (the entropy matrix later leans on it): deterministic = the function's property (same in, same out); hermetic = nothing undeclared can even be *seen*, so dependency information is complete. Hold all six at once and **reproducibility** falls out — the same result on any machine, this year or next. Terraform is declarative but not deterministic — `apply` reads live cloud state; Nix is both.
-Dwell on compose: a module is a value that can't touch the machine while evaluating, so "just drop it in" is safe — embed a whole desktop config, override one leaf deep in someone's stack, no forking. LEGO, not glue. And the domain twist: the value you compute is a build recipe, so all of this applies to your whole system.
+- An expression can't mutate — its value depends on inputs alone
+- Pin terms: deterministic (same in, same out), hermetic (nothing undeclared can be seen)
+- Hold all six at once and reproducibility falls out; compose = LEGO not glue
 -->
 
 ---
@@ -327,61 +335,9 @@ services.nginx = {
 </style>
 
 <!--
-Two ways to get a machine into a state — describe the steps, or describe the result. Procedural systems are defined by their history — the sum of every command ever run, including the forgotten ones; reproducing means replaying an unknown script. Declarative flips it: the file states the end state, the tool derives the steps from any starting point (even blank disk), so drift has nowhere to live. Steps depend on where you start; a declared result is derived fresh from zero, every time. The functional language makes it enforceable — a config can't *do* anything, only *describe*.
--->
-
----
-layout: center
----
-
-<div class="absolute inset-0 flex items-center justify-center" style="background: #EDF2FA;">
-  <div class="w-[820px]">
-    <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
-      <simple-icons-nixos class="text-base text-white" />
-      <span class="font-mono text-xs tracking-widest text-white">boundaries dissolve</span>
-    </div>
-    <div class="text-left">
-
-```nix
-{
-  packages.myapp = rustPlatform.buildRustPackage { src = ./.; };  # 📦 an app
-  nixosConfigurations.server = nixosSystem {                      # 💻 an OS
-    modules = [
-      { services.myapp = { enable = true; port = 8080; }; }       # ⚙️ a config
-      { programs.mosh.enable = true;                               # 🧩 a module…
-        nixpkgs.overlays = [ (final: prev: {
-          mosh = prev.mosh.overrideAttrs {                         # …carrying a patched build
-            patches = [ ./fix-mosh-colors.patch ];
-          };
-        }) ];
-      }
-      { networking.hostName = "wonderland";                        # 🚀 a deployment —
-        imports = [ ./hardware.nix ];                              #    this exact machine
-      }
-    ];
-  };
-}
-```
-
-</div>
-<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">a system is a big package · a package is a tiny system</div>
-  </div>
-</div>
-
-<style>
-.slidev-code {
-  border-radius: 0 !important;
-  margin: 0 !important;
-  background: white !important;
-  padding: 1.25rem 1.5rem !important;
-}
-.slidev-code .line::before {
-  color: #cbd5e1 !important;
-}
-</style>
-
-<!--
-An app, a config, a module, a deployment, an OS. Everywhere else these are different kinds of thing with different tools (apt, /etc, Ansible, Terraform, the distro). In Nix they're one primitive — an expression evaluating to a derivation in one graph — so the categories stop being categories. Walk the example inside-out: Rust app → service config → a module enabling mosh with an overlay patching its build → a deployment pinned to one physical box via `hardware.nix`. Seventeen lines on GitHub = this exact machine, rebuildable by anyone forever — the extropy harvest the next slide names.
+- Two ways to a machine state: describe the steps, or describe the result
+- Procedural = defined by history; declarative states end state, tool derives steps, drift can't live
+- Functional language makes it enforceable — a config can only *describe*, not *do*
 -->
 
 ---
@@ -391,7 +347,6 @@ title: Extropy Harvesting
 
 
 <div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
-  <div class="h-11 flex items-center justify-between px-14 text-white" style="background: #27385D;"><span class="font-bold tracking-wide">Extropy Harvesting</span><span class="font-mono text-xs tracking-widest">a working system, crystallized</span></div>
   <div class="flex-1 grid grid-cols-2">
     <div class="flex flex-col text-left">
       <div class="px-14 h-32 flex items-center gap-5">
@@ -417,7 +372,9 @@ title: Extropy Harvesting
 </div>
 
 <!--
-The payoff of all the philosophy: once a fix exists as Nix in a commit it's permanently captured — check out that rev in five years, on another machine, and the same system comes back. Order compounds instead of evaporating. This is the frame for the rest of the deck: every tool ahead harvests more order into the crystal.
+- Once a fix is Nix in a commit, it's captured forever
+- Check out that rev in five years, another machine — same system comes back
+- Frame for the rest of the deck: every tool harvests more order into the crystal
 -->
 
 ---
@@ -472,8 +429,9 @@ layout: center
 </div>
 
 <!--
-"Works on my machine" is entropy — unrecorded change until nobody can explain the box. Every tool fixes one slice; Nix goes after the root, implicit mutable global state. Row by row: Services (npm scripts, Docker containers, Terraform providers, NixOS systemd modules); Machines (Ansible inside the box, Terraform the box itself, Nix both); Lockfile (npm/Terraform pin one layer, Nix the whole closure to glibc); Declarative (HCL yes, npm/Ansible no — Nix *is* a value); Hermetic (Docker bundles userland, Nix's closure does it down to glibc); Deterministic (only Nix — no live state, no network at eval).
-Punchline: reproducible falls out of holding every row at once — the extropy, crystallized. Green checkmarks become the brand mark itself — a white snowflake-style check on a nix-blue cell.
+- "Works on my machine" is entropy; Nix targets the root — mutable global state
+- Each tool fixes one slice; only Nix holds every row down to glibc
+- Reproducible falls out of holding every row at once
 -->
 
 ---
@@ -493,9 +451,9 @@ layout: center
     <div class="text-sm" style="color: #0D1B2E;">declarative fleets with atomic rollbacks</div>
   </div>
   <div class="flex flex-col items-center justify-center gap-3 px-8 text-center bg-white">
-    <Ico name="robot" class="text-5xl" style="color: #5277C3;" />
-    <div class="font-mono text-xs tracking-widest" style="color: #27385D;">embedded & robotics</div>
-    <div class="text-sm" style="color: #0D1B2E;">lightweight cross-compiled ARM images, atomic A/B updates</div>
+    <Ico name="device-mobile" class="text-5xl" style="color: #5277C3;" />
+    <div class="font-mono text-xs tracking-widest" style="color: #27385D;">your phone</div>
+    <div class="text-sm" style="color: #0D1B2E;">Nix + Home Manager on Android — <code>nix-on-droid</code>, no root</div>
   </div>
   <div class="flex flex-col items-center justify-center gap-3 px-8 text-center" style="background: #EDF2FA;">
     <Ico name="code" class="text-5xl" style="color: #5277C3;" />
@@ -508,14 +466,16 @@ layout: center
     <div class="text-sm" style="color: #0D1B2E;"><code>dockerTools</code> builds OCI — no <code>Dockerfile</code></div>
   </div>
   <div class="flex flex-col items-center justify-center gap-3 px-8 text-center" style="background: #EDF2FA;">
-    <Ico name="microscope" class="text-5xl" style="color: #5277C3;" />
-    <div class="font-mono text-xs tracking-widest" style="color: #27385D;">reproducible research</div>
-    <div class="text-sm" style="color: #0D1B2E;">rerun the experiment bit-for-bit, years later</div>
+    <Ico name="robot" class="text-5xl" style="color: #5277C3;" />
+    <div class="font-mono text-xs tracking-widest" style="color: #27385D;">embedded & robotics</div>
+    <div class="text-sm" style="color: #0D1B2E;">lightweight cross-compiled ARM images, atomic A/B updates</div>
   </div>
 </div>
 
 <!--
-A NixOS system is derived from your declaration — the closure of what you asked for and nothing else, so the same OS fits a beefy server, a 512 MB VPS, and an embedded board. One primitive (a hashed declarative build) serves every layer. Anchors if asked: Anduril ships it on devices, scientific teams use it for paper reproducibility, many shops use only the dev-shell layer. Segue: that minimality is also a *security* property.
+- One primitive — a hashed declarative build — serves every layer
+- Same OS fits a beefy server, a 512 MB VPS, an embedded board
+- Anchors: Anduril devices, nix-on-droid (github.com/nix-community/nix-on-droid-app), dev-shell-only shops
 -->
 
 ---
@@ -556,7 +516,9 @@ layout: center
 </div>
 
 <!--
-The use case that surprises people: every reproducibility property doubles as a security control. Store is read-only and hash-verifiable (`nix store verify`), so tampering has nowhere to hide; the machine either matches its declaration or isn't that generation; reproducible builds let you *verify* binaries not trust them. "Erase your darlings" (grahamc's impermanence post) rolls root back every boot, so any attacker persistence evaporates — full slide later. Segue: this is why ANSSI workstations and DoD-STIG'd hardware land on NixOS. Receipts next.
+- Every reproducibility property doubles as a security control
+- Read-only hash-verifiable store — verify binaries, don't trust them
+- "Erase your darlings" wipes root each boot → attacker persistence evaporates
 -->
 
 ---
@@ -587,5 +549,7 @@ layout: center
 </div>
 
 <!--
-France: DINUM picked NixOS for reproducibility — Sécurix (hardened, ANSSI-guided, FIDO2) for sysadmins, Bureautix for office; ~250 machines by end 2026, a phased cross-gov start, not 2.5M overnight — github.com/cloud-gouv/securix. Anduril: NixOS on defense hardware at fleet scale — the DoD STIG is bureaucratic proof it ships; Nix spread through gov via ex-Anduril engineers. Replit: whole nixpkgs per repl → "50 languages to all of them", then donated $25k (blog.replit.com/nix, /betting-on-nix). Shopify: `dev up` pins nixpkgs per repo, published the Nixology screencasts.
+- France DINUM/Sécurix: Windows → NixOS, ~250 machines by end 2026
+- Anduril: NixOS on DoD defense hardware at fleet scale
+- Replit "50 languages to all of them"; Shopify dev tooling rebuilt on Nix
 -->

@@ -48,11 +48,9 @@ class: text-center
 <div class="opacity-60 text-sm pt-4"><a href="https://github.com/mightyiam/dendritic">github.com/mightyiam/dendritic</a> · built on <a href="https://flake.parts">flake-parts</a> + <a href="https://github.com/vic/import-tree">import-tree</a></div>
 
 <!--
-The usual config repo is organized by *machine* or by *layer* (nixos/ vs home/), so one logical feature — say Japanese input — ends up as three fragments in three trees that have to be kept in sync by hand.
-
-Dendritic flips the axis: every file is a flake-parts module describing one *feature*, and it contributes option values to whichever layers it touches. The module system itself becomes the coordination layer across NixOS, Home Manager, and nix-darwin.
-
-Because files are auto-imported (import-tree), the tree structure carries zero semantics — it's pure documentation. Several community maintainers have adopted it and it pairs naturally with the flake-parts style you saw in the nix-common example earlier.
+- Usual repos split by machine/layer — one feature scattered across three trees, synced by hand
+- Dendritic: every file is a flake-parts module for one feature, feeding whichever layers it touches
+- Auto-imported (import-tree), so the tree is pure documentation — move/rename files freely
 -->
 
 ---
@@ -119,11 +117,9 @@ boot.kernelPatches = [{
 </div>
 
 <!--
-Both examples are the cosmic-comp story from the intro, at lower levels of the stack.
-
-Device-tree overlays: on ARM/embedded boards the DT describes the hardware to the kernel. Vendors make you rebuild a boot image to change it; NixOS takes a `.dtso` file as declarative config and splices it in on every rebuild — same pattern as any overlay: describe the delta, never fork the base.
-
-Kernel patches: `boot.kernelPatches` rebuilds the kernel derivation with your patch in `patches = [ … ]`. The point isn't that you *can* patch a kernel — any distro can — it's that the patch is *declared*: every kernel update re-applies it, and rolling back the generation rolls back the kernel. (Fair warning to deliver aloud: you're now building your own kernel — that's real compile time unless a cache serves it.)
+- Same cosmic-comp story from the intro, deeper in the stack: describe the delta, never fork the base
+- Device-tree overlay: declarative `.dtso` spliced in on every rebuild — no vendor boot image
+- Kernel patch is *declared*: re-applied every update, rolls back with the generation — warn: real compile time without a cache
 -->
 
 

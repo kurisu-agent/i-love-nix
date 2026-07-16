@@ -37,9 +37,9 @@ The **whole OS** is Nix — config to bootloader. More on that in a moment.
 <div class="opacity-60 text-sm pt-8">Try it on the machine you already have — going full NixOS is the deep end, not the entry fee.</div>
 
 <!--
-The installer is Determinate Systems' — the de-facto standard now: creates the /nix APFS volume on macOS, survives OS upgrades, has a real uninstaller, flakes on by default.
-
-On macOS there's also **nix-darwin** worth mentioning aloud: the NixOS module system ported to the Mac — packages, launchd services, `defaults`-style settings, all declarative with generations and `darwin-rebuild switch`. It layers *on top of* this standalone install (the installer answers "how do I get Nix", nix-darwin answers "how do I make my Mac declarative"). It gets its own slide in the ecosystem section.
+- Determinate Systems installer is the de-facto standard — APFS volume on macOS, survives upgrades, real uninstaller, flakes on by default
+- nix-darwin: NixOS module system on the Mac — declarative packages, launchd, `defaults`, `darwin-rebuild switch`
+- nix-darwin layers on top of the standalone install; gets its own ecosystem slide
 -->
 
 ---
@@ -125,7 +125,8 @@ in
 - `let … in` binds names for the expression below; `${…}` interpolates into strings
 
 <!--
-The Meet Nix theory (expressions, not statements) in real syntax: the whole file is ONE expression whose value is the attrset at the bottom.
+- Expressions, not statements — the whole file is ONE expression
+- Its value is the attrset at the bottom
 -->
 
 ---
@@ -149,13 +150,9 @@ builtins.fetchGit { url = "…"; rev = "…"; }  # a pinned source, as a value
 <div class="opacity-60 text-sm pt-4">Day to day you'll mostly use the richer layer on top: <code>nixpkgs.lib</code> (<code>lib.mkIf</code>, <code>lib.mapAttrs</code>, …).</div>
 
 <!--
-The language itself has almost no keywords — everything lives in the `builtins` attrset, always in scope, no imports. Roughly a hundred functions.
-
-The interesting ones are the impure-looking ones: `readFile`, `fetchGit`, `getEnv`. They don't break purity because whatever they return is captured as an *input* to evaluation — read a file and its content is part of what gets hashed; fetch a repo and (in flakes) it must be pinned to a rev. The escape hatches are all accounted for.
-
-`builtins.derivation` is the ur-primitive: literally every package — all 100k in nixpkgs — bottoms out in calls to it. `mkDerivation`, `mkShell`, buildRustPackage… all sugar.
-
-nixpkgs.lib is the community stdlib layered on top — that's where the module system helpers (mkIf, mkForce, mapAttrs) live. builtins = the language's; lib = nixpkgs's.
+- ~100 `builtins`, always in scope, no imports — the whole stdlib
+- Impure-looking ones (`readFile`, `fetchGit`) stay pure: what they return becomes a hashed input
+- `builtins.derivation` is the ur-primitive; `nixpkgs.lib` (`mkIf`, `mapAttrs`) is the community layer on top
 -->
 
 ---
@@ -255,16 +252,9 @@ graph LR
 <div class="text-center opacity-70">the <b>same pipeline</b> from "under the hood" — the "package" is your <b>entire machine</b> · nothing mutates until activation</div>
 
 <!--
-The whole machine goes through the exact evaluate → realise → store → share pipeline from the "under the hood" section, as ONE derivation.
-
-- **Evaluate** — the whole config becomes one `system` derivation (toplevel), hashed like any other build
-- **Realise** — substitute unchanged paths from a binary cache, build only the delta; nothing is live yet
-- **New generation** — registered in /nix/var/nix/profiles/system, right next to the old ones
-- **Boot entry + activation** — systemd-boot/GRUB entry added, then `switch-to-configuration` swaps /etc atomically and starts/stops/restarts only the changed systemd units
-
-Everything before activation is side-effect-free — a failed build changes *nothing*, and the previous generation is always one reboot away.
-
-Variants: `boot` = same, minus activation (applies next reboot) · `test` = activate without a boot entry.
+- The whole machine is ONE `system` derivation through the same evaluate → realise → activate pipeline
+- Nothing is live until activation — a failed build changes nothing; previous generation is one reboot away
+- Variants: `boot` = apply next reboot · `test` = activate without a boot entry
 -->
 
 ---
@@ -475,13 +465,9 @@ path = hash of the **output bytes**. Known only **after** building. Today's ever
 <div class="text-center opacity-60 text-sm pt-2">the bridge between the doors: a <b>realisation</b> — a signed record mapping "output of drv <code>X</code>" → content path</div>
 
 <!--
-The two-hashes distinction, made explicit — people conflate them constantly.
-
-**Input-addressed** (the default): the address is a hash of the *recipe* — known before the build starts, everyone agrees on it, cache lookup is a pure name check. Subtle consequence: the same address can, in principle, hold different bytes if a build isn't perfectly reproducible — which is why caches *sign* their paths and why reproducible-builds work matters.
-
-**Content-addressed**: the address is a hash of the *bytes produced* — it can't exist until after the build, but it's self-verifying: the bytes either hash to the name or they don't, no signature needed. The everyday case: `fetchurl`-style **fixed-output derivations**, where the content hash is declared up front and the fetch must match it. Full **`ca-derivations`** (every build content-addressed) is still experimental; nixpkgs is overwhelmingly input-addressed today.
-
-The payoff CA is chasing — *early cutoff*: under IA, adding a comment to glibc changes glibc's recipe hash, so every downstream address changes and the whole world rebuilds. Under CA, the rebuilt glibc comes out bit-identical → same content hash → same path → dependents' cache stays valid. The bridge between the two worlds is a **realisation** — a record mapping "output of drv X" to a content path, with signatures.
+- Input-addressed (default): hash of the recipe, known before building — the whole cache runs on it
+- Content-addressed (opt-in): hash of the output bytes, self-verifying — today mostly fixed-output fetchers
+- CA chases early cutoff: a bit-identical rebuild keeps its path, so dependents don't rebuild; a realisation bridges the two
 -->
 
 ---
@@ -612,4 +598,216 @@ layout: center
 Cut from Meet Nix — the Dutch-appreciation gag. Wilhelmus swells, say nothing. Click the Dutch icons in one by one — windmills, tulips, clogs, gouda, the world's first stock market (De Witte's 1653 Amsterdam exchange) — then the Netherlands' latest gift: reproducible builds. The whole origin story is Dutch (Utrecht, "niks" = nothing); they also invented tulip mania.
 Photos: Wikimedia Commons. Audio: US Navy Band "Het Wilhelmus", public domain, via Wikimedia Commons.
 The punchline cell is a flat nix block with the snowflake; each cell reveals on click. The Wilhelmus component's animated waving flag shows through the frame and gaps behind the grid.
+-->
+
+---
+layout: center
+---
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="magnifying-glass" class="text-sm" /><span class="font-mono text-xs tracking-widest">ergonomics</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">The small tools that make daily Nix pleasant.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>search.nixos.org — find any package or option</div>
+        <div>comma (,) — run anything uninstalled: , cowsay hi</div>
+        <div>nh — nicer rebuild / switch, pretty diffs</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: search.nixos.org + , + nh</div>
+    </div>
+  </div>
+</div>
+
+<!--
+- search.nixos.org — find any package or option
+- comma (`,`) — run anything without installing
+- nh — nicer rebuilds with diffs and smarter GC
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex items-center justify-center" style="background: #EDF2FA;">
+  <div class="w-[680px]">
+    <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
+      <Ico name="puzzle-piece" class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">composable</span>
+    </div>
+    <div class="text-left text-lg leading-relaxed bg-white px-8 py-6" style="color: #0D1B2E;">
+
+- **Modules merge** — a hundred `.nix` files fold into one system
+- **Overlays &amp; `overrideAttrs`** — bend any package without forking
+- **Flake inputs** — pull in someone's whole system as a dependency
+- **The boundaries dissolve** — app, module, deployment, OS all compose the same way
+
+</div>
+  </div>
+</div>
+
+<!--
+Cut from Why people love it — the "composable" step's bullet slide. Its bullets were absorbed into the boundaries-dissolve example slide (moved there from Meet Nix) when the stepper collapsed to the landing page's three words.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex items-center justify-center" style="background: #EDF2FA;">
+  <div class="w-[680px]">
+    <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
+      <Ico name="gift" class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">shareable</span>
+    </div>
+    <div class="text-left text-lg leading-relaxed bg-white px-8 py-6" style="color: #0D1B2E;">
+
+- Your whole machine is **one repo** — push it, someone else can `nix build` it verbatim
+- Publish reusable **modules** as flake outputs; others `import` them like a library
+- The `flake.lock` travels too → **byte-identical** inputs, never "works on my machine"
+
+</div>
+  </div>
+</div>
+
+<!--
+Cut from Why people love it — the "shareable" step's bullet slide. Merged into the nix-common example slide's speaker notes when the stepper collapsed to reproducible / declarative / reliable.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<div class="absolute inset-0 flex flex-col items-center justify-center gap-8 bg-white">
+  <div class="w-[900px] h-[232px]" style="background: url(/nixos-org-pitch-cropped.png) center / contain no-repeat;"></div>
+  <div class="font-mono text-xs tracking-widest" style="color: #27385D;">nixos.org — above the fold</div>
+</div>
+
+<!--
+Cut from Why people love it — the whole-homepage screenshot intro. Replaced by three per-step pillar slides built from nixos.org's raw SVG icons and verbatim copy (public/pillar-*.svg), so the section now opens directly on the reproducible step.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2 gap-10 items-center px-14 py-10" style="background: #EDF2FA;">
+  <div class="text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+    Builds run in <b>isolation</b> — nothing undeclared can leak in. Same inputs → the same output, <b>bit for bit</b>: works on one machine, works on <b>every</b> machine.
+  </div>
+  <div class="h-full" style="background: url(/love-reproducible.png) center / cover no-repeat;"></div>
+</div>
+
+<!--
+Cut from Why people love it — the reproducible step's Alice explainer (Tweedledum & Tweedledee holding identical hash-cubes). Redundant once the nixos.org pillar slide states the same claim; the step keeps only demonstrations.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2 gap-10 items-center px-14 py-10" style="background: #EDF2FA;">
+  <div class="text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+    Your whole machine in one config. No snowflake servers, no config drift — the system <b>is</b> the code.
+  </div>
+  <div class="h-full" style="background: url(/love-declarative.png) center / cover no-repeat;"></div>
+</div>
+
+<!--
+Cut from Why people love it — the declarative step's Alice explainer (quill materializing a desktop). Redundant next to the nixos.org pillar slide.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2 gap-10 items-center px-14 py-10" style="background: #EDF2FA;">
+  <div class="text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+    Every rebuild is a new <b>generation</b>, switched in one atomic flip — never a half-upgraded system. Booted something broken? Pick the previous one from the boot menu.
+  </div>
+  <div class="h-full" style="background: url(/love-reliable.png) center / cover no-repeat;"></div>
+</div>
+
+<!--
+Cut from Why people love it — the reliable step's Alice explainer (hall of generation doors, one smoking). Redundant next to the pillar slide; its atomic-flip content moved into the GRUB boot-menu slide's speaker note.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2">
+  <div style="background: url(/build-dirty-factory.png) center / cover no-repeat;"></div>
+  <div style="background: url(/build-cleanroom.png) center / cover no-repeat;"></div>
+</div>
+
+<!--
+Cut from Why people love it — the first reproducibility analogy (dirty factory floor vs wafer-fab cleanroom / the sandbox as airlock). Superseded by the carpenter-vs-flat-pack slide, which covers undeclared dependencies and works-everywhere in one image pair.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex items-center justify-center" style="background: #EDF2FA;">
+  <div class="w-[760px]">
+    <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
+      <simple-icons-nixos class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">distributed builds</span>
+    </div>
+    <div class="text-left">
+
+```nix
+# desktop.nix — serve your store to the LAN, like a private cache.nixos.org
+services.harmonia.enable = true;
+boot.binfmt.emulatedSystems = [ "aarch64-linux" ];   # …and build for the phone
+
+# android.nix / old-laptop.nix — outsource the work
+nix.distributedBuilds = true;                # evaluate here, build over there
+nix.buildMachines = [{
+  hostName = "ssh://desktop";                # the beefy box does the lifting
+  systems  = [ "x86_64-linux" "aarch64-linux" ];   # each build routes by arch
+  maxJobs  = 8;
+}];
+nix.settings.substituters = [ "http://desktop:5000" ];   # already built? download, don't compile
+```
+
+</div>
+    <div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">an android phone (nix-on-droid), a 2012 laptop → full system builds in minutes</div>
+  </div>
+</div>
+
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
+
+<!--
+Cut from Why people love it — the distributed-builds config panel, replaced by the phone ↔ desktop substitution flowchart. Keep handy as the "show me the actual config" backup: harmonia serves the LAN, buildMachines ships compilation to the desktop (arch-routed), substituters pull finished paths. On the phone it's `nix-on-droid switch`; on NixOS boxes `nixos-rebuild switch --target-host X --build-host desktop`.
 -->

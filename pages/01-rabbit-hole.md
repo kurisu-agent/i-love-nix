@@ -13,7 +13,7 @@ class: text-center
 </div>
 
 <!--
-Section divider for Down the rabbit hole: the image owns the whole frame, title in a slim flat overlay — ink title bar butted against a nix-blue snowflake square, flush to the top-right corner.
+- Section divider: down the rabbit hole
 -->
 
 ---
@@ -75,7 +75,8 @@ layout: center
 </div>
 
 <!--
-Prelude — my distro journey: Windows (age 8) → macOS (~2010) → Ubuntu (2019) → Pop!_OS (2020) → NixOS (2026, the one I love). Logo tiles with label bars, flat deep arrow connectors between them, and a mono year line under each; the destination tile is the only one with nix-blue bar/year/arrowhead.
+- My distro journey: Windows → macOS → Ubuntu → Pop!_OS → NixOS
+- NixOS 2026 is the one I love
 -->
 
 ---
@@ -85,7 +86,9 @@ layout: center
 <div class="absolute inset-0" style="background: #000 url(/cosmic-tiling.jpg) center / contain no-repeat;"></div>
 
 <!--
-First steps. The annoyance that sold me: Pop!_OS COSMIC has no toggle for desktop animations — durations baked into the compositor source (cosmic-comp #376). My world: patch the source, rebuild, repeat after every update — forever. A friend on NixOS: a ~10-line overlay, declared once, re-applied on every rebuild. Plants the overlays-vs-patches story for later.
+- The annoyance that sold me: Pop!_OS COSMIC, no toggle for animations
+- My world: patch source, rebuild, repeat every update — forever
+- Friend on NixOS: ~10-line overlay, declared once, re-applied each rebuild
 -->
 
 ---
@@ -97,7 +100,9 @@ layout: center
 </div>
 
 <!--
-The upstream ask, verbatim — cosmic-comp #376, open since Mar 2024, 197 👍: give us a setting for animation durations. Still open; the durations stay baked into the source. That itch is what the overlay on the next slide scratches.
+- cosmic-comp #376: open since Mar 2024, 197 👍
+- The ask: a setting for animation durations — still baked into source
+- The itch the next slide's overlay scratches
 -->
 
 ---
@@ -145,5 +150,7 @@ nixpkgs.overlays = [
 </style>
 
 <!--
-…so you write it down once. One overlay in configuration.nix re-patches cosmic-comp on every build and update — declared once, never touched again. Source: cosmic-comp #376.
+- One overlay in configuration.nix re-patches cosmic-comp every build
+- Declared once, never touched again
+- Source: cosmic-comp #376
 -->

@@ -13,6 +13,7 @@ class: text-center
 </div>
 
 <!--
-Switch to the terminal — run-sheet is in demos/README.md.
-Kick off the vibe-coding demo first, then walk the CLI demos while it runs.
+- Switch to terminal — run-sheet in demos/README.md
+- Kick off vibe-coding demo first
+- Walk CLI demos while it runs
 -->

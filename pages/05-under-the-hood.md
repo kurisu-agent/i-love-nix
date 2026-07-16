@@ -13,7 +13,7 @@ class: text-center
 </div>
 
 <!--
-Section divider for Under the hood: the image owns the whole frame, title in a slim flat overlay — ink title bar butted against a nix-blue snowflake square, flush to the top-right corner.
+- Section divider: under the hood
 -->
 
 ---
@@ -96,8 +96,9 @@ layout: center
 </style>
 
 <!--
-package.json : package-lock.json :: flake.nix : flake.lock — "what you want" vs "what you got, exactly"; free intuition if the room knows npm. The deep bars are the Node side; the nix-blue bars with the snowflake always mark the Nix side.
-Where it ends: npm's `integrity` / flake.lock's `narHash` both hash a *download* — but npm stops there, while Nix also hash-names every *build result*. That extra move is the next few slides.
+- package.json:lock :: flake.nix:lock — "what you want" vs "what you got, exactly"
+- Free intuition if the room knows npm; snowflake bars = the Nix side
+- `integrity`/`narHash` hash a download; Nix also hash-names every build result
 -->
 
 ---
@@ -143,9 +144,9 @@ layout: center
 </div>
 
 <!--
-Overview map for the section — each of the six stops gets its own slide next; keep pointing back here. The step bar up top names the six stages; the destination block — everywhere, by hash — is the nix-blue snowflake.
-Trip: resolve → evaluate (recipe) → realize → sandbox build → immutable store graph → global cache by hash.
-Punchline: nothing is "installed" — Nix just execs the binary straight out of `/nix/store`.
+- Overview map: each of the six stops gets its own slide next
+- Trip: resolve → evaluate → realize → build → store → cache
+- Punchline: nothing is "installed" — Nix execs straight out of `/nix/store`
 -->
 
 ---
@@ -173,9 +174,16 @@ layout: center
       <div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">pkgs/by-name/fa/fastfetch/package.nix</span></div>
 
 ```nix
-mkDerivation {
-  pname = "fastfetch";
-  src = fetchFromGitHub { … };
+stdenv.mkDerivation {
+  pname   = "fastfetch";
+  version = "2.65.2";
+  src = fetchFromGitHub {
+    owner = "fastfetch-cli";
+    repo  = "fastfetch";
+    tag   = "2.65.2";
+    hash  = "sha256-Ro31yqYzWfTG…";
+  };
+  # …dependencies & build phases
 }
 ```
 
@@ -196,8 +204,9 @@ mkDerivation {
 </style>
 
 <!--
-**Resolve** — a ref is just a pointer: registry name → pinned repo → one `.nix` file. `nixpkgs` resolves via the flake registry to `github:NixOS/nixpkgs`, pinned to an exact rev; `#fastfetch` selects `packages.<system>.fastfetch`, defined in that package.nix.
-Nothing fetched yet but git metadata — every Nix journey starts with a file like this.
+- Resolve: a ref is a pointer — registry name → pinned repo → one `.nix` file
+- `src` via `fetchFromGitHub` pins owner/repo/tag AND a content hash
+- Nothing fetched yet but metadata — every journey starts with this file
 -->
 
 ---
@@ -263,9 +272,9 @@ out = "/nix/store/"
 </style>
 
 <!--
-**Evaluate** — a pure, lazy function: pinned inputs in → build recipe out, nothing built or downloaded yet. The result is a **derivation** (`.drv`): the recipe plus the hash of every input, just data (`nix derivation show`). Even `builder` is a store-path bash — nothing ambient sneaks in.
-The key move: evaluation also computes the output's store path as `hash(recipe)` — **input-addressed**, known before any work. Contrast `narHash = hash(bytes)`, a content hash of something already fetched. This is the step npm's analogy lacks — it's what makes outputs cacheable/verifiable/shareable.
-If asked: content-addressed (`ca-derivations`) hashes output bytes, still experimental; today nixpkgs is overwhelmingly input-addressed.
+- Evaluate: pure lazy function, inputs → `.drv` recipe, nothing built yet
+- Output store path = `hash(recipe)` — input-addressed, known before any work
+- The step npm's analogy lacks; makes outputs cacheable/verifiable/shareable
 -->
 
 ---
@@ -316,8 +325,9 @@ layout: center
 </div>
 
 <!--
-**Realize** — recipe into a real store path, cheapest way first: in the store → done; in a cache → download ("substitute"); else build it in a sealed sandbox (next stop).
-Nix realizes the whole **closure** this way — pcre2 → gcc-libs → glibc — before anything runs.
+- Realize: recipe → store path, cheapest first — store / cache / build
+- "Substitute" = download from a cache; else build in a sealed sandbox
+- Nix realizes the whole closure before anything runs
 -->
 
 ---
@@ -356,9 +366,9 @@ layout: center
 </div>
 
 <!--
-The hash is a global key — every machine agrees what a build *should* be — so the store is a **cache hierarchy** (like CPU caches): local store (free) → LAN cache (Harmonia) → public cache (cache.nixos.org / Cachix). Nearest copy wins; whoever builds pushes back, warming the cache for everyone behind them.
-You trust the hash + signatures, never the server. Cachix = hosted caches (push once, community substitutes); Nix paths are already content-addressed, so they map onto IPFS too.
-End of the trip: one `.nix` expression → a build the whole planet can reuse.
+- Hash is a global key: store is a cache hierarchy — local → LAN → public
+- Nearest copy wins; whoever builds pushes back. Trust the hash, not the server
+- End of trip: one `.nix` expression → a build the whole planet can reuse
 -->
 
 ---
@@ -408,9 +418,9 @@ layout: center
 </div>
 
 <!--
-Zoom into "build in sandbox." Clean room: no network, declared inputs only (read-only), sealed namespaces + pinned build user + fixed timestamps — that seal is *why* the hash can promise reproducibility.
-Two doors in, both hashes: **sources by content hash** (fetchurl/fetchFromGitHub are fixed-output — network allowed only because bytes must match a declared sha256, wherever they come from) and **dependencies by store path** (yyjson, glibc, gcc, mounted read-only; nothing ambient).
-Because everything's pinned, either room yields the same bytes — so build wherever's fastest: `nix build --builders "ssh://10.0.0.5"` ships the derivation off, path comes back bit-identical.
+- Clean room: no network, declared inputs read-only, sealed — why the hash promises reproducibility
+- Two doors in: sources by content hash, dependencies by store path
+- Same bytes anywhere → build wherever's fastest (remote builders), path comes back bit-identical
 -->
 
 ---
@@ -493,8 +503,7 @@ libssl.so.3 => /nix/store/b7c4…-openssl-3.0.13/lib/…
 </style>
 
 <!--
-Nix deliberately breaks the **FHS** (the /usr/bin, /usr/lib, /etc convention = global mutable state, one version of each thing, installs overwrite in place). On NixOS there's no populated /usr/lib; every package lives in its own hash-addressed prefix, binaries find deps via RPATH/patched shebangs to absolute store paths — which is *how* the two OpenSSLs coexisted in the dependency DAG back in Why people love it.
-The /nix/store panel (real output): nothing is "installed" — PATH points at `/run/current-system/sw`, which is itself a symlink to the `…-system-path` store path (the buildEnv merging every system package), so `whereis` prints a store path straight away. And that `bin/python3` is *still* a symlink — `readlink` lands in the actual python3 package: the first path in the listing above, closing the loop. The composition layer is symlinks almost everywhere: profiles (`~/.nix-profile`), `/run/current-system`, `./result`, the system-path forest. Flip one symlink, flip the whole system; that's why rollbacks are O(1).
-The `ldd` beat: libraries aren't symlinked — absolute store paths are baked into each ELF's RPATH at build time — and nothing is ever copied into a package. Python's own libpython resolves *inside its own store path* (the same `a3f9…` as above), while libssl resolves into openssl's path (`b7c4…`, second line of the listing): RPATH points inward for internal libs, outward for dependencies. Pedant's footnote: libssl is really linked by python's `_ssl` extension module, not the main binary — fine as an illustration. The deep bar is the FHS world; the nix-blue snowflake bar marks the store. The FHS panel mirrors the same three commands: `whereis` lands on THE one path, `readlink` at best finds a version alias in the same shared dir, and `ldd` loads THE same global libs — the ones any install can overwrite in place.
-The catch: pre-built FHS-assuming binaries (Steam, vendor tools, Claude Code) need a shim — nix-ld / buildFHSEnv / steam-run, covered in NixMaxxing.
+- Nix breaks FHS: no global /usr/lib, every package in its own hash-addressed prefix
+- PATH → system-path symlink → package; flip one symlink, flip the system (O(1) rollback)
+- Libs baked into RPATH as absolute store paths, never copied; FHS binaries need a shim (nix-ld)
 -->

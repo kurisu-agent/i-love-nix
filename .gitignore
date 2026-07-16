@@ -5,4 +5,5 @@ dist
 .env.local
 .env*.local
 shots
+shots2
 .direnv
