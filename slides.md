@@ -79,16 +79,14 @@ layout: center
   <div class="w-[560px] flex flex-col gap-2">
     <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
       <simple-icons-nixos class="text-base text-white" />
-      <span class="font-mono text-xs tracking-widest text-white">the rabbit hole, mapped</span>
+      <span class="font-mono text-xs tracking-widest text-white">agenda</span>
     </div>
-    <v-clicks every="2">
     <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="rabbit" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">down the rabbit hole</span></div>
     <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="bug" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">meet nix</span></div>
     <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="heart" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">why people love it</span></div>
-    <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="flask" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">drink me</span></div>
+    <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="flask" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">drink me (demo)</span></div>
     <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="gear" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">under the hood</span></div>
     <div class="h-11 flex items-center gap-4 px-5 bg-white"><Ico name="globe-hemisphere-west" class="text-lg" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #0D1B2E;">the ecosystem</span></div>
-    </v-clicks>
   </div>
 </div>
 
