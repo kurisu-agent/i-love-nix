@@ -22,8 +22,7 @@ Two ways in — same language, same store, same commands:
 On **any Linux**, macOS, or WSL — one installer, no reboot:
 
 ```bash
-curl -fsSL https://install.determinate.systems/nix \
-  | sh -s -- install
+curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 ```
 
 </div>
@@ -240,7 +239,7 @@ use flake
 
 <div class="flex justify-center items-center h-[380px]">
 
-```mermaid {scale: 0.6}
+```mermaid {scale: 0.7}
 graph LR
   A["⌨️ nixos-rebuild<br/>switch"] --> E["λ evaluate<br/>one system derivation"]
   E --> B["🔨 realise<br/>build ∪ substitute"]
@@ -345,7 +344,7 @@ a README of steps, a wiki page, that one teammate who remembers — replayed by 
 <div class="grid grid-cols-2 gap-10 mt-2">
 <div>
 
-### <Ico name="logos:ansible" /> Ansible
+### <Ico name="simple-icons:ansible" style="color:#e00" /> Ansible
 - Playbooks **run top-to-bottom** — order &amp; current state matter; re-runs only _hope_ to be idempotent
 - "Configured" = whatever the tasks _did_, not a value you can inspect or diff
 - Roles don't really compose — no merge/override, you just append more tasks
@@ -483,4 +482,134 @@ The two-hashes distinction, made explicit — people conflate them constantly.
 **Content-addressed**: the address is a hash of the *bytes produced* — it can't exist until after the build, but it's self-verifying: the bytes either hash to the name or they don't, no signature needed. The everyday case: `fetchurl`-style **fixed-output derivations**, where the content hash is declared up front and the fetch must match it. Full **`ca-derivations`** (every build content-addressed) is still experimental; nixpkgs is overwhelmingly input-addressed today.
 
 The payoff CA is chasing — *early cutoff*: under IA, adding a comment to glibc changes glibc's recipe hash, so every downstream address changes and the whole world rebuilds. Under CA, the rebuilt glibc comes out bit-identical → same content hash → same path → dependents' cache stays valid. The bridge between the two worlds is a **realisation** — a record mapping "output of drv X" to a content path, with signatures.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+# Where to go next
+
+[nix.dev](https://nix.dev) · [Zero to Nix](https://zero-to-nix.com) · [nixos.org](https://nixos.org)
+
+Thanks!
+
+<!--
+Cut as a standalone slide — the links now live in the NixCon slide's footer at the end of the ecosystem tour.
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2 gap-0 items-stretch" style="background: #EDF2FA;">
+  <div class="flex flex-col justify-center p-14">
+    <div class="h-10 flex items-center gap-3 px-4" style="background: #27385D;">
+      <Ico name="wrench" class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">my world</span>
+    </div>
+    <div class="bg-white p-8 text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+      Patch the source, rebuild, repeat after every update. <b>Forever.</b>
+    </div>
+    <div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">by hand</div>
+  </div>
+  <div class="flex flex-col justify-center p-14">
+    <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
+      <simple-icons-nixos class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">a friend on nixos</span>
+    </div>
+    <div class="bg-white p-8 text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+      A ~10-line <b>overlay</b> — declared once, re-applied on every rebuild.
+    </div>
+  </div>
+</div>
+
+<!--
+Cut from the themed rabbit-hole section — replaced by a [todo: COSMIC window manager screenshot] placeholder; the my-world / a-friend contrast moved into that slide's speaker notes.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<div class="absolute inset-0 grid grid-cols-10">
+  <div class="col-span-4 relative" style="background: #5277C3;">
+    <div class="absolute top-12 left-12"><simple-icons-nixos class="text-5xl text-white" /></div>
+    <div class="absolute bottom-12 left-12 text-left">
+      <div class="font-mono text-sm tracking-[0.4em]" style="color: #7EBAE4;">SECTION 00</div>
+      <div class="text-7xl font-black text-white leading-none pt-3">theme</div>
+    </div>
+  </div>
+  <div class="col-span-6" style="background: url(/alice-looking-glass.png) center / cover no-repeat;"></div>
+</div>
+
+<!--
+Theme-development scaffolding (was pages/00-theme.md) — the example and template slides all graduated into the live sections; only this divider (for the style rules below) and the swatch are kept. Style rules:
+- palette: nix-logo-blue only (see swatch next slide) — flat fills, no gradients, no shadows
+- blocky: square corners everywhere, full-bleed blocks, hard edges between color/image areas
+- no slide titles — a small mono microlabel (lowercase, tracking-widest) is the only text chrome
+- images and logos carry the slide; text is a caption at most
+- section dividers are a solid color block + a full-bleed image, hard-split
+- recurring brand mark: the white snowflake on a nix-blue block — accent on dividers, watermark on image blocks, checkmark in tables
+
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-[1fr_1fr_2fr_1fr_1fr]">
+  <div class="relative" style="background: #0D1B2E;">
+    <div class="absolute bottom-10 left-8 text-left font-mono text-xs leading-relaxed text-white">ink<br />#0D1B2E</div>
+  </div>
+  <div class="relative" style="background: #27385D;">
+    <div class="absolute bottom-10 left-8 text-left font-mono text-xs leading-relaxed text-white">deep<br />#27385D</div>
+  </div>
+  <div class="relative" style="background: #5277C3;">
+    <div class="absolute bottom-10 left-8 text-left font-mono text-xs leading-relaxed text-white">nix<br />#5277C3</div>
+    <div class="absolute top-10 left-8"><simple-icons-nixos class="text-4xl text-white" /></div>
+  </div>
+  <div class="relative" style="background: #7EBAE4;">
+    <div class="absolute bottom-10 left-8 text-left font-mono text-xs leading-relaxed" style="color: #0D1B2E;">sky<br />#7EBAE4</div>
+  </div>
+  <div class="relative" style="background: #EDF2FA;">
+    <div class="absolute bottom-10 left-8 text-left font-mono text-xs leading-relaxed" style="color: #0D1B2E;">paper<br />#EDF2FA</div>
+  </div>
+</div>
+
+<!--
+The swatch. `nix` (#5277C3) and `sky` (#7EBAE4) are the two blues of the official snowflake logo; `ink`, `deep`, and `paper` are derived from them — a darkened navy scale and a near-white cool tint. The nix column is double-width: it's the primary. No accent color outside this scale.
+-->
+
+---
+
+<PbjTime />
+
+<!--
+Cut from Why people love it — the peanut-butter-&-jelly payoff that followed the "LLMs ❤️ Nix" slide (its punchline used to end "they go together like…").
+-->
+
+---
+layout: center
+---
+
+<Wilhelmus />
+
+<div class="absolute inset-0 p-14 grid grid-cols-3 grid-rows-2 gap-3">
+  <div v-click style="background: url(/dutch-windmills.jpg) center / cover no-repeat;"></div>
+  <div v-click style="background: url(/dutch-tulips.jpg) center / cover no-repeat;"></div>
+  <div v-click style="background: url(/dutch-clogs.jpg) center / cover no-repeat;"></div>
+  <div v-click style="background: url(/dutch-gouda.jpg) center / cover no-repeat;"></div>
+  <div v-click style="background: url(/dutch-beurs.jpg) center / cover no-repeat;"></div>
+  <div v-click class="flex items-center justify-center" style="background: #5277C3;">
+    <simple-icons-nixos class="text-7xl text-white" />
+  </div>
+</div>
+
+<!--
+Cut from Meet Nix — the Dutch-appreciation gag. Wilhelmus swells, say nothing. Click the Dutch icons in one by one — windmills, tulips, clogs, gouda, the world's first stock market (De Witte's 1653 Amsterdam exchange) — then the Netherlands' latest gift: reproducible builds. The whole origin story is Dutch (Utrecht, "niks" = nothing); they also invented tulip mania.
+Photos: Wikimedia Commons. Audio: US Navy Band "Het Wilhelmus", public domain, via Wikimedia Commons.
+The punchline cell is a flat nix block with the snowflake; each cell reveals on click. The Wilhelmus component's animated waving flag shows through the frame and gaps behind the grid.
 -->

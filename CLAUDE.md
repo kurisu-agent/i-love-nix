@@ -15,6 +15,16 @@ A Slidev deck: "I ❤️ NixOS — and you should too". Themed around Alice in W
   flake in `demos/potion/`). `demos/` must stay git-tracked — Nix only sees tracked
   files when evaluating a flake in a git repo.
 
+## Animation
+
+Subtle, not over the top. Three layers, use the right one:
+
+- **Slide transitions**: global plain `fade` — deliberately boring. No whole-slide movement/blur (tried, rejected); motion belongs on individual elements.
+- **In-slide reveals (markdown)**: Slidev built-ins — `<v-clicks>` / `v-click` (global `clickAnimation: up` gives a soft rise) and Slidev's built-in `v-motion` directive (@vueuse/motion, click-aware: `:initial`/`:enter`/`:click-x`/`:leave`) for one-off entrances.
+- **Vue components**: `motion-v` (Motion for Vue) — import `motion` / `AnimatePresence` directly in the SFC (see `StepGuide.vue`). Do NOT register motion-v's `MotionPlugin` globally: its `v-motion` directive collides with Slidev's built-in one.
+
+Component animations must respect `useReducedMotion()` and `useNav().isPrintMode` (exports/screenshots must render the final state, not a mid-animation frame). `StepGuide` animates its active pill from the previous step automatically — keep passing plain `:current` per slide.
+
 ## Deck structure
 
 `slides.md` is a thin index: title/agenda slides plus one `src: ./pages/NN-section.md`

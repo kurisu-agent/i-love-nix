@@ -1,0 +1,20 @@
+/* Give the `up` click-animation preset a softer glide than the 0.1s default. */
+.slidev-vclick-target.slidev-vclick-anim-up {
+  transition:
+    opacity 0.35s ease,
+    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Code blocks never scroll (Slidev defaults to overflow: auto) — long lines are handled elsewhere. */
+.slidev-layout .slidev-code {
+  overflow: visible;
+}
+
+/* Theme: flat inline code — square corners, mono, sky tint + deep ink from the deck palette. */
+.slidev-layout :not(pre) > code {
+  background: rgba(126, 186, 228, 0.25); /* sky #7EBAE4 tint */
+  color: #27385d;
+  border-radius: 0;
+  padding: 0.1em 0.4em;
+  font-size: 0.9em;
+}

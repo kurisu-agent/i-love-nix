@@ -3,139 +3,350 @@ layout: center
 class: text-center
 ---
 
-<SectionBookend image="/alice-ecosystem.png" title="The ecosystem" subtitle="the tools & community around Nix" />
-
----
-
-# nixpkgs — the mothership <Ico name="folders" class="text-2xl" />
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-**The** package collection — 100k+ packages *and* every NixOS module, one giant repo everything else builds on.
-
-- <Ico name="rocket" /> **`nixos-unstable`** — rolling &amp; fresh; the default for desktops and flakes
-- <Ico name="shield-check" /> **`nixos-25.05`** — stable release every six months (May &amp; November); only fixes get backported
-- <Ico name="lightning" /> **Hydra** — the build farm: builds every package, **signs** it, fills `cache.nixos.org` — a branch only advances when it's green
-- <Ico name="git-branch" /> **mix freely** — pin both, run a stable system with a handful of unstable packages
-
+<div class="absolute inset-0" style="background: url(/alice-ecosystem.png) center / cover no-repeat;">
+  <div class="absolute top-0 right-0 flex items-stretch">
+    <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
+      <div class="text-5xl font-black text-white leading-none">the ecosystem</div>
+    </div>
+    <div class="w-20 flex items-center justify-center" style="background: #5277C3;"><simple-icons-nixos class="text-4xl text-white" /></div>
+  </div>
 </div>
-<div>
-<Placeholder label="branches: master → nixos-unstable → nixos-25.05" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/NixOS/nixpkgs">github.com/NixOS/nixpkgs</a> — the repo those 1,000,000 commits live in</div>
 
 <!--
-Start the ecosystem tour at the center of gravity: nixpkgs isn't "a repo of build scripts", it's the largest and freshest package collection in existence — and the NixOS module system lives in the same tree, which is why a package and the service that runs it always move together.
-
-The tracks, in plain terms: everything merges into `master`; once it builds and passes tests, Hydra advances `nixos-unstable` — a rolling release in practice, and fresher than the AUR while being CI-tested. Twice a year (May and November) a release branch is cut — `nixos-25.05`, `nixos-25.11`, named YY.MM — which then only receives bug and security backports: that's what you put on servers. Channels vs flake inputs are just two ways of pointing at these same branches.
-
-Hydra is the machinery behind all of it: the project's own open-source CI/build farm (hydra.nixos.org). Every commit's packages get built for each platform, the outputs are cryptographically signed and pushed to cache.nixos.org, and a channel/branch only advances past a commit once its build jobs are green. Two payoffs to say out loud: you almost never compile anything (your machine substitutes the exact signed binaries Hydra already built — same inputs, same hash, so the cache hit is *provably* the thing you asked for), and signature checking means a poisoned mirror can't hand you a tampered binary. It's the security model from the "hardened deployments" slide, running at ecosystem scale.
-
-The mixing point lands well live: because packages are just values, "stable system + unstable neovim" is three lines — add a second nixpkgs input and pick packages from either. No PPA juggling, no partial-upgrade roulette.
+Section divider — the ecosystem tour. Full-bleed art, slim flat overlay flush to the free top-right sky.
 -->
 
 ---
+layout: center
+---
 
-# nix-community <Ico name="users-three" class="text-2xl" />
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-The **community umbrella org** — where the ecosystem's de-facto-standard tools live and get maintained together.
-
-- Home Manager, impermanence, comma, nh, nixvim, disko, NUR…
-- Shared CI, binary cache &amp; co-maintainers for adopted projects
-- The first place to look when nixpkgs alone isn't enough
-
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="books" class="text-sm" /><span class="font-mono text-xs tracking-widest">nixpkgs</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">100k+ packages <b>+</b> every NixOS module — one repo.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>nixos-unstable — rolling, fresh</div>
+        <div>nixos-25.05 — stable, six-monthly</div>
+        <div>hydra — builds · signs · fills cache.nixos.org</div>
+        <div>mix freely — pin stable + unstable</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: branches: master → nixos-unstable → nixos-25.05</div>
+    </div>
+  </div>
 </div>
-<div>
-<Placeholder label="nix-community — one org, dozens of standard tools" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-community">github.com/nix-community</a></div>
 
 <!--
-The second pillar: an umbrella GitHub org that adopts important community projects and gives them shared infrastructure — CI, a Cachix cache, and co-maintainers — so key tools don't live or die with one person's free time. Almost everything in the rest of this section lives here. Segue: starting with the one you'll reach for first — Home Manager.
+The center of gravity: largest, freshest package collection in existence, with the NixOS module system in the same tree — so a package and its service always move together.
+Hydra builds every commit, signs the outputs, and only advances a branch once it's green; you substitute exact signed binaries instead of compiling.
+Mixing lands live: "stable system + unstable neovim" is just a second nixpkgs input.
+Everything else on this tour builds on top of this repo.
+Source: github.com/NixOS/nixpkgs
 -->
 
 ---
-
-# Home Manager
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-Declarative **dotfiles &amp; user environment** — the layer you reach for right after NixOS itself.
-
-- Your shell, editor, git config, packages — all in `.nix`
-- Per-user **generations &amp; rollbacks**, just like the system
-- Works standalone, or as a NixOS / nix-darwin module
-
-</div>
-<div>
-<Placeholder label="Home Manager — dotfiles as code" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-community/home-manager">github.com/nix-community/home-manager</a></div>
-
+layout: center
 ---
 
-# nix-darwin
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-NixOS-style **declarative config for macOS** — your Mac described in one repo, the same way.
-
-- Manage system settings, packages, and `defaults` declaratively
-- Pairs with **Home Manager** for your user environment
-- Same Nix workflow across Linux and macOS
-
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="books" class="text-sm" /><span class="font-mono text-xs tracking-widest">nixpkgs</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+      The largest <b>and</b> freshest package set anywhere — 100k+ packages, updated fast.
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: package-count / freshness chart</div>
+    </div>
+  </div>
 </div>
-<div>
-<Placeholder label="nix-darwin — declarative macOS config" />
-</div>
-</div>
 
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-darwin/nix-darwin">github.com/nix-darwin/nix-darwin</a></div>
+<!--
+Moved from Why people love it — the size-and-freshness pitch, now the second beat of the nixpkgs stop: not just the biggest package set, also the fastest-moving one.
+-->
 
 ---
-
-# Dev environments
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-Per-project toolchains, friendlier than raw `nix develop`:
-
-- **devenv** — languages, services (Postgres, Redis…), processes & scripts
-- **devbox** — package-manager UX; you barely touch Nix
-- **direnv + nix-direnv** — the shell **auto-activates** the moment you `cd` in
-
-</div>
-<div>
-<Placeholder label="cd into a repo → the right tools just appear" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://devenv.sh">devenv.sh</a> · <a href="https://www.jetify.com/devbox/">devbox</a> · <a href="https://github.com/nix-community/nix-direnv">nix-direnv</a></div>
-
+layout: center
 ---
 
-# Docker <Ico name="plus" /> Nix — better together
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="house" class="text-sm" /><span class="font-mono text-xs tracking-widest">home manager</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Declarative <b>dotfiles &amp; user environment</b>.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>shell · editor · git · packages — all in .nix</div>
+        <div>per-user generations &amp; rollbacks</div>
+        <div>standalone, or a NixOS / nix-darwin module</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: Home Manager — dotfiles as code</div>
+    </div>
+  </div>
+</div>
 
-> Not either/or — the store travels **both** directions
+<!--
+Dotfiles as code — the layer you reach for right after NixOS itself.
+Same generations and rollbacks as the system, per-user; works standalone or as a module.
+Source: github.com/nix-community/home-manager
+-->
 
-<div class="grid grid-cols-2 gap-8 mt-2">
-<div>
+---
+layout: center
+---
 
-### <Ico name="simple-icons:nixos" /> → <Ico name="logos:docker-icon" /> Nix builds the image
-`dockerTools.buildLayeredImage` — an OCI image straight from Nix. No `Dockerfile`, just your **exact closure** (a few MB, no base distro) as reproducible layers.
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="terminal" class="text-sm" /><span class="font-mono text-xs tracking-widest">dev envs</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Per-project toolchains, friendlier than raw <span class="font-mono">nix develop</span>.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>devenv — languages, services, processes</div>
+        <div>devbox — package-manager UX</div>
+        <div>direnv + nix-direnv — auto-activates on cd</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: cd into a repo → the right tools just appear</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Higher-level wrappers over `nix develop`: devenv adds services like Postgres/Redis, devbox hides Nix behind a package-manager UX.
+direnv + nix-direnv is the magic — the shell environment appears the moment you cd into the repo.
+Sources: devenv.sh · jetify.com/devbox · github.com/nix-community/nix-direnv
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="pen-nib" class="text-sm" /><span class="font-mono text-xs tracking-widest">editing</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Nix edited like a real language.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>LSP — nixd / nil</div>
+        <div>formatter — nixfmt (official); alejandra</div>
+        <div>linters — statix + deadnix, via treefmt-nix</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: editor with Nix LSP + format-on-save</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Nix feels like a real language with tooling: LSP (nixd or nil) for completion and goto-def, nixfmt as the official formatter, statix + deadnix for anti-patterns and dead code, usually wired together via treefmt-nix.
+Sources: nixd · nil · nixfmt · statix · deadnix
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="magnifying-glass" class="text-sm" /><span class="font-mono text-xs tracking-widest">ergonomics</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">The small tools that make daily Nix pleasant.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>search.nixos.org — find any package or option</div>
+        <div>comma (,) — run anything uninstalled: , cowsay hi</div>
+        <div>nh — nicer rebuild / switch, pretty diffs</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: search.nixos.org + , + nh</div>
+    </div>
+  </div>
+</div>
+
+<!--
+The small tools that make daily Nix pleasant: search for any package/option, run anything without installing via comma, and nh for nicer rebuilds with diffs and smarter GC.
+Sources: search.nixos.org · comma · nh
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="apple-logo" class="text-sm" /><span class="font-mono text-xs tracking-widest">nix-darwin</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">NixOS-style <b>declarative config for macOS</b>.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>system settings · packages · defaults — declarative</div>
+        <div>pairs with Home Manager</div>
+        <div>same Nix workflow across Linux &amp; macOS</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: nix-darwin — declarative macOS config</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Your Mac described in one repo, the same way as NixOS — settings, packages, `defaults`.
+Pair with Home Manager for the user environment; one workflow across both OSes.
+Source: github.com/nix-darwin/nix-darwin
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="shipping-container" class="text-sm" /><span class="font-mono text-xs tracking-widest">docker</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-8 items-center px-14 py-8">
+    <div>
+      <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
+        <simple-icons-nixos class="text-base text-white" />
+        <span class="font-mono text-xs tracking-widest text-white">nix builds the image</span>
+      </div>
+      <div class="text-left">
 
 ```nix
 dockerTools.buildLayeredImage {
@@ -146,10 +357,14 @@ dockerTools.buildLayeredImage {
 ```
 
 </div>
-<div>
-
-### <Ico name="logos:docker-icon" /> → <Ico name="simple-icons:nixos" /> Nix inside the container
-The **devcontainer feature** drops Nix into any image — reproducible tooling in Docker, Codespaces & CI, no NixOS required.
+      <div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">your exact closure as reproducible layers</div>
+    </div>
+    <div>
+      <div class="h-10 flex items-center gap-3 px-4" style="background: #27385D;">
+        <Ico name="logos:docker-icon" class="text-base" />
+        <span class="font-mono text-xs tracking-widest text-white">nix inside the image</span>
+      </div>
+      <div class="text-left">
 
 ```jsonc
 // .devcontainer/devcontainer.json
@@ -161,185 +376,371 @@ The **devcontainer feature** drops Nix into any image — reproducible tooling i
 ```
 
 </div>
+      <div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">drop Nix into any image — no NixOS required</div>
+    </div>
+  </div>
 </div>
 
-<div class="opacity-60 text-sm pt-2">Nix as the <b>builder</b> <Ico name="wrench" /> or Nix as the <b>guest</b> <Ico name="house" /> — hermetic builds, universal runtime.</div>
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
 
----
-
-# clan.lol
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-Declarative **fleet management** built on NixOS — manage a whole network of machines from one repo.
-
-- Zero-config peer-to-peer networking between machines
-- Built-in **secrets** management
-- One command to deploy and update the fleet
-
-</div>
-<div>
-<Placeholder label="clan.lol — one repo managing many machines" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://clan.lol">clan.lol</a></div>
-
----
-
-# Cachix
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-Hosted **binary cache** for Nix — never compile the same thing twice.
-
-- Push build artifacts once, pull them everywhere (laptops, CI, teammates)
-- Turns slow first builds into fast cache hits
-- The standard answer to "why is it building from source?"
-
-</div>
-<div>
-<Placeholder label="cachix push/pull — build once, share everywhere" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://cachix.org">cachix.org</a></div>
-
----
-
-# ncps
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-Self-hosted **pull-through binary cache** — a local mirror sitting between your machines and `cache.nixos.org`.
-
-- Fetches store paths on demand, then caches &amp; **signs** them for the whole LAN
-- Download once → every laptop, server &amp; CI box substitutes locally
-- Multi-upstream failover · S3 or local storage · SQLite/Postgres · Prometheus
-
-</div>
-<div>
-<Placeholder label="ncps — LAN pull-through cache in front of cache.nixos.org" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/kalbasit/ncps">github.com/kalbasit/ncps</a> — accelerate Nix retrieval across your local network</div>
-
----
-
-# Secrets
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-"Where do passwords go in a config you commit to git?" — encrypted, decrypted at activation into tmpfs.
-
-- **agenix** — age-based, one file per secret; simplest to start
-- **sops-nix** — SOPS-based, scales to many secrets &amp; backends (age, KMS, PGP)
-- Secrets never land in the world-readable `/nix/store`
-
-</div>
-<div>
-<Placeholder label="encrypted secret → /run/secrets at activation" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/ryantm/agenix">agenix</a> · <a href="https://github.com/Mic92/sops-nix">sops-nix</a></div>
-
----
-
-# Discovery &amp; ergonomics
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-The tools that make daily Nix pleasant:
-
-- **search.nixos.org** — find any package or NixOS option
-- **comma (`,`)** — run any program without installing it: `, cowsay hi`
-- **nh** — nicer `rebuild` / `switch` with pretty diffs &amp; smarter GC
-
-</div>
-<div>
-<Placeholder label="search.nixos.org + , + nh" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://search.nixos.org">search.nixos.org</a> · <a href="https://github.com/nix-community/comma">comma</a> · <a href="https://github.com/nix-community/nh">nh</a></div>
-
----
-
-# Editing Nix
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-Make Nix feel like a real language in your editor:
-
-- **LSP** — `nixd` or `nil` for completion, goto-def, option hints
-- **Formatter** — `nixfmt` (the official standard); `alejandra` a popular alternative
-- **Linters** — `statix` (anti-patterns) + `deadnix` (dead code), usually wired via `treefmt-nix`
-
-</div>
-<div>
-<Placeholder label="editor with Nix LSP + format-on-save" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-community/nixd">nixd</a> · <a href="https://github.com/oxalica/nil">nil</a> · <a href="https://github.com/NixOS/nixfmt">nixfmt</a> · <a href="https://github.com/oppiliappan/statix">statix</a> · <a href="https://github.com/astro/deadnix">deadnix</a></div>
-
----
-
-# Erase your darlings <Ico name="fire" class="text-2xl" />
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-**impermanence** — wipe `/` on every boot, keep only what you _declared_.
-
-- Root lives on tmpfs (or a rolled-back snapshot); reboot = clean slate
-- Persist only the dirs/files you explicitly list
-- Hidden state can't accumulate — if it's not declared, it's gone
-
-</div>
-<div>
-<Placeholder label="reboot → root wiped → only declared state survives" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://github.com/nix-community/impermanence">github.com/nix-community/impermanence</a> · <a href="https://grahamc.com/blog/erase-your-darlings/">grahamc.com — Erase your darlings</a></div>
-
----
-
-# NixCon
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-The community **conference** for Nix &amp; NixOS — talks, workshops, and the people behind the project.
-
-- Where the roadmap and big ideas get hashed out
-- Talks recorded and posted online if you can't attend
-- The best way to meet the community in person
-
-</div>
-<div>
-<Placeholder label="NixCon — community conference" />
-</div>
-</div>
-
-<div class="opacity-60 text-sm pt-4"><a href="https://nixcon.org">nixcon.org</a></div>
+<!--
+Not either/or — the store travels both directions.
+Left: Nix builds a tiny OCI image from your exact closure, no Dockerfile, no base distro.
+Right: the devcontainer feature drops Nix into any image for reproducible tooling in Docker, Codespaces, CI.
+Once you're building artifacts, you want to share them — next: caching.
+-->
 
 ---
 layout: center
-class: text-center
 ---
 
-# Where to go next
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="cloud-arrow-down" class="text-sm" /><span class="font-mono text-xs tracking-widest">cachix</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Hosted <b>binary cache</b> — build once, pull everywhere.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>push artifacts once; laptops, CI &amp; teammates pull them</div>
+        <div>slow first builds → fast cache hits</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: cachix push/pull — build once, share everywhere</div>
+    </div>
+  </div>
+</div>
 
-[nix.dev](https://nix.dev) · [Zero to Nix](https://zero-to-nix.com) · [nixos.org](https://nixos.org)
+<!--
+Never compile the same thing twice — push build artifacts once, everyone pulls them.
+The standard answer to "why is it building from source?"
+Source: cachix.org
+-->
 
-Thanks!
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="lock-key" class="text-sm" /><span class="font-mono text-xs tracking-widest">secrets</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Encrypted in git, decrypted at activation into tmpfs.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>agenix — age-based, one file per secret</div>
+        <div>sops-nix — SOPS-based, many secrets &amp; backends</div>
+        <div>never lands in the world-readable /nix/store</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: encrypted secret → /run/secrets at activation</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Answers "where do passwords go in a config you commit to git?" — encrypted at rest, decrypted at activation into tmpfs, never in the world-readable store.
+agenix is the simplest start; sops-nix scales to many secrets and backends (age, KMS, PGP).
+Sources: github.com/ryantm/agenix · github.com/Mic92/sops-nix
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="hard-drives" class="text-sm" /><span class="font-mono text-xs tracking-widest">ncps</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Self-hosted <b>pull-through cache</b> in front of cache.nixos.org.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>fetches on demand, then caches &amp; signs for the LAN</div>
+        <div>download once → every machine substitutes locally</div>
+        <div>multi-upstream · S3/local · SQLite/Postgres · Prometheus</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: ncps — LAN pull-through cache in front of cache.nixos.org</div>
+    </div>
+  </div>
+</div>
+
+<!--
+A local mirror between your machines and cache.nixos.org — fetches store paths on demand, then caches and signs them for the whole LAN.
+Download once and every laptop, server, CI box substitutes locally.
+Source: github.com/kalbasit/ncps
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="fire" class="text-sm" /><span class="font-mono text-xs tracking-widest">impermanence</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;"><b>impermanence</b> — wipe / on every boot, keep only what you <i>declared</i>.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>root on tmpfs / rolled-back snapshot; reboot = clean slate</div>
+        <div>persist only the dirs you explicitly list</div>
+        <div>undeclared hidden state can't accumulate</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: reboot → root wiped → only declared state survives</div>
+    </div>
+  </div>
+</div>
+
+<!--
+"Erase your darlings": root lives on tmpfs or a rolled-back snapshot, so every reboot is a clean slate — you persist only the files you explicitly list.
+If it's not declared, it's gone; hidden state can never accumulate.
+Segue: nearly every tool on this tour is community-maintained — so who maintains them?
+Sources: github.com/nix-community/impermanence · grahamc.com — Erase your darlings
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="users-three" class="text-sm" /><span class="font-mono text-xs tracking-widest">nix-community</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">The <b>umbrella org</b> behind half of this tour — de-facto-standard tools, maintained together.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>Home Manager, impermanence, comma, nh, nixvim, disko, NUR…</div>
+        <div>shared CI, binary cache &amp; co-maintainers</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: nix-community — one org, dozens of standard tools</div>
+    </div>
+  </div>
+</div>
+
+<!--
+The reveal: almost everything from the last dozen slides lives under one GitHub org.
+It adopts key projects and gives them shared infra — CI, cache, co-maintainers — so tools don't die with one person's free time.
+Source: github.com/nix-community
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="rocket-launch" class="text-sm" /><span class="font-mono text-xs tracking-widest">nixos-anywhere</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left text-xl leading-relaxed" style="color: #0D1B2E;">
+      Deploy a declarative NixOS config to <b>any</b> remote box — bare metal or a fresh cloud VM — in one command.
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: laptop deploying a config to a remote server</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Moved from Why people love it. One command to provision any remote box — kexec in, partition, install, reboot into your config. Tooling: nix-community/nixos-anywhere, SaumonNet/proxmox-nixos.
+Segue: one box in one command — now a whole fleet…
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="share-network" class="text-sm" /><span class="font-mono text-xs tracking-widest">clan.lol</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">Declarative <b>fleet management</b> on NixOS.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>zero-config peer-to-peer networking</div>
+        <div>built-in secrets management</div>
+        <div>one command to deploy the fleet</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: clan.lol — one repo managing many machines</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Where the ecosystem is heading: manage a whole fleet of machines from one repo — zero-config P2P mesh, built-in secrets, one command to deploy and update.
+And the people building things like this all meet in one place…
+Source: clan.lol
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="books" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="house" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="terminal" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="pen-nib" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="magnifying-glass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="apple-logo" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="shipping-container" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="cloud-arrow-down" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="lock-key" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="hard-drives" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="fire" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="users-three" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="rocket-launch" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="confetti" class="text-sm" /><span class="font-mono text-xs tracking-widest">nixcon</span></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-14 py-10">
+    <div class="text-left">
+      <div class="text-xl leading-relaxed" style="color: #0D1B2E;">The community <b>conference</b> for Nix &amp; NixOS.</div>
+      <div class="mt-5 space-y-2 font-mono text-sm" style="color: #27385D;">
+        <div>talks · workshops · the people behind it all</div>
+        <div>go deeper: nix.dev · Zero to Nix · nixos.org</div>
+      </div>
+    </div>
+    <div class="relative h-full" style="background: #5277C3;">
+      <simple-icons-nixos class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl text-white" />
+      <div class="absolute bottom-4 left-5 font-mono text-xs tracking-widest" style="color: #7EBAE4;">img: NixCon — community conference</div>
+    </div>
+  </div>
+</div>
+
+<!--
+Talks, workshops, and the people behind everything you just saw — where the roadmap gets hashed out.
+Talks are recorded online, but it's the best way to meet the community in person.
+End of the tour — point at the footer links for self-study, then hand over to the fin slide.
+Sources: nixcon.org · go deeper: nix.dev · zero-to-nix.com · nixos.org
+-->

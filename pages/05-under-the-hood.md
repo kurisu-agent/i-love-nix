@@ -3,28 +3,42 @@ layout: center
 class: text-center
 ---
 
-<SectionBookend image="/alice-under-the-hood.png" title="Under the hood" subtitle="what actually happens when you run a command" />
+<div class="absolute inset-0" style="background: url(/alice-under-the-hood.png) center / cover no-repeat;">
+  <div class="absolute top-0 right-0 flex items-stretch">
+    <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
+      <div class="text-5xl font-black text-white leading-none">under the hood</div>
+    </div>
+    <div class="w-20 flex items-center justify-center" style="background: #5277C3;"><simple-icons-nixos class="text-4xl text-white" /></div>
+  </div>
+</div>
+
+<!--
+Section divider for Under the hood: the image owns the whole frame, title in a slim flat overlay — ink title bar butted against a nix-blue snowflake square, flush to the top-right corner.
+-->
 
 ---
+layout: center
+---
 
-# A flake ≈ `package.json` — for anything Nix builds
+<div class="absolute inset-0 grid grid-cols-2 gap-10 items-center px-16" style="background: #EDF2FA;">
 
-> _If you've used npm, you already know the shape of this_
+<div class="flex flex-col gap-5">
 
-<div class="grid grid-cols-2 gap-8 mt-2">
-<div>
-
-### <Ico name="package" /> Node
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;"><Ico name="package" class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">package.json</span></div>
 
 ```json
-// package.json — what you want
 {
   "dependencies": { "left-pad": "^1.3.0" }
 }
 ```
 
+</div>
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;"><Ico name="package" class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">package-lock.json</span></div>
+
 ```json
-// package-lock.json — what you got, exactly
 {
   "node_modules/left-pad": {
     "version": "1.3.0",
@@ -34,20 +48,27 @@ class: text-center
 ```
 
 </div>
-<div>
 
-### <Ico name="snowflake" /> Nix
+</div>
+
+<div class="flex flex-col gap-5">
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">flake.nix</span></div>
 
 ```nix
-# flake.nix — what you want
 {
   inputs.left-pad.url = "github:acme/left-pad";
   outputs = { left-pad, ... }: { /* … */ };
 }
 ```
 
+</div>
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">flake.lock</span></div>
+
 ```json
-// flake.lock — what you got, exactly
 {
   "left-pad": {
     "rev": "60e2e3fa…",
@@ -57,83 +78,101 @@ class: text-center
 ```
 
 </div>
+
 </div>
 
-<div class="opacity-60 text-sm pt-2">Same idea, bigger reach: the same lockfile discipline scales from <b>one dev shell</b> all the way up to <b>a whole NixOS machine</b> — not just one language's libraries.</div>
+</div>
 
-<div class="opacity-60 text-sm pt-1">…and one level deeper: both hashes above only pin what you <b>download</b> — Nix <em>also</em> names every <b>build result</b> by hash. That's the next few slides <Ico name="arrow-right" /></div>
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
 
 <!--
-Land the analogy first — package.json : package-lock.json :: flake.nix : flake.lock, "what you want" vs "what you got, exactly". If the room knows npm, this is free intuition.
-
-Then plant the flag on where the analogy *ends*, because it matters for everything that follows: npm's `integrity` and flake.lock's `narHash` are the same kind of thing — a **content hash of a downloaded artifact**. It verifies what you fetched, and npm stops there: everything that happens *after* the fetch — the node_modules layout, native addon compiles, postinstall scripts — has no hash, no name, no identity. Two machines with identical lockfiles can still end up with different results.
-
-Nix keeps going: evaluation derives a hash-address for every **build result** — computed from the recipe *before the build even runs* (that's "input-addressed"; the evaluate stop coming up shows it in the .drv). So the lockfile discipline doesn't end at the download — the *outputs* are named, verifiable, cacheable, and shareable too. npm pins the shopping list; Nix pins the shopping list *and* names every dish before it's cooked.
+package.json : package-lock.json :: flake.nix : flake.lock — "what you want" vs "what you got, exactly"; free intuition if the room knows npm. The deep bars are the Node side; the nix-blue bars with the snowflake always mark the Nix side.
+Where it ends: npm's `integrity` / flake.lock's `narHash` both hash a *download* — but npm stops there, while Nix also hash-names every *build result*. That extra move is the next few slides.
 -->
 
 ---
+layout: center
+---
 
-# `nix run nixpkgs#fastfetch` — the whole trip
-
-<PipelineSteps />
-
-<div class="flex justify-center items-center h-[340px]">
-<div class="relative w-[860px] h-[200px] text-sm">
-  <svg class="absolute inset-0 w-full h-full" viewBox="0 0 860 200" fill="none">
-    <defs>
-      <marker id="trip-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
-      </marker>
-    </defs>
-    <path d="M 822 32 H 846 V 100 H 14 V 168 H 30" stroke="#94a3b8" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#trip-arrow)" />
-  </svg>
-  <span class="absolute left-1/2 top-[100px] -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="shuffle" /> realize</span>
-  <div class="absolute left-[40px] right-[40px] top-0 h-[64px] flex items-center gap-0">
-    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex flex-col justify-center text-center leading-tight"><span><Ico name="keyboard" /> <span class="font-mono">nix run</span></span><span class="font-mono">nixpkgs#fastfetch</span></div>
-    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="compass" /> resolve</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
-    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex items-center justify-center gap-1.5 text-center"><Ico name="scroll" /> expression <span class="font-mono">.nix</span></div>
-    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="scroll" /> evaluate</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
-    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex items-center justify-center gap-1.5 text-center"><Ico name="receipt" /> derivation <span class="font-mono">.drv</span></div>
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="compass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="scroll" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="shuffle" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="globe-hemisphere-west" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="hammer" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="package" class="text-sm" /></div>
   </div>
-  <div class="absolute left-[40px] right-[40px] top-[136px] h-[64px] flex items-center gap-0">
-    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex items-center justify-center gap-1.5 text-center"><Ico name="hammer" /> sandbox build</div>
-    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="package" /> store</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
-    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex flex-col justify-center text-center leading-tight"><span><Ico name="package" /> store path</span><span><Ico name="graph" /> dependency graph</span></div>
-    <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 text-xs px-2.5 py-1 rounded bg-slate-700 text-slate-200 whitespace-nowrap"><Ico name="globe-hemisphere-west" /> cache</span><div class="h-px flex-1 bg-slate-400"></div><span class="text-slate-400 -ml-1">▸</span></div>
-    <div class="w-[220px] h-full rounded-md border border-indigo-400 bg-slate-800 text-slate-200 flex flex-col justify-center text-center leading-tight"><span><Ico name="globe-hemisphere-west" /> everywhere,</span><span>by hash</span></div>
+  <div class="flex-1 flex items-center justify-center">
+    <div class="relative w-[860px] h-[200px] text-sm">
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 860 200" fill="none">
+        <defs>
+          <marker id="uth-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#27385D" />
+          </marker>
+        </defs>
+        <path d="M 820 32 H 846 V 100 H 14 V 168 H 34" stroke="#27385D" stroke-width="2" stroke-linejoin="miter" marker-end="url(#uth-arrow)" />
+      </svg>
+      <span class="absolute left-1/2 top-[100px] -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">realize</span>
+      <div class="absolute left-[40px] right-[40px] top-0 h-[64px] flex items-center gap-0">
+        <div class="w-[176px] h-full bg-white flex flex-col justify-center text-center leading-tight font-mono text-xs" style="color: #0D1B2E;"><span>$ nix run</span><span>nixpkgs#fastfetch</span></div>
+        <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">resolve</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+        <div class="w-[176px] h-full bg-white flex items-center justify-center gap-2 text-center text-sm" style="color: #0D1B2E;"><Ico name="scroll" /> <span class="font-mono text-xs">expression.nix</span></div>
+        <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">evaluate</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+        <div class="w-[176px] h-full bg-white flex items-center justify-center gap-2 text-center text-sm" style="color: #0D1B2E;"><Ico name="receipt" /> <span class="font-mono text-xs">derivation.drv</span></div>
+      </div>
+      <div class="absolute left-[40px] right-[40px] top-[136px] h-[64px] flex items-center gap-0">
+        <div class="w-[176px] h-full bg-white flex items-center justify-center gap-2 text-center text-sm" style="color: #0D1B2E;"><Ico name="hammer" /> sandbox build</div>
+        <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">store</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+        <div class="w-[176px] h-full bg-white flex flex-col justify-center text-center leading-tight text-sm" style="color: #0D1B2E;"><span><Ico name="package" /> store path</span><span><Ico name="graph" /> dep graph</span></div>
+        <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">cache</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+        <div class="w-[176px] h-full flex flex-col justify-center items-center text-center leading-tight text-sm text-white" style="background: #5277C3;"><simple-icons-nixos class="text-xl pb-1" /><span>everywhere, by hash</span></div>
+      </div>
+    </div>
   </div>
 </div>
-</div>
-
-<div class="text-center opacity-70">one command, six stops — the next slides zoom into <b>each stop</b> in order</div>
 
 <!--
-One command anchors this whole section. This map is the overview — no details yet on purpose; each stop gets its own slide with the receipts. Keep pointing back to this picture as we go.
-
-The trip: the flake reference **resolves** to a Nix expression; **evaluating** it produces a derivation (a pure build recipe); **realizing** decides how to make it real; on a miss, a sealed sandbox **builds** it; the output lands in the immutable **store**, where paths reference each other as a graph; and because every path is named by the hash of its inputs, the whole thing **caches** globally.
-
-Punchline at the end of the trip: nothing is "installed". No PATH change, no profile entry — Nix just execs `/nix/store/…-fastfetch-2.65.2/bin/fastfetch` straight out of the store.
+Overview map for the section — each of the six stops gets its own slide next; keep pointing back here. The step bar up top names the six stages; the destination block — everywhere, by hash — is the nix-blue snowflake.
+Trip: resolve → evaluate (recipe) → realize → sandbox build → immutable store graph → global cache by hash.
+Punchline: nothing is "installed" — Nix just execs the binary straight out of `/nix/store`.
 -->
 
 ---
+layout: center
+---
 
-<PipelineSteps :current="1" />
-
-<div class="flex justify-center pt-2">
-
-```mermaid {scale: 0.6}
-graph LR
-  C["⌨️ nixpkgs#fastfetch"] -->|"flake registry"| R["github:NixOS/nixpkgs<br/>pinned @ 60e2e3fa…"]
-  R -->|"#fastfetch"| E["📜 packages.x86_64-linux.fastfetch"]
-```
-
-</div>
-
-<div class="flex justify-center pt-4">
-<div>
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-none flex items-center justify-center gap-2 px-6 text-white" style="background: #5277C3;"><Ico name="compass" class="text-sm" /><span class="font-mono text-xs tracking-widest">resolve</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="scroll" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="shuffle" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="globe-hemisphere-west" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="hammer" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="package" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 flex flex-col items-center justify-center gap-10">
+    <div class="flex items-center gap-0 w-[820px] h-[76px] text-sm">
+      <div class="w-[200px] h-full bg-white flex flex-col items-center justify-center text-center leading-tight font-mono text-xs" style="color: #0D1B2E;"><span>nix run</span><span>nixpkgs#fastfetch</span></div>
+      <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">registry</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+      <div class="w-[200px] h-full bg-white flex flex-col items-center justify-center text-center leading-tight font-mono text-xs" style="color: #0D1B2E;"><span>github:NixOS/nixpkgs</span><span>pinned @ 60e2e3fa…</span></div>
+      <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">select</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+      <div class="w-[200px] h-full bg-white flex flex-col items-center justify-center text-center leading-tight font-mono text-xs" style="color: #0D1B2E;"><span>packages.x86_64-linux</span><span>.fastfetch</span></div>
+    </div>
+    <div class="w-[720px] text-left">
+      <div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">pkgs/by-name/fa/fastfetch/package.nix</span></div>
 
 ```nix
-# …which nixpkgs defines in pkgs/by-name/fa/fastfetch/package.nix
 mkDerivation {
   pname = "fastfetch";
   src = fetchFromGitHub { … };
@@ -141,303 +180,321 @@ mkDerivation {
 ```
 
 </div>
+  </div>
 </div>
 
-<div class="text-center opacity-70 pt-4">a ref is just a <b>pointer</b>: registry name → pinned repo → one <code>.nix</code> file · nothing fetched yet but metadata</div>
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
 
 <!--
-**Resolve** — `nixpkgs#fastfetch` looks up `nixpkgs` in the flake registry (→ `github:NixOS/nixpkgs`) and pins it to an exact git revision — recorded in a lock, so tomorrow resolves identically. `#fastfetch` then selects that flake's `packages.<system>.fastfetch` output, which nixpkgs defines in `pkgs/by-name/fa/fastfetch/package.nix`.
-
-That file (right) is the **expression** — the human-written recipe. Nobody wrote anything locally, and nothing has been fetched but git metadata. Every Nix journey starts with a file like this one.
+**Resolve** — a ref is just a pointer: registry name → pinned repo → one `.nix` file. `nixpkgs` resolves via the flake registry to `github:NixOS/nixpkgs`, pinned to an exact rev; `#fastfetch` selects `packages.<system>.fastfetch`, defined in that package.nix.
+Nothing fetched yet but git metadata — every Nix journey starts with a file like this.
 -->
 
 ---
+layout: center
+---
 
-<PipelineSteps :current="2" />
-
-<div class="grid grid-cols-2 gap-10 items-center mt-2">
-<div>
-
-<div class="flex justify-center">
-
-```mermaid {scale: 0.6}
-graph LR
-  E["📜 expression<br/>package.nix"] -->|"evaluate<br/>pure · lazy · no network"| D["🧾 derivation<br/>fastfetch-2.65.2.drv"]
-```
-
-</div>
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="compass" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-6 text-white" style="background: #5277C3;"><Ico name="scroll" class="text-sm" /><span class="font-mono text-xs tracking-widest">evaluate</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="shuffle" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="globe-hemisphere-west" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="hammer" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="package" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 flex flex-col items-center justify-center gap-8 px-16">
+    <div class="flex items-center gap-0 w-[640px] h-[68px] text-sm">
+      <div class="w-[220px] h-full bg-white flex flex-col items-center justify-center text-center leading-tight font-mono text-xs" style="color: #0D1B2E;"><span>expression</span><span>package.nix</span></div>
+      <div class="flex-1 relative flex items-center"><span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="background: #27385D;">evaluate</span><div class="h-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #27385D;"></div></div>
+      <div class="w-[220px] h-full bg-white flex flex-col items-center justify-center text-center leading-tight font-mono text-xs" style="color: #0D1B2E;"><span>derivation</span><span>fastfetch-2.65.2.drv</span></div>
+    </div>
+    <div class="grid grid-cols-2 gap-8 w-full">
+      <div class="text-left">
+        <div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;"><Ico name="target" class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">the recipe alone names the output</span></div>
 
 ```python
-# the recipe alone names the output
 out = "/nix/store/"
     + hash(inputDrvs, builder, env, platform)
     + "-fastfetch-2.65.2"
 ```
 
 </div>
-<div>
+      <div class="text-left">
+        <div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">the .drv · a build recipe as plain data</span></div>
 
 ```json
-// the .drv — a build recipe, as plain data
-{ "name": "fastfetch-2.65.2",
-  "inputDrvs": [ "…-yyjson.drv",
-                 "…-gcc-14.drv" ],
+{
+  "name": "fastfetch-2.65.2",
+  "inputDrvs": [ "…-yyjson.drv", "…-gcc-14.drv" ],
   "builder": "/nix/store/…-bash-5.2/bin/bash",
   "env": { "src": "/nix/store/…" },
-  "outputs": { "out": "/nix/store/
-    rdd4pnr4…-fastfetch-2.65.2" } }
+  "outputs": {
+    "out": "/nix/store/rdd4pnr4…-fastfetch-2.65.2"
+  }
+}
 ```
 
 </div>
+    </div>
+  </div>
 </div>
 
-<div class="text-center opacity-70 pt-4">evaluation is a <b>pure function</b>: pinned inputs in → build recipe out · <b>nothing is built or downloaded yet</b></div>
-
-<div class="text-center opacity-60 text-sm pt-2">the address is <code>hash(recipe)</code> — <b>input-addressed</b> · contrast <code>narHash</code>: <code>hash(bytes)</code>, a <b>content</b> hash of something already fetched</div>
-
-<div class="text-center opacity-60 text-sm pt-1">(building <em>outputs</em> content-addressed too — <code>ca-derivations</code> — exists, but is still experimental)</div>
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
 
 <!--
-**Evaluate** — the Nix expression runs as a pure, lazy function: no network, no mutation, no ambient state. Its result is not a binary — it's a **derivation**, `…-fastfetch-2.65.2.drv`: the complete build recipe plus the hash of every input (sources, dependencies, flags, compiler). It's just data — you can `nix derivation show` it.
-
-Point at `builder`: even the shell that runs the build is a **store path** — a bash pinned by hash, an input like any other (it's inside `hash(…)` in the pseudocode). Nothing ambient sneaks in: if `builder` were the host's `/bin/bash`, whatever version happened to live there would silently shape the build and determinism would leak. It can't — a .drv may only reference the store.
-
-The detail that makes everything downstream work: evaluation *also computes the output's store path* — the pseudocode bottom-left is the whole idea. The hash in `/nix/store/rdd4pnr4…-fastfetch-2.65.2` is a hash **of the .drv itself** — every input drv's hash, the builder, its args and env, the platform — NOT a hash of the built binaries. Walk the two hash functions explicitly: `out = hash(recipe)` here, versus `narHash = hash(bytes)` in the lockfile two slides back — one names a *future* build from its inputs, the other fingerprints *already-fetched* content. That's what **input-addressed** means: the address is known before doing any work, like knowing a spreadsheet cell's coordinates before computing the formula. Change any input anywhere in the graph and the address changes; keep them identical and every machine on earth derives the *same* address. It's what makes the next step a pure lookup: "is it already in the store? in a cache?" — no building, no guessing.
-
-This is exactly the step the npm analogy from the section opener *doesn't have*: a lockfile's integrity hash (npm's `integrity`, flake.lock's `narHash`) verifies what you **download** — but npm's build results (node_modules, native addons, postinstall effects) have no name and no identity. Here, the *result* gets an address the moment you evaluate. That one extra move is what turns "pinned dependencies" into "cacheable, verifiable, shareable builds".
-
-The flip side, if asked (keep it brief): **content-addressed** — path = hash of the output *bytes*, known only *after* building, self-verifying instead of signed. The everyday case is fixed-output fetchers (a source tarball's declared `sha256` — sandbox slide); making *every* build CA is `ca-derivations`, still experimental — its payoff would be early cutoff (a comment change in glibc rebuilds bit-identical → same content hash → the world *doesn't* rebuild). The record bridging the two worlds is called a **realisation**. Deep-dive material; nixpkgs is overwhelmingly input-addressed today.
-
-Mental model: evaluation is a pure function from pinned inputs to a recipe **plus the recipe's future address**. Nothing has been built or downloaded yet — that's the next stop.
+**Evaluate** — a pure, lazy function: pinned inputs in → build recipe out, nothing built or downloaded yet. The result is a **derivation** (`.drv`): the recipe plus the hash of every input, just data (`nix derivation show`). Even `builder` is a store-path bash — nothing ambient sneaks in.
+The key move: evaluation also computes the output's store path as `hash(recipe)` — **input-addressed**, known before any work. Contrast `narHash = hash(bytes)`, a content hash of something already fetched. This is the step npm's analogy lacks — it's what makes outputs cacheable/verifiable/shareable.
+If asked: content-addressed (`ca-derivations`) hashes output bytes, still experimental; today nixpkgs is overwhelmingly input-addressed.
 -->
 
 ---
+layout: center
+---
 
-<PipelineSteps :current="3" />
-
-<div class="flex justify-center items-center h-[360px]">
-
-```mermaid {scale: 0.6}
-graph LR
-  D[".drv recipe<br/>+ input hashes"] --> Q{"already in<br/>/nix/store?"}
-  Q -->|yes| U["✅ use it"]
-  Q -->|no| S{"prebuilt in<br/>cache.nixos.org<br/>or on your LAN?"}
-  S -->|yes| F["⬇️ substitute"]
-  S -->|no| B["🔨 build in sandbox"]
-  U --> R["realized store path"]
-  F --> R
-  B --> R
-```
-
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="compass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="scroll" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-6 text-white" style="background: #5277C3;"><Ico name="shuffle" class="text-sm" /><span class="font-mono text-xs tracking-widest">realize</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="globe-hemisphere-west" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="hammer" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="package" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 flex items-center justify-center">
+    <div class="relative w-[900px] h-[390px] text-sm">
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 900 390" fill="none">
+        <defs>
+          <marker id="rlz-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#27385D" />
+          </marker>
+        </defs>
+        <path d="M 160 200 H 211" stroke="#27385D" stroke-width="2" marker-end="url(#rlz-arrow)" />
+        <path d="M 270 141 V 90 H 400" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#rlz-arrow)" />
+        <path d="M 270 259 V 290 H 411" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#rlz-arrow)" />
+        <path d="M 470 231 V 215 H 600" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#rlz-arrow)" />
+        <path d="M 470 345 H 600" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#rlz-arrow)" />
+        <path d="M 540 90 H 770" stroke="#27385D" stroke-width="2" marker-end="url(#rlz-arrow)" />
+        <path d="M 750 215 H 770" stroke="#27385D" stroke-width="2" marker-end="url(#rlz-arrow)" />
+        <path d="M 750 345 H 770" stroke="#27385D" stroke-width="2" marker-end="url(#rlz-arrow)" />
+      </svg>
+      <div class="absolute flex flex-col items-center justify-center text-center leading-tight font-mono text-xs bg-white" style="left: 10px; top: 167px; width: 150px; height: 66px; color: #0D1B2E;"><span>.drv recipe</span><span>+ input hashes</span></div>
+      <div class="absolute bg-white" style="left: 228px; top: 158px; width: 84px; height: 84px; transform: rotate(45deg);"></div>
+      <div class="absolute flex flex-col items-center justify-center text-center leading-tight font-mono text-[10px]" style="left: 210px; top: 170px; width: 120px; height: 60px; color: #0D1B2E;"><span>in</span><span>/nix/store?</span></div>
+      <div class="absolute bg-white flex items-center justify-center gap-2 text-sm" style="left: 400px; top: 65px; width: 140px; height: 50px; color: #0D1B2E;"><Ico name="check-fat" /> use it</div>
+      <div class="absolute bg-white" style="left: 428px; top: 248px; width: 84px; height: 84px; transform: rotate(45deg);"></div>
+      <div class="absolute flex flex-col items-center justify-center text-center leading-tight font-mono text-[10px]" style="left: 410px; top: 260px; width: 120px; height: 60px; color: #0D1B2E;"><span>in a</span><span>cache?</span></div>
+      <div class="absolute bg-white flex items-center justify-center gap-2 text-sm" style="left: 600px; top: 190px; width: 150px; height: 50px; color: #0D1B2E;"><Ico name="download-simple" /> substitute</div>
+      <div class="absolute bg-white flex items-center justify-center gap-2 text-sm" style="left: 600px; top: 320px; width: 150px; height: 50px; color: #0D1B2E;"><Ico name="hammer" /> build in sandbox</div>
+      <div class="absolute flex flex-col items-center justify-center text-center leading-tight text-white" style="left: 770px; top: 50px; width: 120px; height: 300px; background: #5277C3;"><simple-icons-nixos class="text-2xl pb-2" /><span>realized</span><span>store path</span></div>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 252px; top: 104px; background: #27385D;">yes</span>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 255px; top: 263px; background: #27385D;">no</span>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 512px; top: 204px; background: #27385D;">yes</span>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 515px; top: 334px; background: #27385D;">no</span>
+    </div>
+  </div>
 </div>
 
-<div class="text-center opacity-70">realizing makes the recipe <b>real</b> — cheapest way first: reuse <Ico name="check-fat" class="text-green-500" /> → download <Ico name="download-simple" /> → build <Ico name="hammer" /></div>
-
 <!--
-Realizing = turning the recipe into a real store path, cheapest way first: already in the store → done; prebuilt in a binary cache → download ("substitute"); otherwise → build it, in a sealed sandbox — that sandbox is the next stop.
-
-And Nix realizes the whole **closure** this way — `pcre2 → gcc-libs → glibc` — before anything runs.
+**Realize** — recipe into a real store path, cheapest way first: in the store → done; in a cache → download ("substitute"); else build it in a sealed sandbox (next stop).
+Nix realizes the whole **closure** this way — pcre2 → gcc-libs → glibc — before anything runs.
 -->
 
 ---
+layout: center
+---
 
-<PipelineSteps :current="4" />
-
-<div class="flex justify-center items-center h-[360px]">
-
-```mermaid {scale: 0.55}
-graph LR
-  SRC["📄 source tarball<br/>sha256-Xq3…"] -->|content hash ✓| R
-  Y["📦 yyjson<br/>/nix/store/b7c4…"] -->|store path| R
-  G["📦 glibc<br/>/nix/store/a1f9…"] -->|store path| R
-  CC["🔧 gcc toolchain<br/>/nix/store/9d2k…"] -->|store path| R
-  R["🧾 pinned recipe"]
-  subgraph SL["💻 local sandbox"]
-    BL["🔨 build"]
-  end
-  subgraph SR["🖥️ remote builder"]
-    BR["🔨 build"]
-  end
-  R --> BL
-  R -->|"ssh://10.0.0.5"| BR
-  BL --> O["📦 …-fastfetch-2.65.2<br/>bit-identical either way"]
-  BR --> O
-  classDef focus fill:#3b82f6,color:#fff,stroke:#1e40af,stroke-width:2px;
-  class BL,BR focus
-  style SL fill:transparent,stroke:#818cf8,stroke-dasharray:6 4;
-  style SR fill:transparent,stroke:#818cf8,stroke-dasharray:6 4;
-```
-
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="compass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="scroll" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="shuffle" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-6 text-white" style="background: #5277C3;"><Ico name="globe-hemisphere-west" class="text-sm" /><span class="font-mono text-xs tracking-widest">cache</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="hammer" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="package" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 flex flex-col items-center justify-center">
+    <div class="w-[680px] h-12 bg-white flex items-center justify-center gap-3 font-mono text-xs" style="color: #0D1B2E;"><span class="tracking-widest">need</span><span>/nix/store/a3f9k2q…-fastfetch-2.65.2</span></div>
+    <div class="relative w-[680px] h-9"><div class="absolute top-0 bottom-0 left-[100px] -translate-x-1/2 flex flex-col items-center"><div class="w-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #27385D;"></div></div><span class="absolute left-[100px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-0.5 text-white" style="background: #27385D;">query</span></div>
+    <div class="w-[680px] h-14 flex items-stretch text-white" style="background: #27385D;">
+      <div class="w-[200px] flex flex-col justify-center leading-tight px-5"><span class="font-mono text-[10px] tracking-widest pb-0.5">local store</span><span class="text-[11px]">/nix/store</span></div>
+      <div class="flex-1 flex items-center px-5 font-mono text-[11px] bg-white" style="color: #0D1B2E;">ls /nix/store/a3f9k2q… → not found</div>
+    </div>
+    <div class="relative w-[680px] h-9"><div class="absolute top-0 bottom-0 left-[100px] -translate-x-1/2 flex flex-col items-center"><div class="w-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #27385D;"></div></div><span class="absolute left-[100px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-0.5 text-white" style="background: #27385D;">miss</span></div>
+    <div class="w-[680px] h-14 flex items-stretch text-white" style="background: #27385D;">
+      <div class="w-[200px] flex flex-col justify-center leading-tight px-5"><span class="font-mono text-[10px] tracking-widest pb-0.5">LAN Cache (Harmonia)</span><span class="text-[11px]">http://10.0.0.5:5000</span></div>
+      <div class="flex-1 flex items-center px-5 font-mono text-[11px] bg-white" style="color: #0D1B2E;">GET 10.0.0.5:5000/a3f9k2q….narinfo → 404</div>
+    </div>
+    <div class="relative w-[680px] h-9"><div class="absolute top-0 bottom-0 left-[100px] -translate-x-1/2 flex flex-col items-center"><div class="w-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #27385D;"></div></div><span class="absolute left-[100px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-0.5 text-white" style="background: #27385D;">miss</span></div>
+    <div class="w-[680px] h-14 flex items-stretch text-white" style="background: #27385D;">
+      <div class="w-[200px] flex flex-col justify-center leading-tight px-5"><span class="font-mono text-[10px] tracking-widest pb-0.5">Public Cache</span><span class="text-[11px]">cache.nixos.org, cachix</span></div>
+      <div class="flex-1 flex items-center px-5 font-mono text-[11px] bg-white" style="color: #0D1B2E;">GET /a3f9k2q….narinfo → 404</div>
+    </div>
+    <div class="relative w-[680px] h-9"><div class="absolute top-0 bottom-0 left-[100px] -translate-x-1/2 flex flex-col items-center"><div class="w-0.5 flex-1" style="background: #27385D;"></div><div class="w-0 h-0" style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #27385D;"></div></div><span class="absolute left-[100px] top-1/2 -translate-x-1/2 -translate-y-1/2 z-1 font-mono text-[10px] tracking-widest px-2 py-0.5 text-white" style="background: #27385D;">miss</span></div>
+    <div class="w-[680px] h-12 bg-white flex items-center justify-center gap-2 text-sm" style="color: #0D1B2E;"><Ico name="hammer" /><span>build it, push back to LAN cache</span></div>
+  </div>
 </div>
 
-<div class="text-center opacity-70">the only door into the clean room is a <b>hash</b> — sources by content hash, dependencies by store path</div>
-
-<div class="text-center opacity-60 text-sm pt-2">every input is pinned, so <b>either room</b> yields the same bytes — build wherever is fastest: <code>--builders "ssh://10.0.0.5"</code></div>
-
 <!--
-Zooming into the "build in sandbox" node from the previous slide. The clean room, in three bullets: 🚫🌐 no network · 📦 declared inputs only, mounted read-only · 🕳️ sealed namespaces. A build can't `curl` or `pip install` — every input must be declared up front; no `/home`, no system libs, no ambient state; private mount / PID / net namespaces, pinned build user, fixed timestamps. The sealed environment is *why* the hash can promise reproducibility.
-
-The room is sealed — the *only* door in is a hash, and there are two kinds:
-
-**Sources — by content hash.** `fetchurl` / `fetchFromGitHub` are *fixed-output derivations*: the one place network access is allowed, precisely because the output must match a `sha256` declared up front. Fetch from the original mirror, a CDN, a cache — doesn't matter *where* the bytes come from; if they don't hash to the declared value, the build fails. Identity lives in the hash, not the URL.
-
-**Dependencies — by store path.** yyjson, glibc, even the gcc toolchain itself are already-realised store paths (named by *their* input hashes), mounted read-only. No `/usr/lib`, no `$PATH` from your shell — if it isn't declared, it doesn't exist in there.
-
-That's the whole trick: every input is pinned by hash, so the sandbox can pull each one from wherever is cheapest — local store, binary cache, upstream mirror — and the result is byte-identical either way. Same inputs → same output, now enforceable.
-
-**Remote builds.** Because the recipe + inputs are fully pinned, the sandbox doesn't have to be on this machine: `nix build --builders "ssh://user@10.0.0.5"` ships the derivation to any machine you can reach (or `nix.buildMachines` in the config), it builds in *its* sandbox, and the store path comes back — bit-identical to a local build. Laptops delegate to the beefy desktop; CI farms work the same way.
+The hash is a global key — every machine agrees what a build *should* be — so the store is a **cache hierarchy** (like CPU caches): local store (free) → LAN cache (Harmonia) → public cache (cache.nixos.org / Cachix). Nearest copy wins; whoever builds pushes back, warming the cache for everyone behind them.
+You trust the hash + signatures, never the server. Cachix = hosted caches (push once, community substitutes); Nix paths are already content-addressed, so they map onto IPFS too.
+End of the trip: one `.nix` expression → a build the whole planet can reuse.
 -->
 
 ---
+layout: center
+---
 
-<PipelineSteps :current="5" />
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="compass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="scroll" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="shuffle" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="globe-hemisphere-west" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-6 text-white" style="background: #5277C3;"><Ico name="hammer" class="text-sm" /><span class="font-mono text-xs tracking-widest">build</span></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="package" class="text-sm" /></div>
+  </div>
+  <div class="flex-1 flex items-center justify-center">
+    <div class="relative w-[940px] h-[360px] text-xs">
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 940 360" fill="none">
+        <defs>
+          <marker id="bld-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#27385D" />
+          </marker>
+        </defs>
+        <path d="M 180 50 H 345 V 128" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#bld-arrow)" />
+        <path d="M 180 130 H 270" stroke="#27385D" stroke-width="2" marker-end="url(#bld-arrow)" />
+        <path d="M 180 195 H 270" stroke="#27385D" stroke-width="2" marker-end="url(#bld-arrow)" />
+        <path d="M 180 265 H 345 V 212" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#bld-arrow)" />
+        <path d="M 420 170 H 460 V 90 H 500" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#bld-arrow)" />
+        <path d="M 420 170 H 460 V 270 H 500" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#bld-arrow)" />
+        <path d="M 700 90 H 725 V 180 H 750" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#bld-arrow)" />
+        <path d="M 700 270 H 725 V 180 H 750" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#bld-arrow)" />
+      </svg>
+      <div class="absolute bg-white flex flex-col items-center justify-center text-center leading-tight font-mono" style="left: 10px; top: 27px; width: 170px; height: 46px; color: #0D1B2E;"><span>source tarball</span><span class="text-[9px] tracking-widest" style="color: #27385D;">sha256-Xq3…</span></div>
+      <div class="absolute bg-white flex flex-col items-center justify-center text-center leading-tight font-mono" style="left: 10px; top: 107px; width: 170px; height: 46px; color: #0D1B2E;"><span>yyjson</span><span class="text-[9px] tracking-widest" style="color: #27385D;">/nix/store/b7c4…</span></div>
+      <div class="absolute bg-white flex flex-col items-center justify-center text-center leading-tight font-mono" style="left: 10px; top: 172px; width: 170px; height: 46px; color: #0D1B2E;"><span>glibc</span><span class="text-[9px] tracking-widest" style="color: #27385D;">/nix/store/a1f9…</span></div>
+      <div class="absolute bg-white flex flex-col items-center justify-center text-center leading-tight font-mono" style="left: 10px; top: 242px; width: 170px; height: 46px; color: #0D1B2E;"><span>gcc toolchain</span><span class="text-[9px] tracking-widest" style="color: #27385D;">/nix/store/9d2k…</span></div>
+      <div class="absolute bg-white flex flex-col items-center justify-center text-center leading-tight font-mono" style="left: 270px; top: 128px; width: 150px; height: 84px; color: #0D1B2E;"><Ico name="receipt" class="pb-1 text-base" /><span>pinned recipe</span></div>
+      <div class="absolute flex flex-col bg-white" style="left: 500px; top: 42px; width: 200px; height: 96px;"><div class="h-7 flex items-center px-3 font-mono text-[10px] tracking-widest text-white" style="background: #27385D;">local sandbox</div><div class="flex-1 flex items-center justify-center gap-2 text-sm" style="color: #0D1B2E;"><Ico name="hammer" /> build</div></div>
+      <div class="absolute flex flex-col bg-white" style="left: 500px; top: 222px; width: 200px; height: 96px;"><div class="h-7 flex items-center px-3 font-mono text-[10px] tracking-widest text-white" style="background: #27385D;">remote · ssh://10.0.0.5</div><div class="flex-1 flex items-center justify-center gap-2 text-sm" style="color: #0D1B2E;"><Ico name="hammer" /> build</div></div>
+      <div class="absolute flex flex-col items-center justify-center text-center leading-tight text-white" style="left: 750px; top: 110px; width: 170px; height: 140px; background: #5277C3;"><simple-icons-nixos class="text-2xl pb-2" /><span class="font-mono text-[11px]">…-fastfetch-2.65.2</span><span class="text-[11px] pt-1">bit-identical either way</span></div>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 230px; top: 40px; background: #27385D;">content hash</span>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 230px; top: 253px; background: #27385D;">store path</span>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 440px; top: 120px; background: #27385D;">local</span>
+      <span class="absolute z-1 font-mono text-[10px] tracking-widest px-2 py-1 text-white" style="left: 430px; top: 214px; background: #27385D;">remote</span>
+    </div>
+  </div>
+</div>
 
-<div class="pt-6"></div>
+<!--
+Zoom into "build in sandbox." Clean room: no network, declared inputs only (read-only), sealed namespaces + pinned build user + fixed timestamps — that seal is *why* the hash can promise reproducibility.
+Two doors in, both hashes: **sources by content hash** (fetchurl/fetchFromGitHub are fixed-output — network allowed only because bytes must match a declared sha256, wherever they come from) and **dependencies by store path** (yyjson, glibc, gcc, mounted read-only; nothing ambient).
+Because everything's pinned, either room yields the same bytes — so build wherever's fastest: `nix build --builders "ssh://10.0.0.5"` ships the derivation off, path comes back bit-identical.
+-->
 
-<div class="grid grid-cols-2 gap-10 text-left">
-<div>
+---
+layout: center
+---
 
-### <Ico name="archive" /> FHS — every other distro
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 mx-8 mt-8">
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="compass" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="scroll" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="shuffle" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="globe-hemisphere-west" class="text-sm" /></div>
+    <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="hammer" class="text-sm" /></div>
+    <div class="flex-none flex items-center justify-center gap-2 px-6 text-white" style="background: #5277C3;"><Ico name="package" class="text-sm" /><span class="font-mono text-xs tracking-widest">store</span></div>
+  </div>
+  <div class="flex-1 grid grid-cols-2 gap-10 items-center px-16">
+    <div class="text-left">
+      <div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;"><Ico name="archive" class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">FHS — every other distro</span></div>
 
-```text
+```sh
 /usr/bin/python3         # THE python
 /usr/lib/libssl.so       # THE openssl
 /etc/nginx/nginx.conf    # THE config
+
+# one global path, for every program
+$ whereis python3
+python3: /usr/bin/python3
+
+# …at best a version alias in the same shared dir
+$ readlink /usr/bin/python3
+python3.12
+
+# everyone loads THE same global libs
+$ ldd /usr/bin/python3
+libpython3.12.so => /usr/lib/libpython3.12.so
+libssl.so.3 => /usr/lib/libssl.so.3
+…
 ```
 
-one global namespace · one version of each thing · every install **overwrites in place**
+<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">one global namespace</div>
+    </div>
+    <div class="text-left">
+      <div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">/nix/store</span></div>
 
-</div>
-<div>
-
-### <Ico name="snowflake" /> the store
-
-```text
+```sh
 /nix/store/a3f9…-python3-3.12.8/bin/python3
 /nix/store/b7c4…-openssl-3.0.13/lib/libssl.so
 /nix/store/c1x8…-openssl-1.1.1w/lib/libssl.so
+
+# no /usr/bin — PATH leads straight into the store
+$ whereis python3
+python3: /nix/store/2qjb…-system-path/bin/python3
+
+# …that path is itself a symlink to the package
+$ readlink /nix/store/2qjb…-system-path/bin/python3
+/nix/store/a3f9…-python3-3.12.8/bin/python3
+
+# nothing copied — even its own lib resolves by path
+$ ldd /nix/store/a3f9…-python3-3.12.8/bin/python3
+libpython3.12.so => /nix/store/a3f9…-python3…/lib/…
+libssl.so.3 => /nix/store/b7c4…-openssl-3.0.13/lib/…
+…
 ```
 
-every package **self-contained** · addressed by hash · nothing is ever overwritten
-
+<div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">read-only · hash-addressed</div>
+    </div>
+  </div>
 </div>
-</div>
 
-<div class="text-center opacity-70 pt-8">Nix deliberately breaks the <b>FHS</b> — "which version?" is answered <b>per-app</b> (baked-in store paths), not per-machine</div>
-
-<div class="text-center opacity-60 text-sm pt-2">the catch: pre-built binaries that <em>assume</em> <code>/usr/lib</code> exists need a shim — <code>nix-ld</code>, in NixMaxxing</div>
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
 
 <!--
-The FHS — Filesystem Hierarchy Standard — is what every conventional distro follows: /usr/bin, /usr/lib, /etc as THE well-known locations. It's a *convention of global mutable state*: one namespace, one version of each library, and installing anything means overwriting what's there. It's exactly the "traditional way" slide from earlier, standardized.
-
-Nix opts out on purpose. On NixOS there is no populated /usr/lib at all (just /usr/bin/env and /bin/sh for scripts). Every package lives in its own hash-addressed prefix, and binaries find their exact dependencies via RPATH entries and patched shebangs that point at absolute store paths — which is *how* two OpenSSLs can coexist — you'll see exactly that in the dependency graph on the next slide: nothing ever looks anything up in a shared directory.
-
-Trade-off to be honest about: software distributed as pre-built FHS-assuming binaries (Steam games, random vendor tools, Claude Code) can't find their loader or libs. The escape hatches — nix-ld, buildFHSEnv, steam-run — come up in NixMaxxing.
--->
-
----
-
-<PipelineSteps :current="5" />
-
-<div class="flex flex-col items-center justify-center h-[440px]">
-
-```mermaid {scale: 0.62}
-graph TD
-  subgraph BT["🔧 build tools"]
-    C["glibc-2.39"]
-  end
-  subgraph LIB["📚 libraries"]
-    P["pcre2-10.44"]
-    H["nghttp2-1.62"]
-    subgraph SSL["one lib, two versions"]
-      O["openssl-3.0.13"]
-      O2["openssl-1.1.1w"]
-    end
-  end
-  subgraph APP["🚀 applications"]
-    A["nginx-1.27"]
-    B["curl-8.9"]
-    M["mongodb-4.4"]
-  end
-  C --> O
-  C --> O2
-  C --> P
-  C --> H
-  O --> A
-  P --> A
-  O --> B
-  H --> B
-  O2 --> M
-  classDef shared fill:#3b82f6,color:#fff,stroke:#1e40af,stroke-width:2px;
-  classDef second fill:#f59e0b,color:#000,stroke:#b45309,stroke-width:2px;
-  class O,C shared
-  class O2 second
-  style BT stroke-dasharray:6 4;
-  style LIB stroke-dasharray:6 4;
-  style APP stroke-dasharray:6 4;
-  style SSL stroke-dasharray:3 3,stroke:#94a3b8;
-```
-
-</div>
-
-<!--
-The **hash** is computed over *every* build input — sources, deps, flags, compiler. The name-version part is just a human-friendly label. Each path is **immutable** and self-contained, so many versions of anything coexist with zero conflicts — there is no global `/usr/lib` to fight over.
-
-**Two kinds of hash, one store.** The default is **input-addressed**: the path is the hash of the *recipe*, so it's known before the build even starts. The opt-in alternative (`ca-derivations`, still experimental) is **content-addressed**: the path is the hash of the *output bytes*, known only after building — which lets a rebuilt-but-bit-identical output keep its path, so dependents don't rebuild. Covered on the "Two doors, one store" slide earlier in this section — just re-anchor it here if the room looks lost.
-
-**The zones** are reading aids, not store structure — the store itself is flat; "build tools / libraries / applications" is just how humans read the strata. The nested dotted box makes the punchline visible before you say it: two openssls, siblings in the same zone, no conflict.
-
-**The store is a graph.** Each path records which store paths it references — that's a **DAG**. Arrows flow *down from glibc*: every arrow means "is an input to" — inputs feed into whatever is built from them. The bullets to deliver:
-
-- **Directed** — every arrow means "is an input to" · **acyclic** — nothing can depend on itself, even indirectly (a cycle would mean "build A before A")
-- So a valid **build order** always exists — start at the inputs — and independent branches build **in parallel**
-- Shared nodes are built & stored **once**: installing curl next to nginx only builds the **delta** (nghttp2), never openssl or glibc again
-- Nothing points at a path anymore → safe to **garbage-collect**
-- Exact **closures** — follow the arrows and you have the complete, exact dependency set
-
-**Two OpenSSLs (amber).** mongodb 4.4 wants openssl 1.1 while nginx and curl are on 3.0 — on a normal distro that's dependency hell: one `/usr/lib/libssl.so` to fight over. Here each version is its own store path (the version is part of the hashed inputs), so both live side by side and every app links against exactly the one it declared. This is the "no dependency hell" slide from later, already visible in the store's anatomy.
-
-**And it's shared.** nginx and curl both stand on openssl → glibc — those are the *same* store paths, built once, stored once, cached once. Install curl next to nginx and only its *unique* node (nghttp2) gets built; you pay for the **delta**, not the whole tree. Change one input anywhere → new hash → everything *downstream of it* becomes a different path and rebuilds.
--->
-
----
-
-<PipelineSteps :current="6" />
-
-<div class="flex justify-center items-center h-[300px]">
-
-```mermaid {scale: 0.65}
-graph LR
-  Q["need<br/>/nix/store/a3f9k2q…"] --> S1["💻 local store<br/>/nix/store"]
-  S1 -->|miss| S2["☁️ Cachix<br/>cache.nixos.org"]
-  S2 -->|miss| S3["🖥️ LAN builder<br/>ssh://builder.local"]
-  S3 -->|miss| B["🔨 build it<br/>then push back"]
-  classDef hit fill:#3b82f6,color:#fff,stroke:#1e40af,stroke-width:2px;
-  class S1,S2,S3 hit
-```
-
-</div>
-
-<div class="text-center opacity-70">the hash is a <b>global key</b>, so a store can live at <b>any level</b> — this machine, your LAN, the planet — and the nearest copy wins</div>
-
-<div class="flex justify-center pt-4">
-
-```text
-GET cache.nixos.org/a3f9k2q….narinfo   →   200 — download, don't rebuild
-```
-
-</div>
-
-<!--
-A store path's name **is** the hash of its inputs — so every machine on earth agrees on what a build *should* be. That hash is the shared key that makes global caching work at all.
-
-The diagram is a **cache hierarchy**, like CPU caches: the *same* store, replicated at different distances. First the **local store** (already on disk — free). Then the **caches** — Cachix or cache.nixos.org: someone already built it, just download. Only if it's cached *nowhere* does anyone build — and even then, preferably not here: a **LAN builder** (`ssh://builder.local`) takes the recipe and does the work, its store served over SSH. Whoever builds *pushes back*, warming the caches for everyone behind you.
-
-Substituting means downloading instead of rebuilding. You never trust the *server* — you trust the hash plus signatures.
-
-**Cachix** — hosted binary caches: push once and the whole community can substitute your builds; public caches serve millions of paths.
-
-**IPFS** — Nix paths are *already* content-addressed, so they map straight onto a content-addressed peer-to-peer network: share builds forever, with no single point of failure.
-
-End of the trip: from one `.nix` expression to a build the whole planet can reuse.
+Nix deliberately breaks the **FHS** (the /usr/bin, /usr/lib, /etc convention = global mutable state, one version of each thing, installs overwrite in place). On NixOS there's no populated /usr/lib; every package lives in its own hash-addressed prefix, binaries find deps via RPATH/patched shebangs to absolute store paths — which is *how* the two OpenSSLs coexisted in the dependency DAG back in Why people love it.
+The /nix/store panel (real output): nothing is "installed" — PATH points at `/run/current-system/sw`, which is itself a symlink to the `…-system-path` store path (the buildEnv merging every system package), so `whereis` prints a store path straight away. And that `bin/python3` is *still* a symlink — `readlink` lands in the actual python3 package: the first path in the listing above, closing the loop. The composition layer is symlinks almost everywhere: profiles (`~/.nix-profile`), `/run/current-system`, `./result`, the system-path forest. Flip one symlink, flip the whole system; that's why rollbacks are O(1).
+The `ldd` beat: libraries aren't symlinked — absolute store paths are baked into each ELF's RPATH at build time — and nothing is ever copied into a package. Python's own libpython resolves *inside its own store path* (the same `a3f9…` as above), while libssl resolves into openssl's path (`b7c4…`, second line of the listing): RPATH points inward for internal libs, outward for dependencies. Pedant's footnote: libssl is really linked by python's `_ssl` extension module, not the main binary — fine as an illustration. The deep bar is the FHS world; the nix-blue snowflake bar marks the store. The FHS panel mirrors the same three commands: `whereis` lands on THE one path, `readlink` at best finds a version alias in the same shared dir, and `ldd` loads THE same global libs — the ones any install can overwrite in place.
+The catch: pre-built FHS-assuming binaries (Steam, vendor tools, Claude Code) need a shim — nix-ld / buildFHSEnv / steam-run, covered in NixMaxxing.
 -->
