@@ -811,3 +811,23 @@ nix.settings.substituters = [ "http://desktop:5000" ];   # already built? downlo
 <!--
 Cut from Why people love it — the distributed-builds config panel, replaced by the phone ↔ desktop substitution flowchart. Keep handy as the "show me the actual config" backup: harmonia serves the LAN, buildMachines ships compilation to the desktop (arch-routed), substituters pull finished paths. On the phone it's `nix-on-droid switch`; on NixOS boxes `nixos-rebuild switch --target-host X --build-host desktop`.
 -->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-10 gap-2 m-2">
+    <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="lock-key" class="text-sm" /><span class="font-mono text-xs tracking-widest">secrets</span></div>
+  </div>
+  <div class="flex-1 relative" style="background: url(/site-sops-nix.png?v=2) top center / cover no-repeat;">
+    <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/Mic92/sops-nix</div>
+  </div>
+</div>
+
+<!--
+Cut from The ecosystem — the sops-nix secrets slide (stepper trimmed to just its own pill).
+- Where passwords go in a git-committed config
+- Encrypted at rest, decrypted at activation into tmpfs — never in the world-readable /nix/store
+- sops-nix — many secrets & backends (age, GPG, cloud KMS); agenix the simpler alternative
+-->

@@ -148,6 +148,140 @@ layout: center
 layout: center
 ---
 
+<div class="absolute inset-0 flex items-center justify-center" style="background: #EDF2FA;">
+  <div class="w-[780px]">
+    <div class="h-11 flex items-center gap-3 px-4" style="background: #5277C3;">
+      <simple-icons-nixos class="text-lg text-white" />
+      <span class="font-mono text-base tracking-widest text-white">hello.nix</span>
+    </div>
+    <div class="text-left">
+
+```nix
+{
+  # install nginx, configure it, keep it running
+  services.nginx.enable = true;
+  # tell nginx about our website
+  services.nginx.virtualHosts."wonderland.dev" = {
+    # every visit gets this reply
+    locations."/".return = "200 'hello, wonderland!'";
+  };
+}
+```
+
+</div>
+<div class="h-11 flex items-center px-4 font-mono text-base tracking-widest" style="background: #e2e8f0; color: #475569;">start with nothing, add this file, get a web server</div>
+</div>
+</div>
+
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+  font-size: 120% !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
+
+<!--
+- This is the whole deployment: a NixOS module (a plain attribute set) merged into the system config
+- `return` replies with the text directly — no pkgs, no docroot, nothing else to introduce yet
+- Everything else — systemd unit, nginx.conf, user — is derived. Verified: evaluates to a full system, nginx unit and all
+- `nixos-rebuild switch` applies it; rollback un-applies it. Config is a *value*, not a procedure
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2 gap-10 items-center px-16" style="background: #EDF2FA;">
+
+<div class="flex flex-col gap-5">
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;"><Ico name="package" class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">package.json</span></div>
+
+```json
+{
+  "dependencies": { "left-pad": "^1.3.0" }
+}
+```
+
+</div>
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;"><Ico name="package" class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">package-lock.json</span></div>
+
+```json
+{
+  "node_modules/left-pad": {
+    "version": "1.3.0",
+    "integrity": "sha512-mqcy0Xh4…"
+  }
+}
+```
+
+</div>
+
+</div>
+
+<div class="flex flex-col gap-5">
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">flake.nix</span></div>
+
+```nix
+{
+  inputs.left-pad.url = "github:acme/left-pad";
+  outputs = { left-pad, ... }: { /* … */ };
+}
+```
+
+</div>
+
+<div class="text-left">
+<div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;"><simple-icons-nixos class="text-base text-white" /><span class="font-mono text-xs tracking-widest text-white">flake.lock</span></div>
+
+```json
+{
+  "left-pad": {
+    "rev": "60e2e3fa…",
+    "narHash": "sha256-i8yYPMdb…"
+  }
+}
+```
+
+</div>
+
+</div>
+
+</div>
+
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
+
+<!--
+- package.json:lock :: flake.nix:lock — "what you want" vs "what you got, exactly"
+- Free intuition if the room knows npm; snowflake bars = the Nix side
+- `integrity`/`narHash` hash a download; Nix also hash-names every build result
+-->
+
+---
+layout: center
+---
+
 
 <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 bg-white">
   <div class="flex flex-col items-center justify-center gap-3 px-6 text-center bg-white">
@@ -385,20 +519,20 @@ layout: center
   <div class="w-full grid grid-cols-[160px_repeat(5,1fr)] gap-2">
     <div></div>
     <div class="flex flex-col items-center justify-center gap-1 pb-1"><Ico name="logos:npm-icon" class="text-3xl" /><span class="font-mono text-xs tracking-widest" style="color: #27385D;">npm</span></div>
-    <div class="flex flex-col items-center justify-center gap-1 pb-1"><Ico name="logos:ansible" class="text-3xl" /><span class="font-mono text-xs tracking-widest" style="color: #27385D;">ansible</span></div>
     <div class="flex flex-col items-center justify-center gap-1 pb-1"><Ico name="logos:docker-icon" class="text-3xl" /><span class="font-mono text-xs tracking-widest" style="color: #27385D;">docker</span></div>
+    <div class="flex flex-col items-center justify-center gap-1 pb-1"><Ico name="logos:ansible" class="text-3xl" /><span class="font-mono text-xs tracking-widest" style="color: #27385D;">ansible</span></div>
     <div class="flex flex-col items-center justify-center gap-1 pb-1"><Ico name="logos:terraform-icon" class="text-3xl" /><span class="font-mono text-xs tracking-widest" style="color: #27385D;">terraform</span></div>
     <div class="flex flex-col items-center justify-center gap-1 pb-1"><simple-icons-nixos class="text-3xl" style="color: #5277C3;" /><span class="font-mono text-xs tracking-widest" style="color: #5277C3;">nixos</span></div>
     <div class="h-11 flex items-center justify-end pr-4 font-mono text-xs tracking-widest" style="color: #27385D;">services</div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
-    <div class="bg-white"></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
+    <div class="bg-white"></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="h-11 flex items-center justify-end pr-4 font-mono text-xs tracking-widest" style="color: #27385D;">machines</div>
     <div class="bg-white"></div>
-    <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="bg-white"></div>
+    <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="h-11 flex items-center justify-end pr-4 font-mono text-xs tracking-widest" style="color: #27385D;">lockfile</div>
@@ -415,8 +549,8 @@ layout: center
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="h-11 flex items-center justify-end pr-4 font-mono text-xs tracking-widest" style="color: #27385D;">hermetic</div>
     <div class="bg-white"></div>
-    <div class="bg-white"></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
+    <div class="bg-white"></div>
     <div class="bg-white"></div>
     <div class="flex items-center justify-center" style="background: #5277C3;"><Ico name="check-bold" class="text-xl text-white" /></div>
     <div class="h-11 flex items-center justify-end pr-4 font-mono text-xs tracking-widest" style="color: #27385D;">deterministic</div>
