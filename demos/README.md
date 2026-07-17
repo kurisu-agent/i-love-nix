@@ -23,7 +23,7 @@ Switch to the VM, start Claude Code on the NixOS config, leave it running.
 
 ```bash
 nix run nixpkgs#hello    # cold on purpose — watch it fetch, run, install nothing
-nix run nixpkgs#cowsay -- "sup?"
+nix run nixpkgs#ponysay -- "sup?"
 ```
 
 ## Act 3 — the language is just values

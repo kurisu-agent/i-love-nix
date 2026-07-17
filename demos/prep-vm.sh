@@ -48,10 +48,12 @@ for potion in snake-potion crab-potion rabbit-potion; do
 done
 
 # Act 2's whole point is watching nix fetch something on the fly, so make
-# sure hello/cowsay are cold. The `nix eval` still warms the nixpkgs
+# sure its packages are cold. The `nix eval` still warms the nixpkgs
 # eval cache — the demo should stall on the download, not on evaluation.
-echo "==> un-warming hello + cowsay (Act 2 shows the real fetch)"
-for attr in hello cowsay; do
+# (Not cowsay: the pre-warmed potion shells reference the same store path,
+# so it can't be deleted — Act 6 covers cowsay from inside rabbit anyway.)
+echo "==> un-warming hello + ponysay (Act 2 shows the real fetch)"
+for attr in hello ponysay; do
   path=$(nix eval --raw "nixpkgs#$attr.outPath")
   if nix store delete "$path" >/dev/null 2>&1; then
     echo "    evicted $attr"
