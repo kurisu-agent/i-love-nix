@@ -7,3 +7,5 @@ dist
 shots
 shots2
 .direnv
+result
+result-*
