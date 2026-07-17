@@ -42,7 +42,9 @@ if ! grep -q 'demo prompt' ~/.bashrc 2>/dev/null; then
   cat >>~/.bashrc <<'EOF'
 # demo prompt: short — a blank line, then just a $. The invisible OSC 0
 # prefix still feeds the cwd to the terminal / zellij pane title.
+# PS0 adds a matching blank line between the typed command and its output.
 PS1='\n\[\e]0;\w\a\]\[\e[90m\]$\[\e[0m\] '
+PS0='\n'
 EOF
 fi
 if ! grep -q '_potion_prompt' ~/.bashrc 2>/dev/null; then
