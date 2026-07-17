@@ -13,6 +13,12 @@ cd "$(dirname "$0")"
 echo "==> installing direnv into the user profile"
 command -v direnv >/dev/null || nix profile install nixpkgs#direnv
 
+# ssh with no command starts a *login* shell, which skips ~/.bashrc —
+# route it through so the demo setup applies to every way in.
+if ! grep -q 'bashrc' ~/.bash_profile 2>/dev/null; then
+  echo '[ -f ~/.bashrc ] && . ~/.bashrc' >>~/.bash_profile
+fi
+
 echo "==> hooking direnv into bash"
 if ! grep -q 'direnv hook bash' ~/.bashrc 2>/dev/null; then
   echo 'eval "$(direnv hook bash)"' >>~/.bashrc
@@ -28,6 +34,31 @@ _direnv_hook() {
   trap - SIGINT
   return $previous_exit_status
 }
+EOF
+fi
+# demo prompt: short — just a $. Must land BEFORE the potion socket below
+# so _potion_base_ps1 captures it as the base to fall back to.
+if ! grep -q 'demo prompt' ~/.bashrc 2>/dev/null; then
+  cat >>~/.bashrc <<'EOF'
+# demo prompt: short — just a $
+PS1='\[\e[1m\]$\[\e[0m\] '
+EOF
+fi
+if ! grep -q '_pres_ps0' ~/.bashrc 2>/dev/null; then
+  cat >>~/.bashrc <<'EOF'
+# presentation mode (default on): each command redraws from the TOP of the
+# screen — audience never squints at the bottom edge of the projector.
+# Previous output scrolls into normal scrollback (wheel / PgUp).
+# Toggle with pres-off / pres-on.
+_pres_ps0() {
+  local cmd
+  cmd=$(HISTTIMEFORMAT= history 1 | sed 's/^ *[0-9]\+ *//')
+  printf '\n%.0s' $(seq 1 "${LINES:-$(tput lines)}") # push screen into scrollback
+  printf '\e[H\e[1m$ %s\e[0m\n' "$cmd"              # home + reprint the command
+}
+pres-on() { PS0='$(_pres_ps0)'; }
+pres-off() { PS0=; }
+pres-on
 EOF
 fi
 if ! grep -q '_potion_prompt' ~/.bashrc 2>/dev/null; then
