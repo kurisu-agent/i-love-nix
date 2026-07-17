@@ -42,7 +42,7 @@ if ! grep -q 'demo prompt' ~/.bashrc 2>/dev/null; then
   cat >>~/.bashrc <<'EOF'
 # demo prompt: short — just a $. The invisible OSC 0 prefix still feeds
 # the cwd to the terminal / zellij pane title.
-PS1='\[\e]0;\w\a\]\[\e[1m\]$\[\e[0m\] '
+PS1='\[\e]0;\w\a\]\[\e[90m\]$\[\e[0m\] '
 EOF
 fi
 if ! grep -q '_potion_prompt' ~/.bashrc 2>/dev/null; then
