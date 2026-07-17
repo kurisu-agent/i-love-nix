@@ -38,23 +38,33 @@ class: text-center
 layout: center
 ---
 
-<div class="absolute inset-0 flex flex-col items-center justify-center gap-8" style="background: #EDF2FA;">
-  <div class="h-10 flex items-center gap-3 px-4" style="background: #27385D;">
-    <Ico name="thermometer" class="text-base text-white" />
-    <span class="font-mono text-xs tracking-widest text-white">quick temperature check</span>
+<div class="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5" style="background: #27385D;">
+  <v-clicks>
+  <div class="flex flex-col items-center justify-center gap-5 bg-white p-8">
+    <Ico name="question" class="text-6xl" style="color: #5277C3;" />
+    <div class="text-lg text-center" style="color: #0D1B2E;">never heard of it: "nix… what?"</div>
   </div>
-  <div class="flex items-stretch gap-3">
-    <v-clicks>
-    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">never heard of it: "nix… what?"</div>
-    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">heard the hype, never touched it</div>
-    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;"><span>dabbled: ran <code>nix</code>, maybe broke a system once</span></div>
-    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">daily driver: it's running on my laptop right now</div>
-    </v-clicks>
+  <div class="flex flex-col items-center justify-center gap-5 bg-white p-8">
+    <Ico name="megaphone" class="text-6xl" style="color: #5277C3;" />
+    <div class="text-lg text-center" style="color: #0D1B2E;">heard the hype, never touched it</div>
+  </div>
+  <div class="flex flex-col items-center justify-center gap-5 bg-white p-8">
+    <Ico name="test-tube" class="text-6xl" style="color: #5277C3;" />
+    <div class="text-lg text-center" style="color: #0D1B2E;">dabbled: ran <code>nix</code>, maybe broke a system once</div>
+  </div>
+  <div class="flex flex-col items-center justify-center gap-5 bg-white p-8">
+    <Ico name="laptop" class="text-6xl" style="color: #5277C3;" />
+    <div class="text-lg text-center" style="color: #0D1B2E;">daily driver: it's running on my laptop right now</div>
+  </div>
+  </v-clicks>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-10 flex items-center gap-3 px-4" style="background: #27385D;">
+    <Ico name="hand-waving" class="text-base text-white" />
+    <span class="font-mono text-xs tracking-widest text-white">show of hands</span>
   </div>
 </div>
 
 <!--
-- show of hands across the four boxes — calibrates how deep to go
+- show of hands across the four quadrants — calibrates how deep to go
 - launch the live poll if using one
 -->
 
