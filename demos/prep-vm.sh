@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # prep-vm.sh — one-shot demo prep (Act 0 of README.md) for the native demo
 # VM (nix/run-vm.sh): installs direnv, hooks it into bash, pre-warms the
-# nix store. Run once before the talk, then `exec bash`.
+# potions, and EVICTS hello/cowsay so Act 2 shows a real fetch.
+# Run once before the talk, then `exec bash`.
 # (prep-container.sh is the devcontainer-era equivalent.)
 #
 # Deliberately does NOT `direnv allow` snake/crab — trusting the .envrc
@@ -26,13 +27,37 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_potion_prompt"
 EOF
 fi
 
-echo "==> pre-warming the nix store (nothing downloads mid-demo)"
-nix run nixpkgs#hello >/dev/null
-nix run nixpkgs#cowsay -- prewarm >/dev/null
+echo "==> configuring zellij (no shortcut hints) + bat (print fully, no pager)"
+mkdir -p ~/.config/zellij ~/.config/bat
+if ! grep -q 'default_layout' ~/.config/zellij/config.kdl 2>/dev/null; then
+  cat >>~/.config/zellij/config.kdl <<'EOF'
+// demo: single compact bar — no keybinding hints at the bottom
+default_layout "compact"
+show_startup_tips false
+EOF
+fi
+if ! grep -q 'paging' ~/.config/bat/config 2>/dev/null; then
+  echo '--paging=never' >>~/.config/bat/config
+fi
+
+echo "==> pre-warming the potions (their toolchains shouldn't download mid-demo)"
 nix build --no-link ./snake-potion
 for potion in snake-potion crab-potion rabbit-potion; do
   nix develop "./$potion" --command true
   nix print-dev-env "./$potion" >/dev/null # what direnv calls under the hood
+done
+
+# Act 2's whole point is watching nix fetch something on the fly, so make
+# sure hello/cowsay are cold. The `nix eval` still warms the nixpkgs
+# eval cache — the demo should stall on the download, not on evaluation.
+echo "==> un-warming hello + cowsay (Act 2 shows the real fetch)"
+for attr in hello cowsay; do
+  path=$(nix eval --raw "nixpkgs#$attr.outPath")
+  if nix store delete "$path" >/dev/null 2>&1; then
+    echo "    evicted $attr"
+  else
+    echo "    $attr already cold (or pinned by a gc root — fine)"
+  fi
 done
 
 echo "==> resetting direnv trust (only rabbit pre-trusted — snake's allow is the live reveal)"

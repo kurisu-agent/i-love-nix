@@ -22,14 +22,14 @@ Switch to the VM, start Claude Code on the NixOS config, leave it running.
 ## Act 2 — run things without installing them 🏃
 
 ```bash
-nix run nixpkgs#hello
+nix run nixpkgs#hello    # cold on purpose — watch it fetch, run, install nothing
 nix run nixpkgs#cowsay -- "sup?"
 ```
 
 ## Act 3 — the language is just values
 
 ```bash
-cat sample.nix
+bat sample.nix
 nix eval -f sample.nix message
 nix eval -f sample.nix message --argstr name "Alice"
 nix eval -f sample.nix doubled
@@ -40,7 +40,7 @@ nix eval -f sample.nix doubled
 ```bash
 cargo --version          # command not found
 cd crab-potion
-cat flake.nix
+bat flake.nix
 nix develop -c bash      # step into the devShell explicitly
 cargo --version          # a whole toolchain appeared
 rustc hello.rs -o hello && ./hello
@@ -54,11 +54,11 @@ cd ..
 ```bash
 python3 --version        # command not found — no python on the box
 cd snake-potion          # nothing happens — this .envrc isn't trusted yet
-cat .envrc               # one line: use flake
+bat .envrc               # one line: use flake
 direnv allow             # trust it → the shell loads right here, on cd
 python3 --version        # 3.14 from the flake
 which python3            # /nix/store/…
-cat flake.nix
+bat flake.nix
 nix run .                # the packaged script, from the flake
 cd ..                    # unloads on the way out
 python3 --version        # gone again
@@ -68,7 +68,7 @@ python3 --version        # gone again
 
 ```bash
 cd rabbit-potion         # pre-trusted → the 🐇 hops into your prompt
-cat flake.nix            # …and it's all declared in the shellHook
+bat flake.nix            # …and it's all declared in the shellHook
 cowsay "we're all mad here"
 cd ..                    # prompt back to normal
 ```
