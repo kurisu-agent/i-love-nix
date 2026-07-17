@@ -4,13 +4,39 @@ Start at the **Drink me** bookend slide. Run the acts top to bottom.
 
 ## Act 0 — before the talk
 
-```bash
-cd /workspaces/nix-pres-draft/demos
-./enable-devenv.sh
-exec zsh
-```
+Runs in the native demo VM (`nix/run-vm.sh ssh`) — `git`, `zellij`, `bat` are
+already in the image. `enable-devenv.sh` is the old devcontainer path; skip it
+and set up by hand:
 
-(The script pre-trusts rabbit only — snake's `direnv allow` is the live reveal in Act 5. Don't allow it early.)
+```bash
+cd ~/Code/nix-pres-draft/demos
+
+# direnv, hooked into bash — plus a prompt socket: a loaded potion may
+# export POTION_PROMPT to take over the prompt (direnv can't touch PS1)
+nix profile install nixpkgs#direnv
+cat >>~/.bashrc <<'EOF'
+eval "$(direnv hook bash)"
+_potion_base_ps1="$PS1"
+_potion_prompt() { PS1="${POTION_PROMPT:-$_potion_base_ps1}"; }
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_potion_prompt"
+EOF
+
+# pre-warm the nix store (nothing downloads mid-demo)
+nix run nixpkgs#hello >/dev/null
+nix run nixpkgs#cowsay -- prewarm >/dev/null
+nix build --no-link ./snake-potion
+for p in snake-potion crab-potion rabbit-potion; do
+  nix develop "./$p" --command true
+  nix print-dev-env "./$p" >/dev/null
+done
+
+# trust rabbit only — snake's `direnv allow` is the live reveal in Act 5
+direnv allow ./rabbit-potion
+direnv deny ./snake-potion 2>/dev/null || true
+direnv deny ./crab-potion 2>/dev/null || true
+
+exec bash
+```
 
 ## Act 1 — kick off the vibe-coding demo 🤖
 
@@ -49,7 +75,7 @@ cd ..
 ## Act 5 — snake potion: never type nix develop again 🐍
 
 ```bash
-python3 --version        # host python — 3.11
+python3 --version        # command not found — no python on the box
 cd snake-potion          # nothing happens — this .envrc isn't trusted yet
 cat .envrc               # one line: use flake
 direnv allow             # trust it → the shell loads right here, on cd
@@ -58,7 +84,7 @@ which python3            # /nix/store/…
 cat flake.nix
 nix run .                # the packaged script, from the flake
 cd ..                    # unloads on the way out
-python3 --version        # back to 3.11
+python3 --version        # gone again
 ```
 
 ## Act 6 — rabbit potion: even the prompt 🐇
@@ -88,5 +114,5 @@ Review the config Claude wrote, `nixos-rebuild test`, roll back if it lied.
 **If something looks weird:**
 
 - Tools follow you after `cd`? You're still inside a `nix develop` shell — `exit`. (direnv always prints `direnv: …` lines when it acts; no lines = old shell.)
-- direnv totally silent, even on `allow`? Run `exec zsh` — heals the shell.
+- direnv totally silent, even on `allow`? Run `exec bash` — heals the shell.
 - Everything else (quirks, why the flags): comments in `enable-devenv.sh`.

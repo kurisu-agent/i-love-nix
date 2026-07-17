@@ -50,6 +50,7 @@
     git
     curl
     zellij
+    bat
     ghostty.terminfo
   ];
 
