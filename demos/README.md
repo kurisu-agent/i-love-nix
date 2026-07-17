@@ -5,38 +5,15 @@ Start at the **Drink me** bookend slide. Run the acts top to bottom.
 ## Act 0 — before the talk
 
 Runs in the native demo VM (`nix/run-vm.sh ssh`) — `git`, `zellij`, `bat` are
-already in the image. `enable-devenv.sh` is the old devcontainer path; skip it
-and set up by hand:
+already in the image. (`prep-container.sh` is the devcontainer-era version.)
 
 ```bash
 cd ~/Code/nix-pres-draft/demos
-
-# direnv, hooked into bash — plus a prompt socket: a loaded potion may
-# export POTION_PROMPT to take over the prompt (direnv can't touch PS1)
-nix profile install nixpkgs#direnv
-cat >>~/.bashrc <<'EOF'
-eval "$(direnv hook bash)"
-_potion_base_ps1="$PS1"
-_potion_prompt() { PS1="${POTION_PROMPT:-$_potion_base_ps1}"; }
-PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_potion_prompt"
-EOF
-
-# pre-warm the nix store (nothing downloads mid-demo)
-nix run nixpkgs#hello >/dev/null
-nix run nixpkgs#cowsay -- prewarm >/dev/null
-nix build --no-link ./snake-potion
-for p in snake-potion crab-potion rabbit-potion; do
-  nix develop "./$p" --command true
-  nix print-dev-env "./$p" >/dev/null
-done
-
-# trust rabbit only — snake's `direnv allow` is the live reveal in Act 5
-direnv allow ./rabbit-potion
-direnv deny ./snake-potion 2>/dev/null || true
-direnv deny ./crab-potion 2>/dev/null || true
-
+./prep-vm.sh
 exec bash
 ```
+
+(The script pre-trusts rabbit only — snake's `direnv allow` is the live reveal in Act 5. Don't allow it early.)
 
 ## Act 1 — kick off the vibe-coding demo 🤖
 
@@ -115,4 +92,4 @@ Review the config Claude wrote, `nixos-rebuild test`, roll back if it lied.
 
 - Tools follow you after `cd`? You're still inside a `nix develop` shell — `exit`. (direnv always prints `direnv: …` lines when it acts; no lines = old shell.)
 - direnv totally silent, even on `allow`? Run `exec bash` — heals the shell.
-- Everything else (quirks, why the flags): comments in `enable-devenv.sh`.
+- Everything else (quirks, why the flags): comments in `prep-vm.sh`.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# enable-devenv.sh — one-shot demo prep (Act 0 of README.md):
+# prep-container.sh — devcontainer-era demo prep (superseded by prep-vm.sh):
 # pre-warms the nix store, installs direnv, hooks it into zsh.
 # Run once before the talk, then open a fresh terminal (or `exec zsh`).
 #
