@@ -75,6 +75,9 @@ for attr in hello ponysay; do
   fi
 done
 
+echo "==> removing cmatrix from the profile (Act 7 installs it live)"
+nix profile remove cmatrix >/dev/null 2>&1 || true
+
 echo "==> resetting direnv trust (only rabbit pre-trusted — snake's allow is the live reveal)"
 direnv allow ./rabbit-potion
 direnv deny ./snake-potion >/dev/null 2>&1 || true
