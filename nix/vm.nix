@@ -49,6 +49,7 @@
   environment.systemPackages = with pkgs; [
     git
     curl
+    zellij
   ];
 
   documentation.enable = false;
