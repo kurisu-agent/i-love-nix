@@ -17,6 +17,19 @@ echo "==> hooking direnv into bash"
 if ! grep -q 'direnv hook bash' ~/.bashrc 2>/dev/null; then
   echo 'eval "$(direnv hook bash)"' >>~/.bashrc
 fi
+if ! grep -q '_direnv_hook()' ~/.bashrc 2>/dev/null; then
+  cat >>~/.bashrc <<'EOF'
+# quieter direnv: hide the giant "direnv: export +A +B …" env-diff line
+# (keeps "direnv: loading" etc. — those are the demo's feedback)
+_direnv_hook() {
+  local previous_exit_status=$?
+  trap -- '' SIGINT
+  eval "$(direnv export bash 2> >(grep -v 'direnv: export' >&2))"
+  trap - SIGINT
+  return $previous_exit_status
+}
+EOF
+fi
 if ! grep -q '_potion_prompt' ~/.bashrc 2>/dev/null; then
   cat >>~/.bashrc <<'EOF'
 # prompt socket: a loaded potion may export POTION_PROMPT to take over
