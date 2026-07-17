@@ -50,6 +50,7 @@
     git
     curl
     zellij
+    ghostty.terminfo
   ];
 
   documentation.enable = false;
