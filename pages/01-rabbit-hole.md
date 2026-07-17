@@ -154,3 +154,69 @@ nixpkgs.overlays = [
 - Declared once, never touched again
 - Source: cosmic-comp #376
 -->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 grid grid-cols-2">
+  <div style="background: url(/versions-chaos.png) center / cover no-repeat;"></div>
+  <div style="background: url(/versions-git.png) center / cover no-repeat;"></div>
+</div>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 px-10 py-5" style="background: #0D1B2E;">
+  <div class="text-4xl font-black text-white leading-none whitespace-nowrap">never going back</div>
+</div>
+<div class="absolute bottom-8 left-0 w-1/2 flex justify-center">
+  <div class="w-[400px] text-left">
+    <div class="h-9 flex items-center gap-3 px-4" style="background: #27385D;">
+      <Ico name="folder-open" class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">ls ~/thesis</span>
+    </div>
+
+```text
+thesis_final.docx
+thesis_final_v2.docx
+thesis_final_v3.docx
+thesis_final_v3_FINAL.docx
+thesis_final_v3_FINAL_forreal.docx
+```
+
+</div>
+</div>
+<div class="absolute bottom-8 right-0 w-1/2 flex justify-center">
+  <div class="w-[400px] text-left">
+    <div class="h-9 flex items-center gap-3 px-4" style="background: #5277C3;">
+      <Ico name="git-commit" class="text-base text-white" />
+      <span class="font-mono text-xs tracking-widest text-white">git log --oneline</span>
+    </div>
+
+```text
+8f2e41a defend thesis
+c7a91b3 rewrite chapter three
+0b5e6d1 revert "shorten intro"
+4d0f2e9 first draft
+```
+
+</div>
+</div>
+
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1rem 1.25rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
+
+<!--
+- Section closer: how Nix *feels* — the folders→git leap, again
+- Remember switching from `_FINAL_v3_forreal` folders to git? Once you feel real version control you can never unfeel it
+- Nix is that same leap for the whole system — a strictly better paradigm, not a trade-off
+- Honest part: there IS an upfront investment (a language, new concepts) — but the payoff is enormous
+- It's not just nicer: managed complexity makes things *possible* that simply weren't before — fearless rollbacks, identical machines, whole-OS experiments
+- I am never, ever going back
+-->

@@ -45,29 +45,16 @@ layout: center
   </div>
   <div class="flex items-stretch gap-3">
     <v-clicks>
-    <div class="w-48">
-      <div class="h-9 flex items-center justify-center font-mono text-xs tracking-widest text-white" style="background: #27385D;">a</div>
-      <div class="h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">never heard of it — "nix… what?"</div>
-    </div>
-    <div class="w-48">
-      <div class="h-9 flex items-center justify-center font-mono text-xs tracking-widest text-white" style="background: #27385D;">b</div>
-      <div class="h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">heard the hype, never touched it</div>
-    </div>
-    <div class="w-48">
-      <div class="h-9 flex items-center justify-center font-mono text-xs tracking-widest text-white" style="background: #27385D;">c</div>
-      <div class="h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;"><span>dabbled — ran <code>nix-shell</code>, maybe broke a system once</span></div>
-    </div>
-    <div class="w-48">
-      <div class="h-9 flex items-center justify-center gap-2 font-mono text-xs tracking-widest text-white" style="background: #5277C3;"><simple-icons-nixos class="text-sm" />d</div>
-      <div class="h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">daily driver — it's running on this laptop right now</div>
-    </div>
+    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">never heard of it: "nix… what?"</div>
+    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">heard the hype, never touched it</div>
+    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;"><span>dabbled: ran <code>nix</code>, maybe broke a system once</span></div>
+    <div class="w-48 h-36 flex items-center justify-center bg-white p-4 text-center text-sm" style="color: #0D1B2E;">daily driver: it's running on my laptop right now</div>
     </v-clicks>
   </div>
-  <div class="flex items-center gap-2 font-mono text-xs tracking-widest" style="color: #27385D;"><Ico name="chart-bar" /> [insert poll]</div>
 </div>
 
 <!--
-- show of hands on a/b/c/d — calibrates how deep to go
+- show of hands across the four boxes — calibrates how deep to go
 - launch the live poll if using one
 -->
 

@@ -306,7 +306,7 @@ layout: center
       <div class="font-mono text-xs tracking-widest" style="color: #27385D;">the official formatter</div>
     </div>
     <div class="bg-white flex flex-col items-center justify-center gap-2">
-      <Ico name="detective" class="text-6xl" style="color: #5277C3;" />
+      <Ico name="broom" class="text-6xl" style="color: #5277C3;" />
       <div class="font-mono text-2xl font-bold" style="color: #0D1B2E;">statix</div>
       <div class="font-mono text-xs tracking-widest" style="color: #27385D;">lints anti-patterns</div>
     </div>

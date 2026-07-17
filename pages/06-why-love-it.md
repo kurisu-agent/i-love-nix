@@ -68,36 +68,37 @@ layout: center
         </defs>
         <path d="M 440 84 V 130 H 320 V 176" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#merkle-arrow)" />
         <path d="M 440 84 V 130 H 560 V 176" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#merkle-arrow)" />
-        <path d="M 200 84 V 300 H 380 V 338" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#merkle-arrow)" />
         <path d="M 710 84 V 300 H 500 V 338" stroke="#27385D" stroke-width="2" fill="none" marker-end="url(#merkle-arrow)" />
         <path d="M 320 246 V 338" stroke="#27385D" stroke-width="2" marker-end="url(#merkle-arrow)" />
         <path d="M 560 246 V 338" stroke="#27385D" stroke-width="2" marker-end="url(#merkle-arrow)" />
+        <path d="M 200 380 H 254" stroke="#27385D" stroke-width="2" marker-end="url(#merkle-arrow)" />
       </svg>
-      <div class="absolute font-mono text-[10px] tracking-widest leading-relaxed" style="left: 8px; top: 30px; color: #27385D;">sources ·<br />build tools</div>
+      <div class="absolute font-mono text-[10px] tracking-widest" style="left: 8px; top: 30px; color: #27385D;">build tools</div>
       <div class="absolute font-mono text-[10px] tracking-widest" style="left: 8px; top: 206px; color: #27385D;">libraries</div>
-      <div class="absolute font-mono text-[10px] tracking-widest" style="left: 8px; top: 370px; color: #27385D;">the package</div>
-      <div class="absolute flex flex-col items-center justify-center gap-1 bg-white py-2" style="left: 110px; top: 20px; width: 180px; height: 64px;">
-        <div class="font-mono text-xs" style="color: #0D1B2E;">htop-3.3.0.tar.xz</div>
+      <div class="absolute font-mono text-[10px] tracking-widest" style="left: 20px; top: 322px; color: #27385D;">source</div>
+      <div class="absolute font-mono text-[10px] tracking-widest" style="left: 386px; top: 322px; color: #27385D;">the package</div>
+      <div class="absolute flex flex-col items-center justify-center gap-1 bg-white py-2" style="left: 20px; top: 348px; width: 180px; height: 64px;">
+        <div class="flex items-center gap-1.5 font-mono text-xs" style="color: #0D1B2E;"><Ico name="file-code" class="text-sm" /><span>htop-3.3.0.tar.xz</span></div>
         <div class="font-mono text-[11px] px-2 py-0.5 text-white" style="background: #27385D;">sha256 f9s3lq</div>
       </div>
       <div class="absolute flex flex-col items-center justify-center gap-1 bg-white py-2" style="left: 350px; top: 20px; width: 180px; height: 64px;">
-        <div class="font-mono text-xs" style="color: #0D1B2E;">gcc-13.3</div>
+        <div class="flex items-center gap-1.5 font-mono text-xs" style="color: #0D1B2E;"><Ico name="binary" class="text-sm" /><span>gcc-13.3</span></div>
         <div class="font-mono text-[11px] px-2 py-0.5 text-white" style="background: #27385D;">p7q9f2</div>
       </div>
       <div class="absolute flex flex-col items-center justify-center gap-1 bg-white py-2" style="left: 620px; top: 20px; width: 180px; height: 64px;">
-        <div class="font-mono text-xs" style="color: #0D1B2E;">bash-5.2</div>
+        <div class="flex items-center gap-1.5 font-mono text-xs" style="color: #0D1B2E;"><Ico name="binary" class="text-sm" /><span>bash-5.2</span></div>
         <div class="font-mono text-[11px] px-2 py-0.5 text-white" style="background: #27385D;">mzl8r4</div>
       </div>
       <div class="absolute flex flex-col items-center justify-center gap-1 bg-white py-2" style="left: 210px; top: 182px; width: 220px; height: 64px;">
-        <div class="font-mono text-xs" style="color: #0D1B2E;">ncurses-6.4</div>
+        <div class="flex items-center gap-1.5 font-mono text-xs" style="color: #0D1B2E;"><Ico name="binary" class="text-sm" /><span>ncurses-6.4</span></div>
         <div class="font-mono text-[11px] px-2 py-0.5 text-white" style="background: #27385D;">b2f74c = h( p7q9f2 · … )</div>
       </div>
       <div class="absolute flex flex-col items-center justify-center gap-1 bg-white py-2" style="left: 450px; top: 182px; width: 220px; height: 64px;">
-        <div class="font-mono text-xs" style="color: #0D1B2E;">glibc-2.39</div>
+        <div class="flex items-center gap-1.5 font-mono text-xs" style="color: #0D1B2E;"><Ico name="binary" class="text-sm" /><span>glibc-2.39</span></div>
         <div class="font-mono text-[11px] px-2 py-0.5 text-white" style="background: #27385D;">8xk3vq = h( p7q9f2 · … )</div>
       </div>
       <div class="absolute flex flex-col items-center justify-center gap-1.5" style="left: 260px; top: 344px; width: 360px; height: 72px; background: #5277C3;">
-        <div class="font-mono text-xs text-white">htop-3.3.0</div>
+        <div class="flex items-center gap-1.5 font-mono text-xs text-white"><Ico name="binary" class="text-sm" /><span>htop-3.3.0</span></div>
         <div class="font-mono text-[11px] px-2 py-0.5 text-white" style="background: #0D1B2E;">x1q7pd = h( f9s3lq · mzl8r4 · b2f74c · 8xk3vq )</div>
       </div>
     </div>
@@ -203,6 +204,71 @@ layout: center
       <span class="font-mono text-xs tracking-widest">reliable</span>
     </div>
   </div>
+  <div class="flex-1 flex items-center justify-center">
+    <div class="w-[720px]">
+      <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
+        <simple-icons-nixos class="text-base text-white" />
+        <span class="font-mono text-xs tracking-widest text-white">flake.nix — the repo's dev environment</span>
+      </div>
+      <div class="text-left">
+
+```nix
+{
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+  outputs = { self, nixpkgs }:
+    let pkgs = import nixpkgs { system = "x86_64-linux"; };
+    in {
+      devShells.x86_64-linux.default = pkgs.mkShell {
+        packages = [ pkgs.nodejs_24 pkgs.pnpm pkgs.postgresql_17 ];
+      };
+    };
+}
+```
+
+</div>
+      <div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">git clone → nix develop → node 24 + pnpm + postgres, for everyone</div>
+    </div>
+  </div>
+</div>
+
+<style>
+.slidev-code {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  background: white !important;
+  padding: 1.25rem 1.5rem !important;
+}
+.slidev-code .line::before {
+  color: #cbd5e1 !important;
+}
+</style>
+
+<!--
+- The declarative pitch made concrete: one file in the repo states the toolchain
+- `nix develop` drops anyone into the same shell — node 24, pnpm, postgres — pinned by flake.lock
+- No nvm, no "install postgres first", no README drift; direnv (later) makes entering automatic
+-->
+
+---
+layout: center
+---
+
+<div class="absolute inset-0 flex flex-col" style="background: #EDF2FA;">
+  <div class="flex h-12 gap-2 m-2">
+    <div class="flex-1 flex items-center justify-center gap-2 bg-white" style="color: #27385D;">
+      <Ico name="target" class="text-sm" />
+      <span class="font-mono text-xs tracking-widest">reproducible</span>
+    </div>
+    <div class="flex-1 flex items-center justify-center gap-2 text-white" style="background: #5277C3;">
+      <Ico name="note-pencil" class="text-sm" />
+      <span class="font-mono text-xs tracking-widest">declarative</span>
+    </div>
+    <div class="flex-1 flex items-center justify-center gap-2 bg-white" style="color: #27385D;">
+      <Ico name="shield-check" class="text-sm" />
+      <span class="font-mono text-xs tracking-widest">reliable</span>
+    </div>
+  </div>
   <div class="flex-1 grid grid-cols-2 gap-8 items-center px-14 py-8">
     <div>
       <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
@@ -218,12 +284,6 @@ services.hello = {
   greeting = "Hello, wonderland!";
 };
 ```
-
-</div>
-      <div class="text-left text-sm leading-relaxed pt-4" style="color: #0D1B2E;">
-
-- **Options are the API**, the module is the implementation — typed, documented, discoverable
-- Change `port` once → the nginx vhost **and** the firewall rule re-derive together
 
 </div>
     </div>
@@ -272,6 +332,7 @@ config = lib.mkIf cfg.enable {
 
 <!--
 - One line outside (typed options), all the plumbing inside (the module)
+- Options are the API, the module is the implementation — typed, documented, discoverable
 - Change `port` once → vhost and firewall rule re-derive together, can't drift
 - Same mechanism nixpkgs uses; options indexed on search.nixos.org
 -->
@@ -299,7 +360,7 @@ layout: center
     <div>
       <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
         <simple-icons-nixos class="text-base text-white" />
-        <span class="font-mono text-xs tracking-widest text-white">flake.nix — if I wanted to use it</span>
+        <span class="font-mono text-xs tracking-widest text-white">importing someone's module</span>
       </div>
       <div class="text-left">
 
@@ -314,7 +375,6 @@ common.japanese.enable = true;
 ```
 
 </div>
-      <div class="h-9 flex items-center px-4 font-mono text-xs tracking-widest" style="background: #e2e8f0; color: #475569;">github.com/austinried/nix-common</div>
     </div>
     <div>
       <div class="h-10 flex items-center gap-3 px-4" style="background: #27385D;">
@@ -490,8 +550,8 @@ layout: center
         <path d="M 610 240 V 354" stroke="#27385D" stroke-width="2" marker-end="url(#dag-arrow)" />
         <path d="M 790 240 V 354" stroke="#27385D" stroke-width="2" marker-end="url(#dag-arrow)" />
       </svg>
-      <div class="absolute" style="left: 505px; top: 176px; width: 370px; height: 78px; border: 1px solid #27385D;"></div>
-      <div class="absolute -translate-x-1/2 -translate-y-1/2 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="left: 712px; top: 176px; background: #27385D;">one lib · two versions</div>
+      <div class="absolute rounded-xl" style="left: 501px; top: 164px; width: 376px; height: 100px; border: 1.5px dashed #27385D;"></div>
+      <div class="absolute -translate-x-1/2 -translate-y-1/2 font-mono text-[10px] tracking-widest px-2 py-1 text-white whitespace-nowrap" style="left: 712px; top: 164px; background: #27385D;">one lib · two versions</div>
       <div class="absolute font-mono text-[10px] tracking-widest" style="left: 8px; top: 40px; color: #27385D;">build tools</div>
       <div class="absolute font-mono text-[10px] tracking-widest" style="left: 8px; top: 210px; color: #27385D;">libraries</div>
       <div class="absolute font-mono text-[10px] tracking-widest" style="left: 8px; top: 380px; color: #27385D;">applications</div>
@@ -591,9 +651,9 @@ rec {
   font-size: 0.95rem !important;
   filter: hue-rotate(135deg) saturate(1.1);
 }
-/* darken comments (theme color #94b0d0); value is pre-hue-rotate */
+/* comments (theme color #94b0d0): pre-hue-rotate value that lands on orange #c57914 */
 .slidev-code span[style*="94b0d0" i] {
-  color: #5878a8 !important;
+  color: #a06cff !important;
 }
 .slidev-code .line::before {
   color: #E8A9A2 !important;

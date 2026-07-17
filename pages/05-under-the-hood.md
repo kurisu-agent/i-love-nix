@@ -177,6 +177,7 @@ layout: center
 stdenv.mkDerivation {
   pname   = "fastfetch";
   version = "2.65.2";
+  # source tarball, not a binary!
   src = fetchFromGitHub {
     owner = "fastfetch-cli";
     repo  = "fastfetch";
@@ -205,7 +206,7 @@ stdenv.mkDerivation {
 
 <!--
 - Resolve: a ref is a pointer — registry name → pinned repo → one `.nix` file
-- `src` via `fetchFromGitHub` pins owner/repo/tag AND a content hash
+- `src` via `fetchFromGitHub` pins owner/repo/tag AND a content hash — it's the source code, not a release binary; whether we compile it ourselves is decided later at the cache stop
 - Nothing fetched yet but metadata — every journey starts with this file
 -->
 
