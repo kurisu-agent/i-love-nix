@@ -40,8 +40,9 @@ fi
 # so _potion_base_ps1 captures it as the base to fall back to.
 if ! grep -q 'demo prompt' ~/.bashrc 2>/dev/null; then
   cat >>~/.bashrc <<'EOF'
-# demo prompt: short — just a $
-PS1='\[\e[1m\]$\[\e[0m\] '
+# demo prompt: short — just a $. The invisible OSC 0 prefix still feeds
+# the cwd to the terminal / zellij pane title.
+PS1='\[\e]0;\w\a\]\[\e[1m\]$\[\e[0m\] '
 EOF
 fi
 if ! grep -q '_potion_prompt' ~/.bashrc 2>/dev/null; then
