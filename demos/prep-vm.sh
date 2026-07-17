@@ -44,23 +44,6 @@ if ! grep -q 'demo prompt' ~/.bashrc 2>/dev/null; then
 PS1='\[\e[1m\]$\[\e[0m\] '
 EOF
 fi
-if ! grep -q '_pres_ps0' ~/.bashrc 2>/dev/null; then
-  cat >>~/.bashrc <<'EOF'
-# presentation mode (default on): each command redraws from the TOP of the
-# screen — audience never squints at the bottom edge of the projector.
-# Previous output scrolls into normal scrollback (wheel / PgUp).
-# Toggle with pres-off / pres-on.
-_pres_ps0() {
-  local cmd
-  cmd=$(HISTTIMEFORMAT= history 1 | sed 's/^ *[0-9]\+ *//')
-  printf '\n%.0s' $(seq 1 "${LINES:-$(tput lines)}") # push screen into scrollback
-  printf '\e[H\e[1m$ %s\e[0m\n' "$cmd"              # home + reprint the command
-}
-pres-on() { PS0='$(_pres_ps0)'; }
-pres-off() { PS0=; }
-pres-on
-EOF
-fi
 if ! grep -q '_potion_prompt' ~/.bashrc 2>/dev/null; then
   cat >>~/.bashrc <<'EOF'
 # prompt socket: a loaded potion may export POTION_PROMPT to take over
