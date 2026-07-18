@@ -25,6 +25,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx slidev build --base "/${{ github.event.repository.name }}/"
+      # SPA fallback: Pages serves 404.html for deep slide URLs (/2, /3, …),
+      # so ship the app there too and let the client router render the slide.
+      - run: cp dist/index.html dist/404.html
       - uses: actions/configure-pages@v5
         with:
           enablement: true
