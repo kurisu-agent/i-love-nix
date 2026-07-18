@@ -24,7 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx slidev build --base /nix-pres-draft/
+      - run: npx slidev build --base "/${{ github.event.repository.name }}/"
       - uses: actions/configure-pages@v5
         with:
           enablement: true
