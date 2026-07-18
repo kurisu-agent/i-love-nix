@@ -497,7 +497,7 @@ title: Extropy Harvesting
         <simple-icons-nixos class="text-5xl shrink-0" style="color: #5277C3;" />
         <div>
           <div class="font-mono text-xs tracking-widest" style="color: #5277C3;">extropy</div>
-          <div class="text-base font-bold pt-1 leading-snug" style="color: #0D1B2E;">each fix you <i>declare</i> crystallizes into permanent, accumulating structure.</div>
+          <div class="text-base font-bold pt-1 leading-snug" style="color: #0D1B2E;">each fix you declare crystallizes into permanent, accumulating structure.</div>
         </div>
       </div>
       <div class="flex-1" style="background: url('/extropy-crystal.png') center/cover;"></div>
