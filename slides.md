@@ -132,10 +132,8 @@ class: text-center
 -->
 
 
----
-src: ./pages/10-cutting-floor.md
----
-
----
-src: ./pages/08-nixmaxxing.md
----
+<!--
+Bonus material lives on in pages/ but is not part of the deck:
+pages/10-cutting-floor.md and pages/08-nixmaxxing.md. Re-add a
+`src:` import here to bring either back.
+-->
