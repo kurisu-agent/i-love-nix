@@ -6,7 +6,6 @@ node_modules
 slides.md
 pages
 public
-assets
 *.svg
 *.png
 .env.local

@@ -4,7 +4,7 @@ Start at the **Drink me** bookend slide. Run the acts top to bottom.
 
 ## Act 0 — before the talk
 
-Runs in the native demo VM (`nix/run-vm.sh ssh`) — `git`, `zellij`, `bat` are
+Runs in the native demo VM (`demos/run-vm.sh ssh`) — `git`, `zellij`, `bat` are
 already in the image. (`prep-container.sh` is the devcontainer-era version.)
 
 ```bash

@@ -1,6 +1,8 @@
 {
-  "name": "nix-pres-draft",
+  "name": "i-love-nix",
   "private": true,
+  "description": "I ❤️ NixOS — and you should too. A Slidev deck falling down the rabbit hole into Nix.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "slidev --open",

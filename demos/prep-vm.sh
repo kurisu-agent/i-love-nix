@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # prep-vm.sh — one-shot demo prep (Act 0 of README.md) for the native demo
-# VM (nix/run-vm.sh): installs direnv, hooks it into bash, pre-warms the
+# VM (demos/run-vm.sh): installs direnv, hooks it into bash, pre-warms the
 # potions, and EVICTS hello/cowsay so Act 2 shows a real fetch.
 # Run once before the talk, then `exec bash`.
 # (prep-container.sh is the devcontainer-era equivalent.)

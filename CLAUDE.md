@@ -1,4 +1,4 @@
-# nix-pres-draft
+# i-love-nix
 
 A Slidev deck: "I ❤️ NixOS — and you should too". Themed around Alice in Wonderland
 (falling down the rabbit hole into Nix).

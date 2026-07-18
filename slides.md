@@ -97,11 +97,11 @@ src: ./pages/02-meet-nix.md
 ---
 
 ---
-src: ./pages/06-why-love-it.md
+src: ./pages/03-why-love-it.md
 ---
 
 ---
-src: ./pages/03-drink-me.md
+src: ./pages/04-drink-me.md
 ---
 
 ---
@@ -109,7 +109,7 @@ src: ./pages/05-under-the-hood.md
 ---
 
 ---
-src: ./pages/09-ecosystem.md
+src: ./pages/06-ecosystem.md
 ---
 
 ---
@@ -134,6 +134,5 @@ class: text-center
 
 <!--
 Bonus material lives on in pages/ but is not part of the deck:
-pages/10-cutting-floor.md and pages/08-nixmaxxing.md. Re-add a
-`src:` import here to bring either back.
+pages/07-nixmaxxing.md. Re-add a `src:` import here to bring it back.
 -->
