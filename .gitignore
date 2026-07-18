@@ -9,3 +9,6 @@ shots2
 .direnv
 result
 result-*
+
+# Stray screenshots (deck-export PDFs like i-love-nixos.pdf are committed, not ignored)
+/Screenshot_*.png
