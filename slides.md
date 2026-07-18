@@ -1,6 +1,6 @@
 ---
 theme: default
-title: i <3 nix — and you should too
+title: i <3 nix
 info: A short intro to the Nix package manager and language.
 class: text-center
 transition: fade
