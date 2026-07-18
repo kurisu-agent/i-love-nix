@@ -2,6 +2,7 @@
 theme: default
 title: i <3 nix
 info: A short intro to the Nix package manager and language.
+favicon: ./nix-logo.png
 class: text-center
 transition: fade
 clickAnimation: up
@@ -17,6 +18,7 @@ fonts:
   <div class="absolute inset-0 flex flex-col items-center justify-center">
     <div class="text-8xl font-black text-white leading-none">i &lt;3 nix</div>
     <div class="font-mono text-lg tracking-[0.5em] pt-8 text-white opacity-90">AND YOU SHOULD TOO</div>
+    <a href="https://github.com/kurisu-agent/i-love-nix" target="_blank" class="font-mono text-sm pt-10 text-white opacity-60 hover:opacity-100">github.com/kurisu-agent/i-love-nix</a>
   </div>
 </div>
 
