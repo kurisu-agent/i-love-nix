@@ -52,9 +52,23 @@ defined() { "${VIRSH[@]}" dominfo nix-pres >/dev/null 2>&1; }
 running() { "${VIRSH[@]}" domstate nix-pres 2>/dev/null | grep -qx running; }
 
 build_upload() {
+  # The guest's authorized SSH key stays out of the repo: vm.nix reads
+  # DEMO_VM_SSH_PUBKEY at eval time (hence --impure), loaded here from
+  # the gitignored .env.local.
+  if [ -z "${DEMO_VM_SSH_PUBKEY:-}" ] && [ -f "$REPO/.env.local" ]; then
+    DEMO_VM_SSH_PUBKEY=$(sed -n 's/^DEMO_VM_SSH_PUBKEY=//p' "$REPO/.env.local" | tail -1)
+    DEMO_VM_SSH_PUBKEY=${DEMO_VM_SSH_PUBKEY#\"}
+    DEMO_VM_SSH_PUBKEY=${DEMO_VM_SSH_PUBKEY%\"}
+  fi
+  if [ -z "${DEMO_VM_SSH_PUBKEY:-}" ]; then
+    echo "DEMO_VM_SSH_PUBKEY is not set — add it to $REPO/.env.local, e.g." >&2
+    echo '  DEMO_VM_SSH_PUBKEY="ssh-ed25519 AAAA... me@host"' >&2
+    exit 1
+  fi
+  export DEMO_VM_SSH_PUBKEY
   echo "Building $REPO#vm ..."
   local out
-  out=$(nix build "$REPO#vm" --no-link --print-out-paths)
+  out=$(nix build "$REPO#vm" --no-link --print-out-paths --impure)
   local src="$out/nixos.qcow2" size
   size=$(qemu-img info --output=json "$src" | sed -n 's/.*"virtual-size": *\([0-9]*\).*/\1/p' | head -1)
   "${VIRSH[@]}" vol-delete --pool "$POOL" "$VOL" >/dev/null 2>&1 || true

@@ -28,9 +28,14 @@
     extraGroups = [ "wheel" ];
     # Console fallback; SSH is pubkey-only.
     initialPassword = "demo";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 REDACTED"
-    ];
+    # Pubkey comes from DEMO_VM_SSH_PUBKEY (loaded from .env.local by
+    # run-vm.sh, evaluated with --impure) so no personal key/identifier
+    # lands in the repo. Unset -> no keys; console autologin still works.
+    openssh.authorizedKeys.keys =
+      let
+        key = builtins.getEnv "DEMO_VM_SSH_PUBKEY";
+      in
+      lib.optional (key != "") key;
   };
   security.sudo.wheelNeedsPassword = false;
 

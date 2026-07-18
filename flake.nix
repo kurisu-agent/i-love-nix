@@ -32,8 +32,10 @@
         '';
       };
 
-      # `nix build .#vm` — minimal BIOS qcow2 for the ephemeral demo box.
-      # Boots rootless under plain qemu (no OVMF/UEFI). Output: result/nixos.qcow2
+      # `nix build .#vm --impure` — minimal BIOS qcow2 for the ephemeral demo
+      # box (impure: vm.nix pulls the SSH pubkey from $DEMO_VM_SSH_PUBKEY; see
+      # nix/run-vm.sh). Boots rootless under plain qemu (no OVMF/UEFI).
+      # Output: result/nixos.qcow2
       packages.${system}.vm = nixos-generators.nixosGenerate {
         inherit system;
         format = "qcow";
