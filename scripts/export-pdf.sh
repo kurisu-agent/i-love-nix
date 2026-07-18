@@ -8,11 +8,11 @@
 # static TrueType weights locally, disable the webfont provider just for the
 # export, and let Chromium embed proper CID TrueType fonts.
 #
-# Usage: scripts/export-pdf.sh [output.pdf]   (default: i-love-nixos.pdf)
+# Usage: scripts/export-pdf.sh [output.pdf]   (default: i-love-nix.pdf)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-out="${1:-i-love-nixos.pdf}"
+out="${1:-i-love-nix.pdf}"
 dest="$HOME/.local/share/fonts/deck-static"
 
 # --- one-time: static instances of the deck fonts (idempotent) ---------------
