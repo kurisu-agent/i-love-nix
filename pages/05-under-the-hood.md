@@ -3,7 +3,7 @@ layout: center
 class: text-center
 ---
 
-<div class="absolute inset-0" style="background: url(/alice-under-the-hood.png) center / cover no-repeat;">
+<div class="absolute inset-0 bg-alice-under-the-hood">
   <div class="absolute top-0 right-0 flex items-stretch">
     <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
       <div class="text-5xl font-black text-white leading-none">under the hood</div>

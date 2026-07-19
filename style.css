@@ -18,3 +18,103 @@
   padding: 0.1em 0.4em;
   font-size: 0.9em;
 }
+
+/*
+ * Full-bleed / panel background images.
+ * These live in real CSS (not inline styles) so Vite rewrites the `url(/…)`
+ * paths with the build `--base` prefix — inline `url(/…)` in markdown/Vue
+ * templates is NOT rewritten and 404s on GitHub Pages.
+ */
+.bg-wakaba-mark {
+  background: url(/wakaba-mark.svg) center / contain no-repeat;
+}
+.bg-alice-fin {
+  background: url(/alice-fin.png) center / cover no-repeat;
+}
+.bg-alice-rabbit-hole {
+  background: url(/alice-rabbit-hole.png) center / cover no-repeat;
+}
+.bg-cosmic-tiling {
+  background: #000 url(/cosmic-tiling.jpg) center / contain no-repeat;
+}
+.bg-cosmic-comp-issue {
+  background: url(/cosmic-comp-issue.png) center / contain no-repeat;
+}
+.bg-versions-chaos {
+  background: url(/versions-chaos.png) center / cover no-repeat;
+}
+.bg-versions-git {
+  background: url(/versions-git.png) center / cover no-repeat;
+}
+.bg-alice-meet-nix {
+  background: url(/alice-meet-nix.png) right center / cover no-repeat;
+}
+.bg-eelco-dolstra {
+  background: url(/eelco-dolstra.jpg) center / cover no-repeat;
+}
+.bg-thesis-title-page {
+  background: url(/thesis-title-page.png) center / contain no-repeat;
+}
+.bg-functional-mapping {
+  background: url(/functional-mapping.svg) center / contain no-repeat;
+}
+.bg-alice-tea-party {
+  background: url(/alice-tea-party.png) center / cover no-repeat;
+}
+.bg-build-carpenter {
+  background: url(/build-carpenter.png) center / cover no-repeat;
+}
+.bg-build-flatpack {
+  background: url(/build-flatpack.png) center / cover no-repeat;
+}
+.bg-alice-angry-caterpillar {
+  background: url(/alice-angry-caterpillar.png) center / cover no-repeat;
+}
+.bg-claude-caterpillar-love {
+  background: url(/claude-caterpillar-love.png) center / cover no-repeat;
+}
+.bg-alice-drink-me {
+  background: url(/alice-drink-me.png) center / cover no-repeat;
+}
+.bg-alice-under-the-hood {
+  background: url(/alice-under-the-hood.png) center / cover no-repeat;
+}
+.bg-alice-ecosystem {
+  background: url(/alice-ecosystem.png) center / cover no-repeat;
+}
+.bg-site-nixpkgs {
+  background: url(/site-nixpkgs.png?v=2) top center / cover no-repeat;
+}
+.bg-site-nixpkgs-search {
+  background: url(/site-nixpkgs-search.png?v=2) top center / cover no-repeat;
+}
+.bg-site-nix-community {
+  background: url(/site-nix-community.png?v=2) top center / cover no-repeat;
+}
+.bg-site-home-manager {
+  background: url(/site-home-manager.png?v=2) top center / cover no-repeat;
+}
+.bg-site-nixos-anywhere {
+  background: url(/site-nixos-anywhere.png?v=2) top center / cover no-repeat;
+}
+.bg-site-nix-darwin {
+  background: url(/site-nix-darwin.png?v=2) top center / cover no-repeat;
+}
+.bg-site-devenv {
+  background: url(/site-devenv.png?v=2) top center / cover no-repeat;
+}
+.bg-site-impermanence {
+  background: url(/site-impermanence.png?v=2) top center / cover no-repeat;
+}
+.bg-site-cachix {
+  background: url(/site-cachix.png?v=2) top center / cover no-repeat;
+}
+.bg-site-ncps {
+  background: url(/site-ncps.png?v=2) top center / cover no-repeat;
+}
+.bg-site-clan {
+  background: url(/site-clan.png?v=2) top center / cover no-repeat;
+}
+.bg-site-nixcon {
+  background: url(/site-nixcon.png?v=3) top center / cover no-repeat;
+}

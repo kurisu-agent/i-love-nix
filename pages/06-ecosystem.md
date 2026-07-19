@@ -3,7 +3,7 @@ layout: center
 class: text-center
 ---
 
-<div class="absolute inset-0" style="background: url(/alice-ecosystem.png) center / cover no-repeat;">
+<div class="absolute inset-0 bg-alice-ecosystem">
   <div class="absolute top-0 right-0 flex items-stretch">
     <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
       <div class="text-5xl font-black text-white leading-none">the ecosystem</div>
@@ -36,7 +36,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-nixpkgs.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-nixpkgs">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/NixOS/nixpkgs</div>
   </div>
 </div>
@@ -68,7 +68,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-nixpkgs-search.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-nixpkgs-search">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">search.nixos.org/packages</div>
   </div>
 </div>
@@ -99,7 +99,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-nix-community.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-nix-community">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/nix-community</div>
   </div>
 </div>
@@ -130,7 +130,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-home-manager.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-home-manager">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">home-manager-options.extranix.com</div>
   </div>
 </div>
@@ -161,7 +161,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-nixos-anywhere.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-nixos-anywhere">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/nix-community/nixos-anywhere</div>
   </div>
 </div>
@@ -192,7 +192,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-nix-darwin.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-nix-darwin">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/nix-darwin/nix-darwin</div>
   </div>
 </div>
@@ -223,7 +223,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-devenv.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-devenv">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">devenv.sh</div>
   </div>
 </div>
@@ -254,7 +254,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-impermanence.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-impermanence">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/nix-community/impermanence</div>
   </div>
 </div>
@@ -414,7 +414,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-cachix.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-cachix">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">cachix.org</div>
   </div>
 </div>
@@ -445,7 +445,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-ncps.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-ncps">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">github.com/kalbasit/ncps</div>
   </div>
 </div>
@@ -476,7 +476,7 @@ layout: center
     <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="share-network" class="text-sm" /><span class="font-mono text-xs tracking-widest">clan.lol</span></div>
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="confetti" class="text-sm" /></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-clan.png?v=2) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-clan">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">clan.lol</div>
   </div>
 </div>
@@ -507,7 +507,7 @@ layout: center
     <div class="flex-1 flex items-center justify-center bg-white font-mono text-xs" style="color: #27385D;"><Ico name="share-network" class="text-sm" /></div>
     <div class="flex-none flex items-center justify-center gap-2 px-4 text-white" style="background: #5277C3;"><Ico name="confetti" class="text-sm" /><span class="font-mono text-xs tracking-widest">nixcon</span></div>
   </div>
-  <div class="flex-1 relative" style="background: url(/site-nixcon.png?v=3) top center / cover no-repeat;">
+  <div class="flex-1 relative bg-site-nixcon">
     <div class="absolute bottom-0 right-0 px-4 py-2 font-mono text-xs tracking-widest text-white" style="background: #0D1B2E;">2026.nixcon.org</div>
   </div>
 </div>

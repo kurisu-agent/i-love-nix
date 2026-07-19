@@ -3,7 +3,7 @@ layout: center
 class: text-center
 ---
 
-<div class="absolute inset-0" style="background: url(/alice-tea-party.png) center / cover no-repeat;">
+<div class="absolute inset-0 bg-alice-tea-party">
   <div class="absolute top-0 left-0 flex items-stretch">
     <div class="w-20 flex items-center justify-center" style="background: #5277C3;"><simple-icons-nixos class="text-4xl text-white" /></div>
     <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
@@ -29,8 +29,8 @@ layout: center
 ---
 
 <div class="absolute inset-0 grid grid-cols-2">
-  <div style="background: url(/build-carpenter.png) center / cover no-repeat;"></div>
-  <div style="background: url(/build-flatpack.png) center / cover no-repeat;"></div>
+  <div class="bg-build-carpenter"></div>
+  <div class="bg-build-flatpack"></div>
 </div>
 
 <!--
@@ -612,7 +612,7 @@ layout: center
 ---
 
 <div class="absolute inset-0 grid grid-cols-[0.85fr_1.15fr] gap-0 items-stretch bg-white">
-  <div style="background: url(/alice-angry-caterpillar.png) center / cover no-repeat;"></div>
+  <div class="bg-alice-angry-caterpillar"></div>
   <div class="flex flex-col justify-center px-10" style="background: #F8D8D4;">
     <div class="text-left">
 
@@ -671,7 +671,7 @@ layout: center
 ---
 
 <div class="absolute inset-0 grid grid-cols-[0.85fr_1.15fr] gap-0 items-stretch" style="background: #EDF2FA;">
-  <div style="background: url(/claude-caterpillar-love.png) center / cover no-repeat;"></div>
+  <div class="bg-claude-caterpillar-love"></div>
   <div class="flex flex-col justify-center p-14">
     <div class="h-10 flex items-center gap-3 px-4" style="background: #5277C3;">
       <Ico name="robot" class="text-base text-white" />

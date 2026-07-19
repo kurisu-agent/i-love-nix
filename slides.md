@@ -33,7 +33,7 @@ class: text-center
 ---
 
 <div class="absolute inset-0 flex items-center justify-center" style="background: #EDF2FA;">
-  <div class="aspect-[96/150] h-[62%]" style="background: url(/wakaba-mark.svg) center / contain no-repeat;"></div>
+  <div class="aspect-[96/150] h-[62%] bg-wakaba-mark"></div>
 </div>
 
 ---
@@ -119,7 +119,7 @@ layout: center
 class: text-center
 ---
 
-<div class="absolute inset-0" style="background: url(/alice-fin.png) center / cover no-repeat;">
+<div class="absolute inset-0 bg-alice-fin">
   <div class="absolute bottom-0 left-0 flex items-stretch">
     <div class="w-20 flex items-center justify-center" style="background: #5277C3;"><simple-icons-nixos class="text-4xl text-white" /></div>
     <div class="px-10 py-6 text-left" style="background: #0D1B2E;">

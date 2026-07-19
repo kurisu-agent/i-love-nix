@@ -10,7 +10,7 @@ class: text-center
       <div class="text-7xl font-black text-white leading-none">meet nix</div>
     </div>
   </div>
-  <div class="col-span-5" style="background: url(/alice-meet-nix.png) right center / cover no-repeat;"></div>
+  <div class="col-span-5 bg-alice-meet-nix"></div>
 </div>
 
 <!--
@@ -22,7 +22,7 @@ layout: center
 ---
 
 <div class="absolute inset-0 grid grid-cols-2">
-  <div style="background: url(/eelco-dolstra.jpg) center / cover no-repeat;"></div>
+  <div class="bg-eelco-dolstra"></div>
   <div class="relative" style="background: #5277C3;">
     <div class="absolute top-12 right-12"><simple-icons-nixos class="text-5xl text-white" /></div>
     <div class="absolute bottom-12 left-12 text-left">
@@ -43,8 +43,8 @@ layout: center
 ---
 
 <div class="absolute inset-0 grid grid-cols-2" style="background: #EDF2FA;">
-  <div class="m-10" style="background: url(/thesis-title-page.png) center / contain no-repeat;"></div>
-  <div class="m-10" style="background: url(/functional-mapping.svg) center / contain no-repeat;"></div>
+  <div class="m-10 bg-thesis-title-page"></div>
+  <div class="m-10 bg-functional-mapping"></div>
 </div>
 
 <!--

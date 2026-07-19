@@ -3,7 +3,7 @@ layout: center
 class: text-center
 ---
 
-<div class="absolute inset-0" style="background: url(/alice-rabbit-hole.png) center / cover no-repeat;">
+<div class="absolute inset-0 bg-alice-rabbit-hole">
   <div class="absolute top-0 right-0 flex items-stretch">
     <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
       <div class="text-5xl font-black text-white leading-none">down the rabbit hole</div>
@@ -83,7 +83,7 @@ layout: center
 layout: center
 ---
 
-<div class="absolute inset-0" style="background: #000 url(/cosmic-tiling.jpg) center / contain no-repeat;"></div>
+<div class="absolute inset-0 bg-cosmic-tiling"></div>
 
 <!--
 - The annoyance that sold me: Pop!_OS COSMIC, no toggle for animations
@@ -96,7 +96,7 @@ layout: center
 ---
 
 <div class="absolute inset-0" style="background: #0D1117;">
-  <div class="absolute inset-[10%]" style="background: url(/cosmic-comp-issue.png) center / contain no-repeat;"></div>
+  <div class="absolute inset-[10%] bg-cosmic-comp-issue"></div>
 </div>
 
 <!--
@@ -160,8 +160,8 @@ layout: center
 ---
 
 <div class="absolute inset-0 grid grid-cols-2">
-  <div style="background: url(/versions-chaos.png) center / cover no-repeat;"></div>
-  <div style="background: url(/versions-git.png) center / cover no-repeat;"></div>
+  <div class="bg-versions-chaos"></div>
+  <div class="bg-versions-git"></div>
 </div>
 <div class="absolute top-0 left-1/2 -translate-x-1/2 px-10 py-5" style="background: #0D1B2E;">
   <div class="text-4xl font-black text-white leading-none whitespace-nowrap">never going back</div>

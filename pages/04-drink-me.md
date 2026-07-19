@@ -3,7 +3,7 @@ layout: center
 class: text-center
 ---
 
-<div class="absolute inset-0" style="background: url(/alice-drink-me.png) center / cover no-repeat;">
+<div class="absolute inset-0 bg-alice-drink-me">
   <div class="absolute top-0 left-0 flex items-stretch">
     <div class="w-20 flex items-center justify-center" style="background: #5277C3;"><simple-icons-nixos class="text-4xl text-white" /></div>
     <div class="px-10 py-6 text-left" style="background: #0D1B2E;">
