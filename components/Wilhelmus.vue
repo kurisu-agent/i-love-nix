@@ -4,6 +4,9 @@
 // this slide is on-screen; stops on leave. Same play/pause pattern as PbjTime.vue.
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
+// public/ assets need the deploy base prefixed at runtime.
+const base = import.meta.env.BASE_URL
+
 const root = ref(null)
 const audio = ref(null)
 let observer
@@ -43,7 +46,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="root" class="wilhelmus">
-    <audio ref="audio" src="/wilhelmus.ogg" loop preload="auto"></audio>
+    <audio ref="audio" :src="`${base}wilhelmus.ogg`" loop preload="auto"></audio>
   </div>
 </template>
 

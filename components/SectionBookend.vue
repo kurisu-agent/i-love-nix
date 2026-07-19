@@ -8,6 +8,10 @@ const props = defineProps({
   position: { type: String, default: 'top-left' },
 })
 
+// public/ assets need the deploy base prefixed at runtime (inline styles
+// bypass Vite's --base rewriting).
+const withBase = (u) => (u.startsWith('/') ? import.meta.env.BASE_URL + u.slice(1) : u)
+
 const POSITIONS = {
   'top-left': 'top-8 left-8',
   'top-right': 'top-8 right-8',
@@ -19,7 +23,7 @@ const POSITIONS = {
 <template>
   <div
     class="absolute inset-0"
-    :style="{ background: `#000 url(${image}) center / cover no-repeat` }"
+    :style="{ background: `#000 url(${withBase(image)}) center / cover no-repeat` }"
   ></div>
   <div
     class="absolute text-left text-white rounded-xl px-6 py-5"

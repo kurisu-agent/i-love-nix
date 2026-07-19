@@ -5,6 +5,9 @@
 // Audio (public/pbj.mp3) plays while this slide is on-screen and stops on leave.
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
+// public/ assets need the deploy base prefixed at runtime.
+const base = import.meta.env.BASE_URL
+
 const root = ref(null)
 const audio = ref(null)
 let observer
@@ -45,11 +48,11 @@ onBeforeUnmount(() => {
 <template>
   <div ref="root" class="pbj">
     <img
-      src="/pbj-banana.gif"
+      :src="`${base}pbj-banana.gif`"
       alt="It's peanut butter jelly time — dancing banana"
       class="pbj-gif"
     />
-    <audio ref="audio" src="/pbj.mp3" loop preload="auto"></audio>
+    <audio ref="audio" :src="`${base}pbj.mp3`" loop preload="auto"></audio>
   </div>
 </template>
 
