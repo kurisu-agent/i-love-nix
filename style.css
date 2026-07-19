@@ -118,3 +118,9 @@
 .bg-site-nixcon {
   background: url(/site-nixcon.png?v=3) top center / cover no-repeat;
 }
+.bg-entropy-water {
+  background: url(/entropy-water.png) center / cover;
+}
+.bg-extropy-crystal {
+  background: url(/extropy-crystal.png) center / cover;
+}

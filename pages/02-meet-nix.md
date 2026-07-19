@@ -490,7 +490,7 @@ title: Extropy Harvesting
           <div class="text-base font-bold pt-1 leading-snug" style="color: #0D1B2E;">systems drift. packages rot, config diverges, "works on my machine."</div>
         </div>
       </div>
-      <div class="flex-1" style="background: url('/entropy-water.png') center/cover;"></div>
+      <div class="flex-1 bg-entropy-water"></div>
     </div>
     <div class="flex flex-col text-left">
       <div class="px-14 h-32 flex items-center gap-5">
@@ -500,7 +500,7 @@ title: Extropy Harvesting
           <div class="text-base font-bold pt-1 leading-snug" style="color: #0D1B2E;">each fix you declare crystallizes into permanent, accumulating structure.</div>
         </div>
       </div>
-      <div class="flex-1" style="background: url('/extropy-crystal.png') center/cover;"></div>
+      <div class="flex-1 bg-extropy-crystal"></div>
     </div>
   </div>
 </div>
