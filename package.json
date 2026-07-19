@@ -21,7 +21,7 @@
     "@iconify-json/logos": "^1.2.11",
     "@iconify-json/simple-icons": "^1.2.90",
     "@iconify/vue": "^5.0.1",
-    "@slidev/cli": "^52.16.0",
+    "@slidev/cli": "^52.18.0",
     "@slidev/theme-default": "^0.25.0",
     "knip": "^6.23.0",
     "markdownlint-cli2": "^0.22.1",
